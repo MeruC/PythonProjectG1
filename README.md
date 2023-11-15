@@ -6,6 +6,15 @@ INSTRUCTION: Create an online job portal web app for a job seeker (student) and 
 - Install Python
 - On VSCode Terminal:
   - py -m pip install Django
+### 
+- On VSCode Terminal:
+  - django-admin startproject <foldername>
+  - cd <foldername>
+  - python manage.py runserver
+- Click the url on "Starting development server at <url>"
+ 
+## Frameworks
+ - Django
 
 ## FRONTEND
 
