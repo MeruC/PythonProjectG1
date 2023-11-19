@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class JobsappConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'jobsapp'
+    name = 'apps.jobsapp'

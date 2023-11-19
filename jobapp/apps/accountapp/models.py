@@ -25,4 +25,20 @@ class Alerts(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     
     
+
+class ActivityLog(models.Model):
+    ACTION_CHOICES = [
+        ('signin', 'Sign in'),
+        ('logout','Sign out'),
+        ('applied','Applied'),
+        ('postJob','Posted Job'),
+        ('updatePost','Update Post'),
+        ('updateProfile','Update Profile')
+    ]
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    action = models.CharField(max_length=14,choices=ACTION_CHOICES)
+    timestamp = models.DateTimeField()
+    
+    
+    
     
