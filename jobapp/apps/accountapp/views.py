@@ -20,6 +20,10 @@ User = get_user_model()
 # ------------------ Register ------------------
 def Register(request):
     error = {}
+
+    if request.user.is_authenticated:
+        return redirect("../../profile/")
+
     if request.method == "POST":
         form = RegisterForm(request.POST)
         # check if all inputs are valid
@@ -48,6 +52,9 @@ def Register(request):
 
 # ------------------ Login ------------------
 def Login(request):
+    if request.user.is_authenticated:
+        return redirect("../../profile/")
+
     if request.method == "POST":
         form = LoginForm(request.POST)
 

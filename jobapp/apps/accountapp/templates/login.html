@@ -37,7 +37,8 @@
           <div>{{ message }}</div>
         </div>
         <!-- error message generated from forms.py -->
-        <!-- {% endfor %} {% endif %} {% if form.non_field_errors %}
+        {% endfor %} {% endif %}
+        <!-- {% if form.non_field_errors %}
         <div class="alert {{message.tags}}">
           <div class="text-red-500 ml-1">
             {{ form.non_field_errors|join:", " }}
