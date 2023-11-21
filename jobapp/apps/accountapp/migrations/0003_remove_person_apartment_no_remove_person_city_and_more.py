@@ -12,37 +12,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='person',
-            name='apartment_no',
-        ),
-        migrations.RemoveField(
-            model_name='person',
-            name='city',
-        ),
-        migrations.RemoveField(
-            model_name='person',
-            name='postal_code',
-        ),
-        migrations.RemoveField(
-            model_name='person',
-            name='street_address',
-        ),
-        migrations.AddField(
-            model_name='person',
-            name='biography',
-            field=models.TextField(blank=True),
-        ),
-        migrations.AddField(
-            model_name='person',
-            name='contact',
-            field=models.CharField(default='', max_length=12),
-        ),
-        migrations.AddField(
-            model_name='person',
-            name='profile_picture',
-            field=models.FileField(null=True, upload_to='uploads/'),
-        ),
         migrations.AlterField(
             model_name='activitylog',
             name='timestamp',
@@ -65,4 +34,5 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='accountapp.user')),
             ],
         ),
+
     ]
