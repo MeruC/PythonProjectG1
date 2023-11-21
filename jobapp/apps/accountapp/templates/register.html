@@ -1,0 +1,201 @@
+<!-- login.html -->
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+  </head>
+  <link rel="stylesheet" href="{% static '/css/main.css' %}" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <body class="bg-[#F1F8F9]">
+    <div
+      class="min-h-screen flex flex-col justify-center items-center gap-7 px-5 py-20"
+    >
+      <a href="{% url 'login' %}" class=""
+        ><div class="text-4xl font-bold">
+          <span>Job</span><span class="text-[#6A994E]">Portal</span>
+        </div></a
+      >
+      <div
+        class="flex flex-col justify-center bg-white w-full md:w-[500px] p-10 rounded-xl shadow-md"
+      >
+        <div class="text-2xl font-bold mb-6">Register</div>
+        {% if messages %} {% for message in messages %}
+        <div class="alert  {{message.tags}}">
+          <div>{{ message }}</div>
+        </div>
+        {% endfor %} {% endif %} {% if form.non_field_errors %}
+        <div class="alert {% if message.tags %} {{message.tags}} {% endif %}">
+          <div class="text-red-500 ml-1">
+            {{ form.non_field_errors|join:", " }}
+          </div>
+        </div>
+        {% endif %}
+        <form
+          method="post"
+          action="{% url 'register' %}"
+          class="flex flex-col gap-3 w-full"
+        >
+          {% csrf_token %}
+
+          <div class="flex flex-col sm:flex-row gap-3">
+            <div class="">
+              <label
+                for="{{ form.first_name.id_for_label }}"
+                class="text-sm font-semibold"
+                >First Name</label
+              >
+              {{ form.first_name }} {% if form.errors.first_name %}
+              <div class="text-[13px] text-red-500 ml-1">
+                {{ form.errors.first_name}}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="">
+              <label
+                for="{{ form.last_name.id_for_label }}"
+                class="text-sm font-semibold"
+                >Last Name</label
+              >
+              {{ form.last_name }} {% if form.errors.last_name %}
+              <div class="text-[13px] text-red-500 ml-1">
+                {{ form.errors.last_name}}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="">
+            <label
+              for="{{ form.username.id_for_label }}"
+              class="text-sm font-semibold"
+              >Username</label
+            >
+            {{ form.username }} {% if form.errors.username %}
+            <div class="text-[13px] text-red-500 ml-1">
+              {{ form.errors.username}}
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="">
+            <label
+              for="{{ form.email.id_for_label }}"
+              class="text-sm font-semibold"
+              >Email Address</label
+            >
+
+            {{ form.email }} {% if form.errors.email %}
+            <div class="text-xs text-red-500 ml-1 mt-1">
+              {{ form.errors.email }}
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="">
+            <label
+              for="{{ form.password.id_for_label }}"
+              class="text-sm font-semibold"
+              >Password</label
+            >
+            <div class="relative">
+              {{ form.password }}
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <button
+                  type="button"
+                  id="password_toggle"
+                  class="text-gray-600 focus:outline-none"
+                >
+                  <i
+                    class="fa-solid fa-eye text-gray-500"
+                    id="password_icon"
+                  ></i>
+                </button>
+              </div>
+            </div>
+            <div
+              class="text-[10px] text-gray-600 mt-2 pr-5"
+              id="password_requirment"
+            >
+              Password must be 8-20 characters long and contain a combination of
+              capital and lowercase letters, numbers, and symbols.
+            </div>
+            {% if form.errors.password %}
+            <div class="text-xs text-red-500 ml-1 mt-1">
+              {{ form.errors.password}}
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="">
+            <label
+              for="{{ form.confirm_password.id_for_label }}"
+              class="text-sm font-semibold"
+              >Confirm Password</label
+            >
+            <div class="relative">
+              {{ form.confirm_password }}
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <button
+                  type="button"
+                  id="confirm_password_toggle"
+                  class="text-gray-600 focus:outline-none"
+                >
+                  <i
+                    class="fa-solid fa-eye text-gray-500"
+                    id="confirm_password_icon"
+                  ></i>
+                </button>
+              </div>
+            </div>
+            {% if form.errors.confirm_password %}
+            <div class="text-xs text-red-500 ml-1 mt-1">
+              {{ form.errors.confirm_password }}
+            </div>
+            {% endif %}
+          </div>
+          <button
+            type="submit"
+            class="bg-[#6A994E] text-white p-1.5 font-semibold rounded-md mt-5 mb-8"
+          >
+            Register
+          </button>
+        </form>
+        <div class="font-semibold">
+          <span>Already have an account?</span>
+          <a href="{% url 'login' %}" class="text-[#6A994E] font-bold">Login</a>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src="{% static '/js/account.js' %}"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      password_toggler(
+        "{{ form.password.id_for_label }}",
+        "password_toggle",
+        "password_icon"
+      );
+      password_toggler(
+        "{{ form.confirm_password.id_for_label }}",
+        "confirm_password_toggle",
+        "confirm_password_icon"
+      );
+
+      password_requirment(
+        "{{ form.password.id_for_label }}",
+        "password_requirment"
+      );
+    });
+  </script>
+</html>

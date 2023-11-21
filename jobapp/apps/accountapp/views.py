@@ -1,3 +1,67 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.hashers import make_password, check_password
 
-# Create your views here.
+from django.contrib.auth import login, logout
+
+from django.contrib import messages
+
+from .forms import LoginForm, RegisterForm
+from .utils import (
+    check_identifier,
+)
+
+from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+
+# ------------------ Register ------------------
+def Register(request):
+    error = {}
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            new_user = User.objects.create_user(
+                first_name=form.cleaned_data["first_name"],
+                last_name=form.cleaned_data["last_name"],
+                username=form.cleaned_data["username"],
+                email=form.cleaned_data["email"],
+                password=form.cleaned_data["password"],
+            )
+            new_user.save()
+
+            messages.success(
+                request,
+                "Registration successful. You can now login to your account.",
+            )
+            return redirect("login")
+
+    else:
+        form = RegisterForm()
+
+    return render(request, "register.html", {"form": form, "error": error})
+
+
+# ------------------ Login ------------------
+def Login(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            identifier = form.cleaned_data["identifier"]
+            user = User.objects.get(**{check_identifier(identifier): identifier})
+            login(request, user)
+            return redirect("../../profile/")
+
+    else:
+        form = LoginForm()
+
+    return render(request, "login.html", {"form": form})
+
+
+# ------------------ Logout ------------------
+def Logout(request):
+    logout(request)
+    return redirect("login")
