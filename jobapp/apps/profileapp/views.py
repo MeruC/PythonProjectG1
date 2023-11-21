@@ -1,16 +1,11 @@
-
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-
-def index(request):
-    return HttpResponse("Hello profile app")
-
 # redirect the user to login page if not logged-in
 @login_required(login_url="login")
-def Profile(
+def index(
     request,
 ):
     # Check if the user is logged-in
@@ -29,4 +24,3 @@ def Profile(
         }
 
     return render(request, "profile.html", {"user_data": user_data})
-

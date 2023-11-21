@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 
@@ -62,8 +61,11 @@ def Login(request):
         if form.is_valid():
             identifier = form.cleaned_data["identifier"]
             user = User.objects.get(**{check_identifier(identifier): identifier})
-            login(request, user)
-            return redirect("../../profile/")
+            if user.is_active:
+                login(request, user)
+                return redirect("../../profile/")
+            else:
+                messages.error(request, "Your account has been disabled.")
 
     else:
         form = LoginForm()
@@ -75,4 +77,3 @@ def Login(request):
 def Logout(request):
     logout(request)
     return redirect("login")
-
