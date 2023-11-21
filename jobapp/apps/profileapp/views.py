@@ -1,17 +1,16 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
-
 
 # Create your views here.
+# redirect the user to login page if not logged-in
 @login_required(login_url="login")
 def Profile(
     request,
 ):
+    # Check if the user is logged-in
     if request.user.is_authenticated:
+        # access logged-in user data using request.user.field_from_db
         print("user_email", request.user.email)
         print("user_id", request.user.id)
         user_data = None

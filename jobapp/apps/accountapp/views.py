@@ -22,6 +22,7 @@ def Register(request):
     error = {}
     if request.method == "POST":
         form = RegisterForm(request.POST)
+        # check if all inputs are valid
         if form.is_valid():
             new_user = User.objects.create_user(
                 first_name=form.cleaned_data["first_name"],
@@ -32,6 +33,7 @@ def Register(request):
             )
             new_user.save()
 
+            # generate a success message when registration is successful
             messages.success(
                 request,
                 "Registration successful. You can now login to your account.",
