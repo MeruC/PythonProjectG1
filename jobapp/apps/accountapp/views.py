@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 
@@ -74,3 +75,4 @@ def Login(request):
 def Logout(request):
     logout(request)
     return redirect("login")
+
