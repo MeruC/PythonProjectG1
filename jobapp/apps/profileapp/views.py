@@ -1,26 +1,33 @@
-from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .forms import EditForm
+from django.shortcuts import render, redirect
 
-
-# Create your views here.
-# redirect the user to login page if not logged-in
 @login_required(login_url="login")
-def index(
-    request,
-):
-    # Check if the user is logged-in
-    if request.user.is_authenticated:
-        # access logged-in user data using request.user.field_from_db
-        print("user_email", request.user.email)
-        print("user_id", request.user.id)
-        user_data = None
+def index(request):
+    if request.method == 'POST':
+        form = EditForm(request.POST, instance=request.user) #instance of the current user
+        if form.is_valid(): #checking if there's an error
+            try:
+                form.save() #update the data of the current user
+                messages.success(request, 'Profile updated successfully.')
+                return redirect('index') #direct only to the profile again
+            except Exception as e:
+                messages.error(request, 'Profile update failed. An error occurred.')
+        else:
+            messages.error(request, 'Profile update failed. Please check the form.')
 
-        user_data = {
-            "email": request.user.email,
-            "id": request.user.id,
-            "username": request.user.username,
-            "first_name": request.user.first_name,
-            "last_name": request.user.last_name,
-        }
+    else:
+        form = EditForm(instance=request.user)
 
-    return render(request, "profile.html", {"user_data": user_data})
+    #data of the current user to be displayed on the profile section
+    user_data = {
+        "email": request.user.email,
+        "id": request.user.id,
+        "username": request.user.username,
+        "first_name": request.user.first_name,
+        "last_name": request.user.last_name,
+        "profile_summary": request.user.profile_summary
+    }
+
+    return render(request, "profile.html", {"user_data": user_data, "form": form})

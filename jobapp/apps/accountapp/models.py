@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractUser
 # user table
 class User(AbstractUser):
     # add additional fields here
+    profile_summary = models.TextField(default="")
     pass
 
 
