@@ -27,15 +27,24 @@ edit this later {% endcomment %} {% comment %} <!DOCTYPE html>
     referrerpolicy="no-referrer"
   />
   <body class="bg-[#F1F8F9] min-h-screen">
-    <nav id="navbar" class="h-20 max-h-20 w-full bg-gray-200">
-      <h1>JobPortal</h1>
-      <ul>
-        <li>Find Jobs</li>
-      </ul>
+    <nav
+      id="navbar"
+      class="h-20 max-h-20 w-full bg-gray-200 flex justify-between items-center"
+    >
+      <div class="flex gap-12 items-center">
+        <h1 class="text-3xl font-bold">
+          Job<span class="text-[hsla(98, 32%, 45%, 1)] text-green-500"
+            >Portal</span
+          >
+        </h1>
+        <ul class="font-bold text-xl">
+          <li>Find Jobs</li>
+        </ul>
+      </div>
 
-      <div>
-        <a href="{% url 'accountapp:login' %}">Sign In </a>
-        <a href="">Login</a>
+      <div class="flex flex-wrap gap-8 items-center mx-8">
+        <a href="{% url 'accountapp:login' %}" class="">Sign In </a>
+        <a href="{% url 'accountapp:register' %}">Register</a>
       </div>
     </nav>
     <div
@@ -108,7 +117,7 @@ edit this later {% endcomment %} {% comment %} <!DOCTYPE html>
 
       <div class="mt-10">
         <a
-          href="{% url accountapp:login }"
+          href="{% url 'accountapp:login' %}"
           class="text-[#386641] font-bold underline"
           >Sign In</a
         >
