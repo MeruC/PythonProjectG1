@@ -8,7 +8,7 @@ edit this later {% endcomment %} {% comment %} <!DOCTYPE html>
   </head>
   <body class="min-h-screen"></body>
 </html>
-app_name = "accountapp" {% endcomment %}
+{% endcomment %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -107,7 +107,11 @@ app_name = "accountapp" {% endcomment %}
       </p>
 
       <div class="mt-10">
-        <a href="" class="text-[#386641] font-bold underline">Sign In</a>
+        <a
+          href="{% url accountapp:login }"
+          class="text-[#386641] font-bold underline"
+          >Sign In</a
+        >
       </div>
     </div>
   </body>
