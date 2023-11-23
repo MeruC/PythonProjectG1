@@ -1,15 +1,32 @@
-{% comment %} Homepage Working draft {% endcomment %}
+{% comment %} Homepage Working draft {% endcomment %} {% comment %} TODO might
+edit this later {% endcomment %} {% comment %} <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homepage</title>
+  </head>
+  <body class="min-h-screen"></body>
+</html>
+app_name = "accountapp" {% endcomment %}
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Homepage</title>
-    {% comment %} TODO might edit this later {% endcomment %}
-    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="min-h-screen">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <body class="bg-[#F1F8F9] min-h-screen">
     <nav id="navbar" class="h-20 max-h-20 w-full bg-gray-200">
       <h1>JobPortal</h1>
       <ul>
@@ -17,9 +34,81 @@
       </ul>
 
       <div>
-        <a href="{% url 'jobsapp:index' %}">Sign In </a>
+        <a href="{% url 'accountapp:login' %}">Sign In </a>
         <a href="">Login</a>
       </div>
     </nav>
+    <div
+      class="relative flex justify-center items-center h-40"
+      style="background: linear-gradient(132deg, #f4d03f 0%, #16a085 100%)"
+    >
+      <div class="text-2xl font-bold text-white -mt-10">
+        Your Gateway To Career Opportunities!
+      </div>
+      <div
+        class="absolute top-1/2 bg-white flex flex-col sm:flex-row p-6 mx-10 rounded-lg gap-3 my-4 items-end shadow-md"
+      >
+        <div class="w-full md:w-1/2">
+          <label htmlfor="what" class="text-sm font-semibold">What</label>
+          <div class="relative">
+            <input
+              type="text"
+              id="what"
+              class="w-full px-2 py-1 rounded-md border border-gray-300 focus:outline-none focus:border-[#386641]"
+              placeholder="Skills, Job Title, Keywords"
+            />
+            <div
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400"
+            >
+              <div><i class="fa-solid fa-location-dot"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="w-full md:w-1/2">
+          <label htmlfor="what" class="text-sm font-semibold">Where</label>
+          <div class="relative">
+            <input
+              type="text"
+              id="where"
+              placeholder="City, Country"
+              class="w-full px-2 py-1 rounded-md border border-gray-300 focus:outline-none focus:border-[#386641]"
+            />
+            <div
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400"
+            >
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+          </div>
+        </div>
+        <div class="w-full md:w-40">
+          <select
+            name="category"
+            id="category"
+            class="w-full px-2 py-1 rounded-md border border-gray-300 focus:outline-none focus:border-[#386641]"
+          >
+            <option value="all">All</option>
+            <option value="part_time">Part Time</option>
+            <option value="full_time">Full Time</option>
+          </select>
+        </div>
+        <div class="w-full md:w-52">
+          <button class="w-full bg-[#386641] text-white rounded-md py-1">
+            Look for Jobs
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl mx-20 my-5 mt-16 p-10 w-[850px] mx-auto">
+      <p>
+        Sign in to your account and take the next step in your career journey.
+        Whether you're a talented professional or an employer seeking top-tier
+        candidates, we're here to make your experience seamless. Let's build
+        your future together!
+      </p>
+
+      <div class="mt-10">
+        <a href="" class="text-[#386641] font-bold underline">Sign In</a>
+      </div>
+    </div>
   </body>
 </html>
