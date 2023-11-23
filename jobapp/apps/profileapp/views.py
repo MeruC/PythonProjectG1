@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import EditForm, WorkHistoryForm
 from django.shortcuts import render, redirect
-
+from apps.jobsapp.models import WorkExperience
 
 #retrieve current user data
 def get_user_data(request):
@@ -12,9 +12,16 @@ def get_user_data(request):
         "username": request.user.username,
         "first_name": request.user.first_name,
         "last_name": request.user.last_name,
-        "profile_summary": request.user.profile_summary
+        "profile_summary": request.user.profile_summary,
     }
-    
+   
+# retrieve all the work experience of user
+def get_user_work_experience(request):
+    user = request.user.id
+    work_experience = WorkExperience.objects.filter(user=user)
+    return work_experience
+
+
 @login_required(login_url="login")
 def index(request):
     if request.method == 'POST':
@@ -37,7 +44,13 @@ def index(request):
     # data of the current user to be displayed on the profile section
     template = "profile.html"
     user_data = get_user_data(request)
-    context = {"user_data": user_data, "form": form, "work_form": work_history_form}
+    work_experiences = get_user_work_experience(request)
+    context = {
+        "user_data": user_data, 
+        "form": form, 
+        "work_form": work_history_form,
+        "work_experiences": work_experiences
+        }
     
     return render(request, template, context)
 
@@ -59,6 +72,7 @@ def addWorkExp(request):
                 end_year = request.POST.get('end_year')
                 end_date = f"{end_month}, {end_year}"
                 position = request.POST.get('position')
+                company_name = request.POST.get('company_name')
                 
                 #add new data to the database
                 work_experience = work_history_form.save(commit=False)
@@ -66,6 +80,7 @@ def addWorkExp(request):
                 work_experience.position = position
                 work_experience.end_date = end_date
                 work_experience.user = request.user
+                work_experience.company_name = company_name
                 
                 work_experience.save() #add the new work experience
                 
