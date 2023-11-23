@@ -13,4 +13,6 @@ urlpatterns = [
     path("job/", include(jobs_urls)),
     path("management/", include(management_urls)),
     path("profile/", include(profile_urls)),
+    # EXTRAS / LIB
+    path("__reload__/", include("django_browser_reload.urls")),
 ]
