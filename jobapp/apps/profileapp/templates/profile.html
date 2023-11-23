@@ -17,7 +17,7 @@
   <title>Profile</title>
 </head>
 
-<body>
+<body class="relative">
   {% if user.is_authenticated %}
 
   {% if user_data %}
@@ -177,7 +177,8 @@
             <h1 class="text-lg font-bold text-[#6a994e]">Work History</h1>
 
             <button
-              class="py-1 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5">Add
+              class="py-1 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
+              onclick="openModal('open-workexp-modal')">Add
               Work Experience</button>
           </div>
 
@@ -230,6 +231,63 @@
     </div>
   </div>
 
+
+  <!-- modals -->
+  <!-- add work experience modal -->
+  <div
+    class="absolute flex items-center justify-center work-history-modal top-0 left-0 w-full h-full z-50 bg-black bg-opacity-25 hidden">
+    <div class="w-2/5 rounded-md h-max bg-white p-5">
+      <h2 class="font-bold text-[#386641] text-lg pb-5 border-b border-[#6a994e]">Add Work History</h2>
+
+      <form method="POST" action="{% url 'addWorkExp' %}">
+        {% csrf_token %}
+        <!-- job title -->
+        <div class="flex flex-col gap-2 mt-5 gap-1">
+          <label for="{{work_form.id_for_label}}">Job Title</label>
+          {{work_form.work_title}}
+        </div>
+
+        <!-- company name -->
+        <div class="flex flex-col mt-3 gap-1">
+          <label for="{{work_form.id_for_label}}">Company Name</label>
+          {{work_form.company_name}}
+        </div>
+
+        <!-- job position -->
+        <div class="flex flex-col mt-3 gap-1">
+          <label for="{{work_form.id_for_label}}">Position</label>
+          {{work_form.position}}
+        </div>
+
+        <!-- started -->
+        <div class="flex flex-col gap-2 mt-3">
+          <label for="{{work_form.id_for_label}}">Started</label>
+          <div class="flex gap-2">
+            {{work_form.started_month}}
+            {{work_form.started_year}}
+          </div>
+
+        </div>
+
+        <!-- end -->
+        <div class="flex flex-col gap-2 mt-3">
+          <label for="{{work_form.id_for_label}}">End</label>
+          <div class="flex gap-2">
+            {{work_form.end_month}}
+            {{work_form.end_year}}
+          </div>
+
+        </div>
+
+        <div class="flex justify-end mt-2 gap-3">
+          <button class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]">Add</button>
+          <button type="button" class="text-[#386641] hover:font-bold transition delay-duration-200"
+            onclick="toggleModal('close-work-modal')">Cancel</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
   {% endif %}
   {% endif %}
 

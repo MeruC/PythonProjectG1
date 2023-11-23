@@ -20,4 +20,14 @@ function openTab(id) {
     }
 }
 
+function toggleModal(action) {
+    if (action === 'close-work-modal') $('.work-history-modal').addClass('hidden')
+    else $('.work-history-modal').addClass('hidden')
+}
+
+
+function openModal(action) {
+    if (action === 'open-workexp-modal') $('.work-history-modal').removeClass('hidden')
+}
+
 

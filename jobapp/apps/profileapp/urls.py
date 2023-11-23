@@ -4,4 +4,5 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path('addWorkExp/', views.addWorkExp, name="addWorkExp") #add work experience
 ]
