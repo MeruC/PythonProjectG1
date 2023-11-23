@@ -1,0 +1,25 @@
+{% comment %} Homepage Working draft {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homepage</title>
+    {% comment %} TODO might edit this later {% endcomment %}
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen">
+    <nav id="navbar" class="h-20 max-h-20 w-full bg-gray-200">
+      <h1>JobPortal</h1>
+      <ul>
+        <li>Find Jobs</li>
+      </ul>
+
+      <div>
+        <a href="{% url 'jobsapp:index' %}">Sign In </a>
+        <a href="">Login</a>
+      </div>
+    </nav>
+  </body>
+</html>
