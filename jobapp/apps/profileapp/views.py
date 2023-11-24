@@ -159,7 +159,18 @@ def delete_work(request,id):
         del_work.delete() #delete the selected data in the record
         messages.success(request,'Deletetion of work Success')
         return JsonResponse({'status':200,'message':'Success Deletion'})
-    except Exception as e:
+    except Exception:
         messages.error(request,'Deletion of work failed')
+        
+    return redirect('index')
+
+def delete_education(request,id):
+    del_education = get_object_or_404(Education,id=id)
+    try:
+        del_education.delete() #delete education record
+        messages.success(request,'Deletion of education success')
+        return JsonResponse({'status':200,'message':'Success Deletion'})
+    except Exception:
+        messages.error(request,'Deletion of education failed')
         
     return redirect('index')

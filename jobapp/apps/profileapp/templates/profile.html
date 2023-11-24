@@ -172,12 +172,22 @@
             <h1 class="text-lg font-bold text-[#6a994e]">Education</h1>
 
             {% for education in education_data%}
+            <!-- display all the education of the current user -->
+            <div class="flex justify-between items-start education_wrapper">
               <div>
                 <p class="text-lg font-medium">{{education.course}}</p>
                 <p class="font-medium">{{education.school_name}}</p>
                 <p class="text-sm text-gray-500">{{education.started_year}} - {{education.ended_year}}</p>
               </div>
-              {% endfor %}
+
+              <div>
+                <button class="bg-blue-400 hover:bg-blue-500 text-white p-2 rounded-md">Update</button>
+                <button class="hover:bg-red-500 text-red-400 hover:text-white p-2 rounded-md transition delay-25" onclick="deleteEducation('{{education.id}}',this)">Delete</button>
+              </div>
+              
+            </div>
+          
+            {% endfor %}
 
             <button
               class="py-2 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"

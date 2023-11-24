@@ -47,34 +47,64 @@ function deleteWork(id,element) {
         icon: 'error',
         confirmButtonText: 'Delete',
         confirmButtonColor: '#EF5350',
-        confirmButtonBorder: '#EF5350',
         showCancelButton: true,
         showCloseButton: true
       }).then(result=>{
         if(result.isConfirmed){
             // proceed on the deletion
-            fetch(URL, {
-                method: 'DELETE',
-                headers: {
-                    'Content-type': 'application/json',
-                    'X-CSRFToken': csrfToken
-                }
-            })
-            .then(response=>{return response.json()})
-            .then(data => {
-                // Handle the response data here if needed
-                if(data.status === 200 && data.message === 'Success Deletion'){
-                    // delete the selected work wrapper
-                    const container = element.parentElement
-                    container.remove()
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+            deletionProcess(URL,csrfToken,element)
         }
       })
 
 }
 
+
+function deleteEducation(id,element){
+    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value; //make the request POST secured
+    const URL = `/profile/delEducation/${parseInt(id)}/`; //link for views for deletion
+
+
+    // confirmation deletion
+    // confirmation dialog
+    Swal.fire({
+        title: 'Delete!',
+        text: 'This is a SweetAlert dialog.',
+        icon: 'error',
+        confirmButtonText: 'Delete',
+        confirmButtonColor: '#EF5350',
+        showCancelButton: true,
+        showCloseButton: true
+      }).then(result=>{
+        if(result.isConfirmed){
+            // perform the deletion of education
+            element = element.parentElement
+            deletionProcess(URL,csrfToken,element)
+        }
+      })
+    
+
+}
+
+
+function deletionProcess(URL,csrfToken,element){
+    fetch(URL, {
+        method: 'DELETE',
+        headers: {
+            'Content-type': 'application/json',
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(response=>{return response.json()})
+    .then(data => {
+        // Handle the response data here if needed
+        if(data.status === 200 && data.message === 'Success Deletion'){
+            // delete the selected work wrapper
+            const container = element.parentElement
+            container.remove()
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
 
