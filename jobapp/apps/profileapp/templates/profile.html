@@ -11,6 +11,9 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="{% static '/js/profile.js' %}"></script>
 
@@ -187,11 +190,16 @@
             <h1 class="text-lg font-bold text-[#6a994e]">Work History</h1>
             <!-- display all the work experience of the current user -->
             {% for experience in work_experiences %}
-            <div class="py-2 border-b border-gray-300">
-              <p class="text-lg font-medium">{{experience.work_title}}</p>
-              <p class="font-medium">{{experience.company_name}}</p>
-              <p class="text-sm text-gray-500">{{experience.start_date}} - {{experience.end_date}}</p>
+            <div class="flex justify-between items-start work_wrapper">
+              <div class="py-2 border-b border-gray-300">
+                <p class="text-lg font-medium">{{experience.work_title}}</p>
+                <p class="font-medium">{{experience.company_name}}</p>
+                <p class="text-sm text-gray-500">{{experience.start_date}} - {{experience.end_date}}</p>
+              </div>
+
+              <button class="hover:bg-red-500 text-red-400 hover:text-white px-3 py-2 rounded-md transition delay-25" onclick="deleteWork('{{experience.id}}', this)">Delete</button>
             </div>
+            
             {% endfor %}
 
             <button

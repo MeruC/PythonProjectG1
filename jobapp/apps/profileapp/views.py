@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import HttpResponse, JsonResponse
 from .forms import EditForm, WorkHistoryForm, EducationForm
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from apps.jobsapp.models import WorkExperience
 from apps.accountapp.models import Education
 from django.core.exceptions import ValidationError
@@ -149,3 +150,16 @@ def addEducation(request):
         }
     
     return render(request,template,context)
+
+
+#deleting record
+def delete_work(request,id):
+    del_work = get_object_or_404(WorkExperience, id=id)
+    try:
+        del_work.delete() #delete the selected data in the record
+        messages.success(request,'Deletetion of work Success')
+        return JsonResponse({'status':200,'message':'Success Deletion'})
+    except Exception as e:
+        messages.error(request,'Deletion of work failed')
+        
+    return redirect('index')
