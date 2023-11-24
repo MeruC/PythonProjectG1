@@ -56,12 +56,11 @@ class ActivityLog(models.Model):
 
 class Education(models.Model):
     DEGREE_LEVEL_CHOICES = [
-        ("PE", "Primary Education"),
-        ("LSE", "Junior High School"),
-        ("USE", "Senior High School"),
-        ("UG", "College"),
-        ("PG", "Master"),
-        ("DC", "PhD"),
+        ("HS", "High School"),
+        ("UG", "Bachelors"),
+        ("PG", "Masters"),
+        ("CF", "Certificate"),
+        ("AS", "Associates"),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
