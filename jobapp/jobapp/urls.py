@@ -5,9 +5,12 @@ from apps.core import urls as core_urls
 from apps.jobsapp import urls as jobs_urls
 from apps.management import urls as management_urls
 from apps.profileapp import urls as profile_urls
+from apps.jobsapp import urls as homepage_urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    # homepage
+    path("", include(homepage_urls)),
     path("account/", include(account_urls)),
     path("core/", include(core_urls)),
     path("job/", include(jobs_urls)),

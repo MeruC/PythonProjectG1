@@ -7,4 +7,6 @@ app_name = "profileapp"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    # todo update this later since there's no view for logout yet
+    path("logout/", views.index, name="logout"),
 ]
