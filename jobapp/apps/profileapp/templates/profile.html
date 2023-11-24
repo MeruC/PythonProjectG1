@@ -168,7 +168,8 @@
           <div class="border-b border-[#3C3C3C] py-5">
             <h1 class="text-lg font-bold text-[#6a994e]">Education</h1>
             <button
-              class="py-1 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5">Add
+              class="py-1 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
+              onclick="toggleModal('open-education-modal')">Add
               Education</button>
           </div>
 
@@ -181,13 +182,13 @@
             <div class="py-2 border-b border-gray-300">
               <p class="text-lg font-medium">{{experience.work_title}}</p>
               <p class="font-medium">{{experience.company_name}}</p>
-              <p class="text-sm text-gray-500">{{experience.start_date}} {{experience.start_date}}</p>
+              <p class="text-sm text-gray-500">{{experience.start_date}} - {{experience.start_date}}</p>
             </div>
             {% endfor %}
 
             <button
               class="py-1 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
-              onclick="openModal('open-workexp-modal')">Add
+              onclick="toggleModal('open-workexp-modal')">Add
               Work Experience</button>
           </div>
 
@@ -242,64 +243,114 @@
 
   <!-- modals -->
   <!-- add work experience modal -->
-  <div
-    class=" absolute flex items-center justify-center work-history-modal top-0 left-0 w-full h-full z-50 bg-black
-                  bg-opacity-25 hidden">
-                  <div class="w-2/5 rounded-md h-max bg-white p-5">
-                    <h2 class="font-bold text-[#386641] text-lg pb-5 border-b border-[#6a994e]">Add Work History</h2>
+  <div class="absolute flex items-center justify-center work-history-modal top-0 left-0 w-full h-full z-50 bg-black
+    bg-opacity-25 hidden">
 
-                    <form method="POST" action="{% url 'addWorkExp' %}">
-                      {% csrf_token %}
-                      <!-- job title -->
-                      <div class="flex flex-col gap-2 mt-5 gap-1">
-                        <label for="{{work_form.id_for_label}}">Job Title</label>
-                        {{work_form.work_title}}
-                      </div>
+    <div class="w-2/5 rounded-md h-max bg-white p-5">
+      <h2 class="font-bold text-[#386641] text-lg pb-5 border-b border-[#6a994e]">Add Work History</h2>
 
-                      <!-- company name -->
-                      <div class="flex flex-col mt-3 gap-1">
-                        <label for="{{work_form.id_for_label}}">Company Name</label>
-                        {{work_form.company_name}}
-                      </div>
+      <form method="POST" action="{% url 'addWorkExp' %}">
+        {% csrf_token %}
+        <!-- job title -->
+        <div class="flex flex-col gap-2 mt-5 gap-1">
+          <label for="{{work_form.id_for_label}}">Job Title</label>
+          {{work_form.work_title}}
+        </div>
 
-                      <!-- job position -->
-                      <div class="flex flex-col mt-3 gap-1">
-                        <label for="{{work_form.id_for_label}}">Position</label>
-                        {{work_form.position}}
-                      </div>
+        <!-- company name -->
+        <div class="flex flex-col mt-3 gap-1">
+          <label for="{{work_form.id_for_label}}">Company Name</label>
+          {{work_form.company_name}}
+        </div>
 
-                      <!-- started -->
-                      <div class="flex flex-col gap-2 mt-3">
-                        <label for="{{work_form.id_for_label}}">Started</label>
-                        <div class="flex gap-2">
-                          {{work_form.started_month}}
-                          {{work_form.started_year}}
-                        </div>
+        <!-- job position -->
+        <div class="flex flex-col mt-3 gap-1">
+          <label for="{{work_form.id_for_label}}">Position</label>
+          {{work_form.position}}
+        </div>
 
-                      </div>
+        <!-- started -->
+        <div class="flex flex-col gap-2 mt-3">
+          <label for="{{work_form.id_for_label}}">Started</label>
+          <div class="flex gap-2">
+            {{work_form.started_month}}
+            {{work_form.started_year}}
+          </div>
 
-                      <!-- end -->
-                      <div class="flex flex-col gap-2 mt-3">
-                        <label for="{{work_form.id_for_label}}">End</label>
-                        <div class="flex gap-2">
-                          {{work_form.end_month}}
-                          {{work_form.end_year}}
-                        </div>
+        </div>
 
-                      </div>
+        <!-- end -->
+        <div class="flex flex-col gap-2 mt-3">
+          <label for="{{work_form.id_for_label}}">End</label>
+          <div class="flex gap-2">
+            {{work_form.end_month}}
+            {{work_form.end_year}}
+          </div>
 
-                      <div class="flex justify-end mt-2 gap-3">
-                        <button
-                          class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]">Add</button>
-                        <button type="button" class="text-[#386641] hover:font-bold transition delay-duration-200"
-                          onclick="toggleModal('close-work-modal')">Cancel</button>
-                      </div>
+        </div>
 
-                    </form>
-                  </div>
-              </div>
-              {% endif %}
-              {% endif %}
+        <div class="flex justify-end mt-2 gap-3">
+          <button
+            class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]">Add</button>
+          <button type="button" class="text-[#386641] hover:font-bold transition delay-duration-200"
+            onclick="toggleModal('close-work-modal')">Cancel</button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
+
+  <div class="absolute flex items-center justify-center education-modal top-0 left-0 w-full h-full z-50 bg-black
+    bg-opacity-25 hidden">
+  
+    <div class="w-2/5 rounded-md h-max bg-white p-5">
+
+      <h2 class="font-bold text-[#386641] text-lg pb-5 border-b border-[#6a994e]">Add Education</h2>
+      <form action="{% url 'addEducation' %}" method="POST">
+        {% csrf_token %}
+        <div class="mt-5">
+          <label for="{{ education.id_for_label }}">Education Level:</label>
+          {{education.education_level}}
+        </div>
+
+        <div>
+          <label for="{education.id_for_label}">Institution / School / University:</label>
+          {{education.school_name}}
+        </div>
+
+        <div>
+          <label for="{education.id_for_label}">Course:</label>
+          {{education.course}}
+        </div>
+
+        <div class="flex gap-2">
+          <div>
+            <label for="{{ education.id_for_label }}">Start year:</label>
+            {{education.started_year}}
+          </div>
+  
+  
+          <div>
+            <label for="{{ education.id_for_label }}">Ended year:</label>
+            {{education.ended_year}}
+          </div>
+        </div>
+        
+        <div class="flex justify-end mt-2 gap-3">
+          <button
+            class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]">Add</button>
+          <button type="button" class="text-[#386641] hover:font-bold transition delay-duration-200"
+            onclick="toggleModal('close-education-modal')">Cancel</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  {% endif %}
+  {% endif %}
 
 
 </body>

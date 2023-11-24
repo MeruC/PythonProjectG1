@@ -1,8 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import EditForm, WorkHistoryForm
+from .forms import EditForm, WorkHistoryForm, EducationForm
 from django.shortcuts import render, redirect
 from apps.jobsapp.models import WorkExperience
+from django.core.exceptions import ValidationError
+
 
 #retrieve current user data
 def get_user_data(request):
@@ -27,6 +29,8 @@ def index(request):
     if request.method == 'POST':
         form = EditForm(request.POST, instance=request.user)  # instance of the current user
         work_history_form = WorkHistoryForm(request.POST)  # Pass request.POST here, not just request
+        education_form = EducationForm(request.POST)
+        
         if form.is_valid():  # checking if there's an error
             try:
                 form.save()  # update the data of the current user
@@ -40,6 +44,7 @@ def index(request):
     else:
         form = EditForm(instance=request.user)
         work_history_form = WorkHistoryForm()  # Create a blank instance for rendering in the template
+        education_form = EducationForm()
 
     # data of the current user to be displayed on the profile section
     template = "profile.html"
@@ -49,7 +54,8 @@ def index(request):
         "user_data": user_data, 
         "form": form, 
         "work_form": work_history_form,
-        "work_experiences": work_experiences
+        "work_experiences": work_experiences,
+        "education":education_form,
         }
     
     return render(request, template, context)
@@ -86,8 +92,9 @@ def addWorkExp(request):
                 
                 messages.success(request, 'Work experience added successfully.')
                 return redirect('index')
-            except Exception as e:
+            except ValidationError as e:
                  messages.error(request, 'Profile update failed. An error occurred.')
+                 print(e)
                  
     else:
         work_history_form = WorkHistoryForm()  # Create a blank instance for rendering in the template
@@ -98,3 +105,38 @@ def addWorkExp(request):
     template = "profile.html"
     context = {"user_data": user_data, "work_form": work_history_form}
     return render(request, template, context)
+
+
+def addEducation(request):
+    if request.method == 'POST':
+        form = EditForm(request.POST, instance=request.user)  # instance of the current user
+        work_history_form = WorkHistoryForm(request.POST)  # Pass request.POST here, not just request
+        education_form = EducationForm(request.POST)
+        
+        if education_form.is_valid():
+            try:
+                #add new record of education
+                new_education = education_form.save(commit=False)
+                new_education.user = request.user
+                new_education.save()
+
+                messages.success(request, 'Education added successfully.')
+                print(education_form.cleaned_data)
+                return redirect('index')  # Redirect to the profile again
+            except Exception as e:
+                messages.error(request,'Education update failed')
+                print(e)
+                pass
+            
+    user_data = get_user_data(request)
+    template = 'profile.html'
+    work_experiences = get_user_work_experience(request)
+    context = {
+        "user_data": user_data, 
+        "form": form, 
+        "work_form": work_history_form,
+        "work_experiences": work_experiences,
+        "education":education_form,
+        }
+    
+    return render(request,template,context)
