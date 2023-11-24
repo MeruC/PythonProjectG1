@@ -167,8 +167,17 @@
           <!-- education -->
           <div class="border-b border-[#3C3C3C] py-5">
             <h1 class="text-lg font-bold text-[#6a994e]">Education</h1>
+
+            {% for education in education_data%}
+              <div>
+                <p class="text-lg font-medium">{{education.course}}</p>
+                <p class="font-medium">{{education.school_name}}</p>
+                <p class="text-sm text-gray-500">{{education.started_year}} - {{education.ended_year}}</p>
+              </div>
+              {% endfor %}
+
             <button
-              class="py-1 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
+              class="py-2 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
               onclick="toggleModal('open-education-modal')">Add
               Education</button>
           </div>
@@ -176,18 +185,17 @@
           <!-- Work history -->
           <div class=" py-5">
             <h1 class="text-lg font-bold text-[#6a994e]">Work History</h1>
-
             <!-- display all the work experience of the current user -->
             {% for experience in work_experiences %}
             <div class="py-2 border-b border-gray-300">
               <p class="text-lg font-medium">{{experience.work_title}}</p>
               <p class="font-medium">{{experience.company_name}}</p>
-              <p class="text-sm text-gray-500">{{experience.start_date}} - {{experience.start_date}}</p>
+              <p class="text-sm text-gray-500">{{experience.start_date}} - {{experience.end_date}}</p>
             </div>
             {% endfor %}
 
             <button
-              class="py-1 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
+              class="py-2 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
               onclick="toggleModal('open-workexp-modal')">Add
               Work Experience</button>
           </div>
@@ -271,7 +279,7 @@
 
         <!-- started -->
         <div class="flex flex-col gap-2 mt-3">
-          <label for="{{work_form.id_for_label}}">Started</label>
+          <label for="{{work_form.started_month.id_for_label}}">Started</label>
           <div class="flex gap-2">
             {{work_form.started_month}}
             {{work_form.started_year}}
@@ -281,8 +289,16 @@
 
         <!-- end -->
         <div class="flex flex-col gap-2 mt-3">
-          <label for="{{work_form.id_for_label}}">End</label>
-          <div class="flex gap-2">
+          <div class="flex items-center justify-between gap-2">
+            <label for="{{work_form.id_for_label}}">End</label>
+
+            <div class="text-gray-600">
+              <span>Present</span>
+              <input name="present" onclick="toggleEndWork()" type="checkbox">
+            </div>
+          </div>
+          
+          <div class="flex gap-2 end-work-data">
             {{work_form.end_month}}
             {{work_form.end_year}}
           </div>

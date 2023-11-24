@@ -3,6 +3,7 @@ from django.contrib import messages
 from .forms import EditForm, WorkHistoryForm, EducationForm
 from django.shortcuts import render, redirect
 from apps.jobsapp.models import WorkExperience
+from apps.accountapp.models import Education
 from django.core.exceptions import ValidationError
 
 
@@ -23,6 +24,10 @@ def get_user_work_experience(request):
     work_experience = WorkExperience.objects.filter(user=user)
     return work_experience
 
+def get_user_education(request):
+    user = request.user.id
+    education = Education.objects.filter(user=user)
+    return education
 
 @login_required(login_url="login")
 def index(request):
@@ -50,12 +55,14 @@ def index(request):
     template = "profile.html"
     user_data = get_user_data(request)
     work_experiences = get_user_work_experience(request)
+    education = get_user_education(request)
     context = {
         "user_data": user_data, 
         "form": form, 
         "work_form": work_history_form,
         "work_experiences": work_experiences,
         "education":education_form,
+        "education_data":education
         }
     
     return render(request, template, context)
@@ -74,6 +81,8 @@ def addWorkExp(request):
                 start_year = request.POST.get('started_year')
                 start_date = f"{start_month}, {start_year}"
 
+                is_present = request.POST.get('present')
+                    
                 end_month = request.POST.get('end_month')
                 end_year = request.POST.get('end_year')
                 end_date = f"{end_month}, {end_year}"
@@ -82,12 +91,12 @@ def addWorkExp(request):
                 
                 #add new data to the database
                 work_experience = work_history_form.save(commit=False)
+                #check if the present is clicked
+                work_experience.end_date = "Present" if is_present else end_date
                 work_experience.start_date = start_date
                 work_experience.position = position
-                work_experience.end_date = end_date
                 work_experience.user = request.user
                 work_experience.company_name = company_name
-                
                 work_experience.save() #add the new work experience
                 
                 messages.success(request, 'Work experience added successfully.')

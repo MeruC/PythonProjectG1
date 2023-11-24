@@ -29,4 +29,8 @@ function toggleModal(action) {
     }
 }
 
+function toggleEndWork(){
+    $('.end-work-data').toggle()
+}
+
 
