@@ -1,0 +1,23 @@
+.active-tab {
+  border-left: #6a994e solid 3px;
+  padding: 5px;
+  font-weight: 600;
+  color: #6a994e;
+}
+
+.border input:focus {
+  border-bottom: #6a994e solid 2px !important;
+}
+
+textarea:focus {
+  border: #6a994e 2px solid !important;
+}
+
+label {
+  color: #3a3a3a;
+  font-weight: bold;
+}
+
+pre {
+  color: yellow;
+}

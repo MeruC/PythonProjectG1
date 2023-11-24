@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractUser
 # user table
 class User(AbstractUser):
     # add additional fields here
+    profile_summary = models.TextField(default="")
     pass
 
 
@@ -55,17 +56,19 @@ class ActivityLog(models.Model):
 
 class Education(models.Model):
     DEGREE_LEVEL_CHOICES = [
-        ("PE", "Primary Education"),
-        ("LSE", "Junior High School"),
-        ("USE", "Senior High School"),
-        ("UG", "College"),
-        ("PG", "Master"),
-        ("DC", "PhD"),
+        ("HS", "High School"),
+        ("UG", "Bachelors"),
+        ("PG", "Masters"),
+        ("CF", "Certificate"),
+        ("AS", "Associates"),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     education_level = models.CharField(max_length=4, choices=DEGREE_LEVEL_CHOICES)
     school_name = models.CharField(max_length=120)
+    course = models.CharField(max_length=150,default='')
+    started_year = models.IntegerField(default=2020)
+    ended_year = models.IntegerField(default=2021)
 
 
 class SocialMedia(models.Model):

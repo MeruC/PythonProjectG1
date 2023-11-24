@@ -1,25 +1,374 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    My Profile 
-    <!-- Check if the user is logged-in -->
-    {% if user.is_authenticated %}
-    <a href="{% url 'profileapp:logout' %}">Logout</a>
+  
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static '/css/profile.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="{% static '/js/profile.js' %}"></script>
 
-	  <!-- Display data from views -->
-    {% if user_data %}
-    <p>Hello: {{ user_data.first_name }} {{ user_data.last_name }}</p>
-    <p>Email: {{ user_data.email }}</p>
-    <p>Username: {{ user_data.username }}</p>
-    
-    {% endif %}
-    {% endif %}
+  <title>Profile</title>
+</head>
 
-    <div><div>
-  </body>
+<body class="relative">
+  {% if user.is_authenticated %}
+
+  {% if user_data %}
+
+  <div class="w-4/5 mx-auto h-screen">
+    <!-- Main navigation container -->
+    <nav
+      class="flex-no-wrap relative flex w-full items-center justify-between bg-[#FBFBFB] py-2 shadow-md shadow-black/5 dark:bg-neutral-600 dark:shadow-black/10 lg:flex-wrap lg:justify-start lg:py-4">
+      <div class="flex w-full flex-wrap items-center justify-between px-3">
+        <!-- Hamburger button for mobile view -->
+        <button
+          class="block border-0 bg-transparent px-2 text-neutral-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden"
+          type="button" data-te-collapse-init data-te-target="#navbarSupportedContent1"
+          aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation">
+          <!-- Hamburger icon -->
+          <span class="[&>svg]:w-7">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
+              <path fill-rule="evenodd"
+                d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
+                clip-rule="evenodd" />
+            </svg>
+          </span>
+        </button>
+
+        <!-- Collapsible navigation container -->
+        <div class="!visible hidden flex-grow basis-[100%] items-center lg:!flex lg:basis-auto"
+          id="navbarSupportedContent1" data-te-collapse-item>
+          <!-- Logo -->
+          <a class="mb-4 ml-2 mr-5 mt-3 flex items-center text-neutral-900 hover:text-neutral-900 focus:text-neutral-900 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400 lg:mb-0 lg:mt-0"
+            href="#">
+            <img src="https://tecdn.b-cdn.net/img/logo/te-transparent-noshadows.webp" style="height: 15px" alt="TE Logo"
+              loading="lazy" />
+          </a>
+          <!-- Left navigation links -->
+          <ul class="list-style-none mr-auto flex flex-col pl-0 lg:flex-row" data-te-navbar-nav-ref>
+            <li class="mb-4 lg:mb-0 lg:pr-2" data-te-nav-item-ref>
+              <!-- Dashboard link -->
+              <a class="text-[#6A994E] py-2 hover:border-b-2 border-[#6A994E] transition duration-200 hover:text-[#6A994E] hover:ease-in-out"
+                href="#" data-te-nav-link-ref>Find Job</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Right elements -->
+        <div class="relative flex items-center">
+          <!-- Container with two dropdown menus -->
+          <div class="relative" data-te-dropdown-ref data-te-dropdown-alignment="end">
+            <!-- First dropdown trigger -->
+            <a class="hidden-arrow mr-4 flex items-center text-neutral-600 transition duration-200 hover:text-neutral-700 hover:ease-in-out focus:text-neutral-700 disabled:text-black/30 motion-reduce:transition-none dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
+              href="#" id="dropdownMenuButton1" role="button" data-te-dropdown-toggle-ref aria-expanded="false">
+              <!-- Dropdown trigger icon -->
+              <span class="[&>svg]:w-5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#6A994E" class="h-5 w-5">
+                  <path fill-rule="evenodd"
+                    d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z"
+                    clip-rule="evenodd" />
+                </svg>
+              </span>
+              <!-- Notification counter -->
+              <span
+                class="absolute -mt-4 ml-2.5 rounded-full bg-danger px-[0.35em] py-[0.15em] text-[0.6rem] font-bold leading-none text-white">1</span>
+            </a>
+            <!-- First dropdown menu -->
+            <ul
+              class="absolute z-[1000] float-left m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
+              aria-labelledby="dropdownMenuButton1" data-te-dropdown-menu-ref>
+              <!-- First dropdown menu items -->
+              <li>
+                <a class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
+                  href="#" data-te-dropdown-item-ref>Action</a>
+              </li>
+              <li>
+                <a class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
+                  href="#" data-te-dropdown-item-ref>Another action</a>
+              </li>
+              <li>
+                <a class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
+                  href="#" data-te-dropdown-item-ref>Something else here</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Second dropdown container -->
+          <div class="relative" data-te-dropdown-ref data-te-dropdown-alignment="end">
+            <!-- Second dropdown trigger -->
+            <a class="hidden-arrow flex items-center gap-2 whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none"
+              href="#" id="dropdownMenuButton2" role="button" data-te-dropdown-toggle-ref aria-expanded="false">
+              <!-- User avatar -->
+              <img src="https://tecdn.b-cdn.net/img/new/avatars/2.jpg" class="rounded-full w-9 h-9" alt=""
+                loading="lazy" />
+
+              <span class="text-[#6A994E] text-lg font-bold">{{user_data.first_name}} {{user_data.last_name}}</span>
+            </a>
+            <!-- Second dropdown menu -->
+            <ul
+              class="absolute z-[1000] float-left m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
+              aria-labelledby="dropdownMenuButton2" data-te-dropdown-menu-ref>
+              <!-- Second dropdown menu items -->
+              <li>
+                <a class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
+                  href="#" data-te-dropdown-item-ref>Action</a>
+              </li>
+              <li>
+                <a class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
+                  href="#" data-te-dropdown-item-ref>Another action</a>
+              </li>
+              <li>
+                <a class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
+                  href="#" data-te-dropdown-item-ref>Something else here</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="flex flex-col md:flex-row gap-2 p-5 h-4/5">
+      <aside class="flex flex-col gap-5 w-full md:w-1/5 h-4/5">
+
+        <section class="flex flex-col items-center">
+          <img
+            src="https://png.pngtree.com/thumb_back/fh260/background/20230612/pngtree-man-wearing-glasses-is-wearing-colorful-background-image_2905240.jpg"
+            class="h-40 w-40 rounded-full" alt="">
+
+          <p class="text-xl">{{ user_data.first_name }} {{ user_data.last_name }}</p>
+          <span class="">{{user_data.email}}</span>
+        </section>
+
+        <section class="text-start flex flex-col gap-2">
+          <button class="active-tab text-start" id="profile-tab-btn"
+            onclick="openTab('profile-tab-btn')">Profile</button>
+          <button id="setting-tab-btn" class="text-start" onclick="openTab('setting-tab-btn')">Account Settings</button>
+        </section>
+      </aside>
+
+
+      <main class="w-4/5">
+        <div class="border border-[#6a994e] h-max max-h-[97%] rounded-lg overflow-y-auto p-5 profile-tab">
+          <!-- profile summary -->
+          <div class="border-b border-[#3C3C3C] py-3 w-full">
+            <h1 class="text-lg font-bold text-[#6a994e]">Profile Summary</h1>
+            <pre
+              class="text-[#3C3C3C] text-sm mt-5 indent-5 w-full whitespace-pre-wrap text-justify">{{user_data.profile_summary}}</pre>
+          </div>
+
+
+          <!-- education -->
+          <div class="border-b border-[#3C3C3C] py-5">
+            <h1 class="text-lg font-bold text-[#6a994e]">Education</h1>
+
+            {% for education in education_data%}
+              <div>
+                <p class="text-lg font-medium">{{education.course}}</p>
+                <p class="font-medium">{{education.school_name}}</p>
+                <p class="text-sm text-gray-500">{{education.started_year}} - {{education.ended_year}}</p>
+              </div>
+              {% endfor %}
+
+            <button
+              class="py-2 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
+              onclick="toggleModal('open-education-modal')">Add
+              Education</button>
+          </div>
+
+          <!-- Work history -->
+          <div class=" py-5">
+            <h1 class="text-lg font-bold text-[#6a994e]">Work History</h1>
+            <!-- display all the work experience of the current user -->
+            {% for experience in work_experiences %}
+            <div class="py-2 border-b border-gray-300">
+              <p class="text-lg font-medium">{{experience.work_title}}</p>
+              <p class="font-medium">{{experience.company_name}}</p>
+              <p class="text-sm text-gray-500">{{experience.start_date}} - {{experience.end_date}}</p>
+            </div>
+            {% endfor %}
+
+            <button
+              class="py-2 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
+              onclick="toggleModal('open-workexp-modal')">Add
+              Work Experience</button>
+          </div>
+
+
+        </div>
+
+        <!-- setting tab -->
+        <div class="border border-[#6a994e] h-max max-h-[97%] rounded-lg overflow-y-auto p-5 setting-tab hidden">
+          <div class=" gap-2 text-lg">
+            <form method="POST" action="{% url 'index' %}" class="flex flex-col gap-3">
+              <div>
+                <img class="h-36 w-36 rounded-md"
+                  src="https://png.pngtree.com/thumb_back/fh260/background/20230612/pngtree-man-wearing-glasses-is-wearing-colorful-background-image_2905240.jpg"
+                  alt="">
+
+                <button
+                  class="bg-[#6a994e] text-white my-2 rounded-md px-3 hover:font-bold transition duration-200">Upload
+                  image</button>
+              </div>
+              {% csrf_token %}
+              <div class="flex gap-4">
+                <div class="w-1/2">
+                  <label for="{{form.first_name.id_for_label}}">First name:</label>
+                  {{ form.first_name }}
+                </div>
+                <div class="w-1/2">
+                  <label for="{{form.last_name.id_for_label}}">Last name:</label>
+                  {{ form.last_name }}
+                </div>
+              </div>
+
+              <label for="{{form.email_address.id_for_label}}">Email address:</label>
+              {{ form.email }}
+
+              <label for="{{form.profile_summary.id_for_label}}">Profile summary</label>
+              {{form.profile_summary}}
+
+              <div class="flex justify-end gap-2">
+                <button
+                  class="bg-[#386641] py-2 px-3 transition duration-200 hover:bg-[#6a994e] rounded-sm text-white font-bold"
+                  type="submit">Save changes</button>
+                <button class="text-[#386641] hover:font-bold transition delay-duration-200"">Cancel</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+
+  <!-- modals -->
+  <!-- add work experience modal -->
+  <div class="absolute flex items-center justify-center work-history-modal top-0 left-0 w-full h-full z-50 bg-black
+    bg-opacity-25 hidden">
+
+    <div class="w-2/5 rounded-md h-max bg-white p-5">
+      <h2 class="font-bold text-[#386641] text-lg pb-5 border-b border-[#6a994e]">Add Work History</h2>
+
+      <form method="POST" action="{% url 'addWorkExp' %}">
+        {% csrf_token %}
+        <!-- job title -->
+        <div class="flex flex-col gap-2 mt-5 gap-1">
+          <label for="{{work_form.id_for_label}}">Job Title</label>
+          {{work_form.work_title}}
+        </div>
+
+        <!-- company name -->
+        <div class="flex flex-col mt-3 gap-1">
+          <label for="{{work_form.id_for_label}}">Company Name</label>
+          {{work_form.company_name}}
+        </div>
+
+        <!-- job position -->
+        <div class="flex flex-col mt-3 gap-1">
+          <label for="{{work_form.id_for_label}}">Position</label>
+          {{work_form.position}}
+        </div>
+
+        <!-- started -->
+        <div class="flex flex-col gap-2 mt-3">
+          <label for="{{work_form.started_month.id_for_label}}">Started</label>
+          <div class="flex gap-2">
+            {{work_form.started_month}}
+            {{work_form.started_year}}
+          </div>
+
+        </div>
+
+        <!-- end -->
+        <div class="flex flex-col gap-2 mt-3">
+          <div class="flex items-center justify-between gap-2">
+            <label for="{{work_form.id_for_label}}">End</label>
+
+            <div class="text-gray-600">
+              <span>Present</span>
+              <input name="present" onclick="toggleEndWork()" type="checkbox">
+            </div>
+          </div>
+          
+          <div class="flex gap-2 end-work-data">
+            {{work_form.end_month}}
+            {{work_form.end_year}}
+          </div>
+
+        </div>
+
+        <div class="flex justify-end mt-2 gap-3">
+          <button
+            class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]">Add</button>
+          <button type="button" class="text-[#386641] hover:font-bold transition delay-duration-200"
+            onclick="toggleModal('close-work-modal')">Cancel</button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
+
+  <div class="absolute flex items-center justify-center education-modal top-0 left-0 w-full h-full z-50 bg-black
+    bg-opacity-25 hidden">
+  
+    <div class="w-2/5 rounded-md h-max bg-white p-5">
+
+      <h2 class="font-bold text-[#386641] text-lg pb-5 border-b border-[#6a994e]">Add Education</h2>
+      <form action="{% url 'addEducation' %}" method="POST">
+        {% csrf_token %}
+        <div class="mt-5">
+          <label for="{{ education.id_for_label }}">Education Level:</label>
+          {{education.education_level}}
+        </div>
+
+        <div>
+          <label for="{education.id_for_label}">Institution / School / University:</label>
+          {{education.school_name}}
+        </div>
+
+        <div>
+          <label for="{education.id_for_label}">Field of Study:</label>
+          {{education.course}}
+        </div>
+
+        <div class="flex gap-2">
+          <div>
+            <label for="{{ education.id_for_label }}">Start year:</label>
+            {{education.started_year}}
+          </div>
+  
+  
+          <div>
+            <label for="{{ education.id_for_label }}">Ended year:</label>
+            {{education.ended_year}}
+          </div>
+        </div>
+        
+        <div class="flex justify-end mt-2 gap-3">
+          <button
+            class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]">Add</button>
+          <button type="button" class="text-[#386641] hover:font-bold transition delay-duration-200"
+            onclick="toggleModal('close-education-modal')">Cancel</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  {% endif %}
+  {% endif %}
+
+
+</body>
+
 </html>

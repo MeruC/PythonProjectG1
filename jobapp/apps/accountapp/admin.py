@@ -1,5 +1,6 @@
 from django.contrib import admin
-from apps.accountapp.models import User
+from apps.accountapp.models import User, Education
+from apps.jobsapp.models import WorkExperience
 from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
@@ -67,3 +68,16 @@ class CustomUserAdmin(UserAdmin):
         "email",
         "username",
     )
+
+
+class WorkHistoryAdmin(admin.ModelAdmin):
+    list_display = ['user','work_title','position','start_date','end_date']
+    
+admin.site.register(WorkExperience,WorkHistoryAdmin)
+
+class EducationAdmin(admin.ModelAdmin):
+    list_display = ['user','education_level', 'school_name','course','started_year','ended_year']
+    
+admin.site.register(Education,EducationAdmin)
+
+
