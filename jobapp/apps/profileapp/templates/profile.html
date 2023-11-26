@@ -199,14 +199,12 @@
               onclick="toggleModal('open-workexp-modal')">Add
               Work Experience</button>
           </div>
-
-
         </div>
 
         <!-- setting tab -->
         <div class="border border-[#6a994e] h-max max-h-[97%] rounded-lg overflow-y-auto p-5 setting-tab hidden">
           <div class=" gap-2 text-lg">
-            <form method="POST" action="{% url 'index' %}" class="flex flex-col gap-3">
+            <form method="POST" action="{% url 'profileapp:index' %}" class="flex flex-col gap-3">
               <div>
                 <img class="h-36 w-36 rounded-md"
                   src="https://png.pngtree.com/thumb_back/fh260/background/20230612/pngtree-man-wearing-glasses-is-wearing-colorful-background-image_2905240.jpg"
@@ -257,7 +255,7 @@
     <div class="w-2/5 rounded-md h-max bg-white p-5">
       <h2 class="font-bold text-[#386641] text-lg pb-5 border-b border-[#6a994e]">Add Work History</h2>
 
-      <form method="POST" action="{% url 'addWorkExp' %}">
+      <form method="POST" action="{% url 'profileapp:addWorkExp' %}">
         {% csrf_token %}
         <!-- job title -->
         <div class="flex flex-col gap-2 mt-5 gap-1">
@@ -324,7 +322,7 @@
     <div class="w-2/5 rounded-md h-max bg-white p-5">
 
       <h2 class="font-bold text-[#386641] text-lg pb-5 border-b border-[#6a994e]">Add Education</h2>
-      <form action="{% url 'addEducation' %}" method="POST">
+      <form action="{% url 'profileapp:addEducation' %}" method="POST">
         {% csrf_token %}
         <div class="mt-5">
           <label for="{{ education.id_for_label }}">Education Level:</label>

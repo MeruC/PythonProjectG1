@@ -1,0 +1,73 @@
+<nav class="flex bg-white py-3 px-20 shadow-md">
+  <ul class="flex w-full gap-4 items-center justify-center">
+    <li>
+      <a href="{% url 'jobsapp:index' %}" class="text-2xl font-bold"
+        ><span class="text-[#386641]">Work</span><span class="">It</span></a
+      >
+    </li>
+    <li class="flex-1">
+      <a
+        href="{% url 'jobsapp:index' %}"
+        class="border-b-[2px] border-[#386641] text-[#386641] py-2 px-2"
+        >Find Jobs</a
+      >
+    </li>
+
+    {% if user.is_authenticated %}
+    <!-- logged in -->
+    <li class="text-red-500 underline">
+      <a href="{% url 'profileapp:index' %}">Recruit</a>
+    </li>
+    <div class="w-[1px] h-full bg-gray-300"></div>
+    <li class="text-gray-500 underline">
+      <i class="fa-regular fa-bell"></i>
+    </li>
+    <li>
+      <!-- <a href="{% url 'profileapp:index' %}"
+        > -->
+      <img src="https://picsum.photos/200" class="w-8 h-8 rounded-full" />
+      <!--  </a> -->
+    </li>
+    <li class="relative">
+      <i class="fa-solid fa-chevron-down text-xs" id="icon_dropdown"></i>
+      <ul
+        id="dropdown"
+        class="absolute hidden bg-white border shadow-md mt-2 py-2 px-4 space-y-2 z-10 duration-300 right-0"
+      >
+        <li><a href="{% url 'profileapp:index' %}">Profile</a></li>
+
+        <li><a href="{% url 'accountapp:logout' %}">Logout</a></li>
+        <!-- Add your logout link here -->
+      </ul>
+    </li>
+    {% else %}
+    <!-- visitor -->
+    <li
+      class="border border-1 border-[#386641] text-[#386641] w-24 py-1 text-center rounded-md"
+    >
+      <a href="{% url 'accountapp:register' %}">Sign In</a>
+    </li>
+
+    {% endif %}
+  </ul>
+</nav>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const icon_dropdown = document.querySelector("#icon_dropdown");
+    const dropdown = document.querySelector("#dropdown");
+
+    icon_dropdown.addEventListener("click", function (event) {
+      event.preventDefault();
+      dropdown.classList.toggle("hidden");
+    });
+
+    window.addEventListener("click", function (event) {
+      if (
+        !icon_dropdown.contains(event.target) &&
+        !dropdown.contains(event.target)
+      ) {
+        dropdown.classList.add("hidden");
+      }
+    });
+  });
+</script>

@@ -22,16 +22,16 @@
     <div
       class="min-h-screen flex flex-col justify-center items-center gap-7 px-5 py-20"
     >
-      <a href="{% url 'login' %}" class=""
+      <a href="{% url 'jobsapp:index' %}" class="mb-5"
         ><div class="text-4xl font-bold">
-          <span>Job</span><span class="text-[#6A994E]">Portal</span>
+          <span class="text-[#386641]">Work</span><span class="">It</span>
         </div></a
       >
 
       <div
         class="flex flex-col justify-center bg-white w-full md:w-[500px] p-10 rounded-xl shadow-md"
       >
-        <div class="text-2xl font-bold mb-6">Sign In</div>
+        <div class="text-3xl font-bold mb-6">Sign In</div>
         {% if messages %} {% for message in messages %}
         <div class="alert  {{message.tags}}">
           <div>{{ message }}</div>
@@ -47,7 +47,7 @@
         {% endif %} -->
         <form
           method="post"
-          action="{% url 'login' %}"
+          action="{% url 'accountapp:login' %}"
           class="flex flex-col gap-3 w-full"
         >
           {% csrf_token %}
@@ -104,7 +104,9 @@
         </form>
         <div class="font-semibold">
           <span>Don't have an account?</span>
-          <a href="{% url 'register' %}" class="text-[#6A994E] font-bold"
+          <a
+            href="{% url 'accountapp:register' %}"
+            class="text-[#6A994E] font-bold"
             >Register</a
           >
         </div>

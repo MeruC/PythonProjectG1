@@ -21,9 +21,9 @@
     <div
       class="min-h-screen flex flex-col justify-center items-center gap-7 px-5 py-20"
     >
-      <a href="{% url 'login' %}" class=""
+      <a href="{% url 'jobsapp:index' %}" class="mb-5"
         ><div class="text-4xl font-bold">
-          <span>Job</span><span class="text-[#6A994E]">Portal</span>
+          <span class="text-[#386641]">Work</span><span class="">It</span>
         </div></a
       >
       <div
@@ -47,7 +47,7 @@
         {% endif %} -->
         <form
           method="post"
-          action="{% url 'register' %}"
+          action="{% url 'accountapp:register' %}"
           class="flex flex-col gap-3 w-full"
         >
           {% csrf_token %}
@@ -177,7 +177,11 @@
         </form>
         <div class="font-semibold">
           <span>Already have an account?</span>
-          <a href="{% url 'login' %}" class="text-[#6A994E] font-bold">Login</a>
+          <a
+            href="{% url 'accountapp:login' %}"
+            class="text-[#6A994E] font-bold"
+            >Login</a
+          >
         </div>
       </div>
     </div>
