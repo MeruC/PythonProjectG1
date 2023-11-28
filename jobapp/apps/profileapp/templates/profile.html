@@ -11,6 +11,9 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="{% static '/js/profile.js' %}"></script>
 
@@ -106,7 +109,7 @@
             <a class="hidden-arrow flex items-center gap-2 whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none"
               href="#" id="dropdownMenuButton2" role="button" data-te-dropdown-toggle-ref aria-expanded="false">
               <!-- User avatar -->
-              <img src="https://tecdn.b-cdn.net/img/new/avatars/2.jpg" class="rounded-full w-9 h-9" alt=""
+              <img src="{{user.profile_img.url}}" class="rounded-full w-9 h-9" alt=""
                 loading="lazy" />
 
               <span class="text-[#6A994E] text-lg font-bold">{{user_data.first_name}} {{user_data.last_name}}</span>
@@ -138,9 +141,16 @@
       <aside class="flex flex-col gap-5 w-full md:w-1/5 h-4/5">
 
         <section class="flex flex-col items-center">
-          <img
-            src="https://png.pngtree.com/thumb_back/fh260/background/20230612/pngtree-man-wearing-glasses-is-wearing-colorful-background-image_2905240.jpg"
-            class="h-40 w-40 rounded-full" alt="">
+          {% if user.profile_img %}
+            <img
+              src="{{user.profile_img.url}}"
+              class="h-40 w-40 rounded-full" alt="">
+          {% else %}
+            <img
+              src="{{user.profile_img.url}}"
+              class="h-40 w-40 rounded-full" alt="">
+          {% endif %}
+          
 
           <p class="text-xl">{{ user_data.first_name }} {{ user_data.last_name }}</p>
           <span class="">{{user_data.email}}</span>
@@ -169,12 +179,22 @@
             <h1 class="text-lg font-bold text-[#6a994e]">Education</h1>
 
             {% for education in education_data%}
+            <!-- display all the education of the current user -->
+            <div class="flex justify-between items-start education_wrapper">
               <div>
                 <p class="text-lg font-medium">{{education.course}}</p>
                 <p class="font-medium">{{education.school_name}}</p>
                 <p class="text-sm text-gray-500">{{education.started_year}} - {{education.ended_year}}</p>
               </div>
-              {% endfor %}
+
+              <div>
+                <button class="bg-blue-400 hover:bg-blue-500 text-white p-2 rounded-md">Update</button>
+                <button class="hover:bg-red-500 text-red-400 hover:text-white p-2 rounded-md transition delay-25" onclick="deleteEducation('{{education.id}}',this)">Delete</button>
+              </div>
+              
+            </div>
+          
+            {% endfor %}
 
             <button
               class="py-2 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
@@ -187,11 +207,16 @@
             <h1 class="text-lg font-bold text-[#6a994e]">Work History</h1>
             <!-- display all the work experience of the current user -->
             {% for experience in work_experiences %}
-            <div class="py-2 border-b border-gray-300">
-              <p class="text-lg font-medium">{{experience.work_title}}</p>
-              <p class="font-medium">{{experience.company_name}}</p>
-              <p class="text-sm text-gray-500">{{experience.start_date}} - {{experience.end_date}}</p>
+            <div class="flex justify-between items-start work_wrapper">
+              <div class="py-2 border-b border-gray-300">
+                <p class="text-lg font-medium">{{experience.work_title}}</p>
+                <p class="font-medium">{{experience.company_name}}</p>
+                <p class="text-sm text-gray-500">{{experience.start_date}} - {{experience.end_date}}</p>
+              </div>
+
+              <button class="hover:bg-red-500 text-red-400 hover:text-white px-3 py-2 rounded-md transition delay-25" onclick="deleteWork('{{experience.id}}', this)">Delete</button>
             </div>
+            
             {% endfor %}
 
             <button
@@ -206,17 +231,26 @@
         <!-- setting tab -->
         <div class="border border-[#6a994e] h-max max-h-[97%] rounded-lg overflow-y-auto p-5 setting-tab hidden">
           <div class=" gap-2 text-lg">
-            <form method="POST" action="{% url 'index' %}" class="flex flex-col gap-3">
-              <div>
-                <img class="h-36 w-36 rounded-md"
-                  src="https://png.pngtree.com/thumb_back/fh260/background/20230612/pngtree-man-wearing-glasses-is-wearing-colorful-background-image_2905240.jpg"
-                  alt="">
-
-                <button
-                  class="bg-[#6a994e] text-white my-2 rounded-md px-3 hover:font-bold transition duration-200">Upload
-                  image</button>
-              </div>
+            <form method="POST" action="{% url 'index' %}" class="flex flex-col gap-3" enctype="multipart/form-data">
               {% csrf_token %}
+
+              <div>
+
+                {% if user.profile_img %}
+                    <img id="img_settings" class="h-36 w-36 rounded-full object-cover mb-5"
+                        src="{{ user.profile_img.url }}"
+                        alt="">
+                {% else %}
+                    <!-- default image -->
+                    <img id="img_settings" class="h-36 w-36 rounded-full object-cover mb-5"
+                        src="{% static '/assets/default_profile.png' %}"
+                        alt="">
+                {% endif %}
+                
+                {{ form.profile_img }}
+              </div>
+                           
+
               <div class="flex gap-4">
                 <div class="w-1/2">
                   <label for="{{form.first_name.id_for_label}}">First name:</label>

@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import HttpResponse, JsonResponse
 from .forms import EditForm, WorkHistoryForm, EducationForm
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from apps.jobsapp.models import WorkExperience
 from apps.accountapp.models import Education
 from django.core.exceptions import ValidationError
@@ -16,6 +17,7 @@ def get_user_data(request):
         "first_name": request.user.first_name,
         "last_name": request.user.last_name,
         "profile_summary": request.user.profile_summary,
+        "profile_img": request.user.profile_img
     }
    
 # retrieve all the work experience of user
@@ -32,13 +34,19 @@ def get_user_education(request):
 @login_required(login_url="login")
 def index(request):
     if request.method == 'POST':
-        form = EditForm(request.POST, instance=request.user)  # instance of the current user
+        form = EditForm(request.POST,request.FILES ,instance=request.user)  # instance of the current user
         work_history_form = WorkHistoryForm(request.POST)  # Pass request.POST here, not just request
         education_form = EducationForm(request.POST)
         
         if form.is_valid():  # checking if there's an error
             try:
+                old_profile = request.user.profile_img.url if request.user.profile_img else None
                 form.save()  # update the data of the current user
+                
+                # remove the old profile
+                if old_profile:
+                    request.user.profile_img.storage.delete(old_profile)
+                    
                 messages.success(request, 'Profile updated successfully.')
                 return redirect('index')  # direct only to the profile again
             except Exception as e:
@@ -149,3 +157,27 @@ def addEducation(request):
         }
     
     return render(request,template,context)
+
+
+#deleting record
+def delete_work(request,id):
+    del_work = get_object_or_404(WorkExperience, id=id)
+    try:
+        del_work.delete() #delete the selected data in the record
+        messages.success(request,'Deletetion of work Success')
+        return JsonResponse({'status':200,'message':'Success Deletion'})
+    except Exception:
+        messages.error(request,'Deletion of work failed')
+        
+    return redirect('index')
+
+def delete_education(request,id):
+    del_education = get_object_or_404(Education,id=id)
+    try:
+        del_education.delete() #delete education record
+        messages.success(request,'Deletion of education success')
+        return JsonResponse({'status':200,'message':'Success Deletion'})
+    except Exception:
+        messages.error(request,'Deletion of education failed')
+        
+    return redirect('index')
