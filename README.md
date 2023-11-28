@@ -21,8 +21,6 @@ env\Scripts\activate
 ```bash
 pip install -r requirements.txt
 ```
-***📌 We still don't have database and models, so you may skip steps 5 & 6.***
-
 5. Apply database migrations
 ```bash
 python manage.py migrate
@@ -35,6 +33,8 @@ python manage.py createsuperuser
 ```bash
 python manage.py runserver
 ```
+
+- For using and running the tailwind please refer here: https://clarencedimafelix.notion.site/Using-django-tailwind-caf8a872c5a743939cd2a0c1182eb8f5?pvs=4
 
 ## Frameworks
  - Django

@@ -27,8 +27,8 @@ SECRET_KEY = "django-insecure-2-hf0ldzhe$dy9gvd)a@fi59w9ukmd_yqr-%@!n0!#$uu^p#y6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -42,6 +42,17 @@ INSTALLED_APPS = [
     "apps.accountapp.apps.AccountappConfig",
     "apps.jobsapp.apps.JobsappConfig",
     "apps.profileapp.apps.ProfileappConfig",
+    # EXTRAS / LIB
+    "tailwind",
+    "theme",
+    "django_browser_reload",
+]
+
+TAILWIND_APP_NAME = "theme"
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+
+INTERNAL_IPS = [
+  "127.0.0.1"
 ]
 
 MIDDLEWARE = [
@@ -52,6 +63,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # EXTRAS / LIB
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = "jobapp.urls"
@@ -63,6 +76,8 @@ TEMPLATES = [
             os.path.join(BASE_DIR, "apps/accountapp/templates"),
             os.path.join(BASE_DIR, "apps/jobsapp/templates"),
             os.path.join(BASE_DIR, "apps/profileapp/templates"),
+            # JOIN GENERAL TEMPLATES
+            os.path.join(BASE_DIR, "templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
