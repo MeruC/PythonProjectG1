@@ -26,7 +26,11 @@
     </div>
 
     <div class="flex flex-wrap gap-8 items-center mx-8">
-      <a href="{% url 'accountapp:login' %}" class="daisy-btn">Sign In </a>
+      <a
+        href="{% url 'accountapp:login' %}"
+        class="daisy-btn daisy-btn-accent font-bold"
+        >Sign In
+      </a>
       <a href="{% url 'accountapp:register' %}">Register</a>
     </div>
   </nav>
