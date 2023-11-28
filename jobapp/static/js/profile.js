@@ -126,3 +126,31 @@ $(document).ready(function(){
     
 })
 
+function toggleDropdown(element){
+    $('.second-dropdown').toggle()
+
+    // change icon
+    if (element.hasClass('fa-arrow-down')) {
+        element.removeClass('fa-arrow-down').addClass('fa-arrow-up');
+    } else {
+        element.removeClass('fa-arrow-up').addClass('fa-arrow-down');
+    }
+}
+
+function isLogout(){
+    // confirmation
+    Swal.fire({
+        title: 'Sign out',
+        text: 'Are you sure you want to leave?',
+        icon: 'question',
+        confirmButtonText: 'Sign out',
+        showCancelButton: true,
+        showCloseButton: true
+      }).then(result=>{
+        if(result.isConfirmed){
+            // logout the current user
+            window.open('http://127.0.0.1:8000/account/logout/','_blank')
+        }
+      })
+}
+

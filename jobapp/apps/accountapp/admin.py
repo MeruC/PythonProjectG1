@@ -5,9 +5,6 @@ from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
 
-admin.site.register(User, UserAdmin)
-
-
 class CustomUserAdmin(UserAdmin):
     model = User
     list_display = (
@@ -17,6 +14,7 @@ class CustomUserAdmin(UserAdmin):
         "last_login",
         "is_staff",
         "is_active",
+        "profile_img",
     )
     list_filter = (
         "email",
@@ -38,7 +36,8 @@ class CustomUserAdmin(UserAdmin):
                     "last_name",
                     "is_staff",
                     "is_active",
-                    "profile_img",  # Add profile_img field here
+                    "profile_summary",
+                    "profile_img",
                 )
             },
         ),
@@ -57,7 +56,8 @@ class CustomUserAdmin(UserAdmin):
                     "last_name",
                     "is_staff",
                     "is_active",
-                    "profile_img",  # Add profile_img field here
+                    "profile_summary",
+                    "profile_img",
                 ),
             },
         ),
@@ -71,6 +71,7 @@ class CustomUserAdmin(UserAdmin):
         "username",
     )
 
+admin.site.register(User, CustomUserAdmin)
 
 class WorkHistoryAdmin(admin.ModelAdmin):
     list_display = ['user','work_title','position','start_date','end_date']

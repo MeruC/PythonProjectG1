@@ -8,7 +8,6 @@ class User(AbstractUser):
     # add additional fields here
     profile_summary = models.TextField(default="")
     profile_img = models.ImageField(null=True, blank=True,upload_to="images/")
-    pass
 
 
 # class User(models.Model):
