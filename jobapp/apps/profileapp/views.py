@@ -17,6 +17,7 @@ def get_user_data(request):
         "first_name": request.user.first_name,
         "last_name": request.user.last_name,
         "profile_summary": request.user.profile_summary,
+        "profile_img": request.user.profile_img
     }
    
 # retrieve all the work experience of user
@@ -33,13 +34,19 @@ def get_user_education(request):
 @login_required(login_url="login")
 def index(request):
     if request.method == 'POST':
-        form = EditForm(request.POST, instance=request.user)  # instance of the current user
+        form = EditForm(request.POST,request.FILES ,instance=request.user)  # instance of the current user
         work_history_form = WorkHistoryForm(request.POST)  # Pass request.POST here, not just request
         education_form = EducationForm(request.POST)
         
         if form.is_valid():  # checking if there's an error
             try:
+                old_profile = request.user.profile_img.url if request.user.profile_img else None
                 form.save()  # update the data of the current user
+                
+                # remove the old profile
+                if old_profile:
+                    request.user.profile_img.storage.delete(old_profile)
+                    
                 messages.success(request, 'Profile updated successfully.')
                 return redirect('index')  # direct only to the profile again
             except Exception as e:

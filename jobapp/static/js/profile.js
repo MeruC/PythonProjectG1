@@ -108,3 +108,21 @@ function deletionProcess(URL,csrfToken,element){
     });
 }
 
+
+$(document).ready(function(){
+    $('#profileInput').on('change', function () {
+        let selectedFile = this.files[0];
+    
+        if (selectedFile) {
+            let reader = new FileReader();
+    
+            reader.onload = function (e) { 
+                $('#img_settings').attr('src', e.target.result);
+            };
+    
+            reader.readAsDataURL(selectedFile);
+        }
+    });
+    
+})
+
