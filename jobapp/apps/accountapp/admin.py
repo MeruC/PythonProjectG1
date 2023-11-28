@@ -15,6 +15,7 @@ class CustomUserAdmin(UserAdmin):
         "is_staff",
         "is_active",
         "profile_img",
+        "contact_number",
     )
     list_filter = (
         "email",
@@ -58,6 +59,7 @@ class CustomUserAdmin(UserAdmin):
                     "is_active",
                     "profile_summary",
                     "profile_img",
+                    "contact_number",
                 ),
             },
         ),

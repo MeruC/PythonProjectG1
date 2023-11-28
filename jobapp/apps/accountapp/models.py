@@ -8,7 +8,7 @@ class User(AbstractUser):
     # add additional fields here
     profile_summary = models.TextField(default="")
     profile_img = models.ImageField(null=True, blank=True,upload_to="images/")
-
+    contact_number = models.CharField(max_length=12, default='')
 
 # class User(models.Model):
 #     username = models.CharField(max_length=100)
