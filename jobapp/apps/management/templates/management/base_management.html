@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block metaData %}
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet" />
+{% endblock metaData %}
+{% block content %}
+    <nav class="daisy-drawer lg:daisy-drawer-open bg-white ">
+        <input id="my-drawer-2" type="checkbox" class="daisy-drawer-toggle" />
+        <div class="daisy-drawer-content flex flex-col bg-[#F1F8F9]">
+            <!-- Page content here -->
+            {% block section %}
+            {% endblock section %}
+            <label for="my-drawer-2"
+                   class="daisy-btn daisy-btn-secondary daisy-drawer-button lg:hidden">Open drawer</label>
+        </div>
+        <div class="daisy-drawer-side">
+            <h1 class="py-8 text-4xl text-secondary font-bold text-center">
+                Work<span class="text-gray-800">It</span>
+            </h1>
+            <label for="my-drawer-2"
+                   aria-label="close sidebar"
+                   class="daisy-drawer-overlay"></label>
+            <ul class="daisy-menu bg-white p-4 w-80 min-h-full  text-base-content flex flex-col flex-nowrap gap-4 [&>*>a]:py-4">
+                <!-- Sidebar content here -->
+                <li>
+                    <a class="font-bold">
+                        <i class="fa-solid fa-chart-line fa-xl"></i>
+                        <span class="ml-2">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="font-bold">
+                        <i class="fa-solid fa-user-group fa-xl"></i>
+                        <span class="ml-2">Users</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="font-bold">
+                        <i class="fa-regular fa-building fa-xl"></i>
+                        <span class="ml-2">Companies</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="font-bold">
+                        <i class="fa-solid fa-briefcase fa-xl"></i>
+                        <span class="ml-2">Users</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% endblock content %}
