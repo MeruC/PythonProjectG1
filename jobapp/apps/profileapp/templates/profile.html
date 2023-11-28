@@ -128,9 +128,9 @@
 
 
       <main class="w-4/5">
-        <div class="border border-[#6a994e] h-max max-h-[97%] rounded-lg overflow-y-auto p-5 profile-tab">
+        <div class=" h-max max-h-[97%] rounded-lg overflow-y-auto p-5 profile-tab">
           <!-- profile summary -->
-          <div class="border-b border-[#3C3C3C] py-3 w-full">
+          <div class=" py-3 w-full">
             <h1 class="text-lg font-bold text-[#6a994e]">Profile Summary</h1>
             <pre
               class="text-[#3C3C3C] text-sm mt-5 indent-5 w-full whitespace-pre-wrap text-justify">{{user_data.profile_summary}}</pre>
@@ -138,7 +138,7 @@
 
 
           <!-- education -->
-          <div class="border-b border-[#3C3C3C] py-5">
+          <div class="py-5">
             <h1 class="text-lg font-bold text-[#6a994e]">Education</h1>
 
             {% for education in education_data%}
@@ -225,17 +225,24 @@
                 </div>
               </div>
 
+              <label for="{{form.profile_summary.id_for_label}}">Profile summary</label>
+              {{form.profile_summary}}
+
               <label for="{{form.email_address.id_for_label}}">Email address:</label>
               {{ form.email }}
 
-              <label for="{{form.profile_summary.id_for_label}}">Profile summary</label>
-              {{form.profile_summary}}
+              <label for="form.contact_number.id_for_label">Contact No.</label>
+              <div class="flex gap-2 items-center">
+                <span>+63</span>
+                {{form.contact_number}}
+              </div>
+              
 
               <div class="flex justify-end gap-2">
                 <button
                   class="bg-[#386641] py-2 px-3 transition duration-200 hover:bg-[#6a994e] rounded-sm text-white font-bold"
                   type="submit">Save changes</button>
-                <button class="text-[#386641] hover:font-bold transition delay-duration-200"">Cancel</button>
+                <button class="text-[#386641] hover:font-bold transition delay-duration-200">Cancel</button>
               </div>
 
             </form>
@@ -252,7 +259,7 @@
     bg-opacity-25 hidden">
 
     <div class="w-2/5 rounded-md h-max bg-white p-5">
-      <h2 class="font-bold text-[#386641] text-lg pb-5 border-b border-[#6a994e]">Add Work History</h2>
+      <h2 class="font-bold text-[#386641] text-lg pb-5">Add Work History</h2>
 
       <form method="POST" action="{% url 'addWorkExp' %}">
         {% csrf_token %}
@@ -320,7 +327,7 @@
   
     <div class="w-2/5 rounded-md h-max bg-white p-5">
 
-      <h2 class="font-bold text-[#386641] text-lg pb-5 border-b border-[#6a994e]">Add Education</h2>
+      <h2 class="font-bold text-[#386641] text-lg pb-5">Add Education</h2>
       <form action="{% url 'addEducation' %}" method="POST">
         {% csrf_token %}
         <div class="mt-5">
@@ -361,6 +368,38 @@
       </form>
     </div>
   </div>
+
+  
+  <!-- update password -->
+  <div class="absolute flex p-5 justify-center education-modal top-0 left-0 w-full h-full z-50 bg-black
+    bg-opacity-25">
+  
+      <div class="w-2/5 rounded-md h-max bg-white p-5">
+        <form method="POST">
+          {% csrf_token %}
+          <h2 class="text-xl py-2 border-b border-gray-300">Change Password</h2>
+
+          <p class="text-sm italic text-red-400 hidden unmatch-current-password-msg">Current password is unmatched!</p>
+          <label for="{{password_form.current_password.id_for_label}}">Current Password:</label>
+          {{password_form.current_password}}
+    
+          <label for="{{password_form.password.id_for_label}}">New Password:</label>
+          {{password_form.password}}
+    
+          <label>Confirm Password:</label>
+          <input type="password" name="confirm_pass" class="block rounded-md border border-gray-300 py-3 p-2 outline-none text-sm w-full resize-none"/>
+          <p class="text-sm italic text-red-400 hidden unmatch-new-password-msg">New password not match!</p>
+          <div class="flex gap-2 justify-end mt-2">
+            <button type="button" class="bg-[#6a994e] rounded-md px-3 py-2 text-white hover:bg-[#386641]" onclick="updatePassword('{{user.id}}')">Change password</button>
+            <button type="button">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+    
+  </div>
+
+
 
   {% endif %}
   {% endif %}

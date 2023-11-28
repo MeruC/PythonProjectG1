@@ -154,3 +154,53 @@ function isLogout(){
       })
 }
 
+function togglePassword(icon){
+
+    // change icon
+    if(icon.hasClass('fa-edit')) icon.removeClass('fa-edit').addClass('fa-close')
+    else icon.removeClass('fa-close').addClass('fa-edit')
+    
+    $('.password-wrapper').toggle() //password container
+}
+
+function updatePassword(id){
+    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value; //make the request POST secured
+    const URL = `/profile/updatePassword/${parseInt(id)}/`; //link for views for updating password
+    const currentPassword = document.querySelector('input[name="current_password"]').value;
+    const newPassword = $('input[name="password"]').val()
+    const confirm_pass = $('input[name="confirm_pass"]').val()
+
+    // data to be sent
+    const data = {
+        current_password: currentPassword,
+        new_password: newPassword,
+    };
+
+    $('.unmatch-current-password-msg').addClass('hidden')
+    $('.unmatch-new-password-msg').addClass('hidden')
+    if(newPassword === confirm_pass){
+        
+        fetch(URL, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(response => {
+            if(response.status === 200){
+                // check for validation
+                if(response.message === 'Password unmatched') $('.unmatch-current-password-msg').removeClass('hidden')
+                else{
+                    // match and updated password
+                }
+            }
+        })
+    
+    } else
+        $('.unmatch-new-password-msg').removeClass('hidden')
+    
+}
+

@@ -1,10 +1,12 @@
+import json
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth import authenticate
 from django.http import HttpResponse, JsonResponse
-from .forms import EditForm, WorkHistoryForm, EducationForm
+from .forms import EditForm, WorkHistoryForm, EducationForm, PasswordForm
 from django.shortcuts import get_object_or_404, render, redirect
 from apps.jobsapp.models import WorkExperience
-from apps.accountapp.models import Education
+from apps.accountapp.models import Education, User
 from django.core.exceptions import ValidationError
 
 
@@ -37,6 +39,7 @@ def index(request):
         form = EditForm(request.POST,request.FILES ,instance=request.user)  # instance of the current user
         work_history_form = WorkHistoryForm(request.POST)  # Pass request.POST here, not just request
         education_form = EducationForm(request.POST)
+        password_form = PasswordForm(request.POST)
         
         if form.is_valid():  # checking if there's an error
             try:
@@ -58,6 +61,7 @@ def index(request):
         form = EditForm(instance=request.user)
         work_history_form = WorkHistoryForm()  # Create a blank instance for rendering in the template
         education_form = EducationForm()
+        password_form = PasswordForm()
 
     # data of the current user to be displayed on the profile section
     template = "profile.html"
@@ -70,7 +74,8 @@ def index(request):
         "work_form": work_history_form,
         "work_experiences": work_experiences,
         "education":education_form,
-        "education_data":education
+        "education_data":education,
+        "password_form":password_form,
         }
     
     return render(request, template, context)
@@ -123,7 +128,6 @@ def addWorkExp(request):
     context = {"user_data": user_data, "work_form": work_history_form}
     return render(request, template, context)
 
-
 def addEducation(request):
     if request.method == 'POST':
         form = EditForm(request.POST, instance=request.user)  # instance of the current user
@@ -158,6 +162,27 @@ def addEducation(request):
     
     return render(request,template,context)
 
+def updatePassword(request, id):
+    print(request.POST.get('current_password'))
+    if(request.method == 'POST'):
+        user = get_object_or_404(User,id=id)
+        
+        try:
+            # load body to get the data sent
+            data = json.loads(request.body)
+            current_password = data.get('current_password')
+            user_auth = authenticate(request, username=user.username, password=current_password)
+            
+            
+            # check current password for validation
+            if user_auth is not None:
+                return JsonResponse({'status':200,'message':'Successfully updated'})
+            else : return JsonResponse({'status':200,'message':'Password unmatched'})
+            
+        except Exception: 
+            return redirect('index')  # Redirect to the profile again
+        
+    return redirect('index')
 
 #deleting record
 def delete_work(request,id):
@@ -181,3 +206,5 @@ def delete_education(request,id):
         messages.error(request,'Deletion of education failed')
         
     return redirect('index')
+
+
