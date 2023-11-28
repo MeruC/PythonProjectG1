@@ -1,4 +1,5 @@
-<nav class="flex bg-white py-3 px-20 shadow-md">
+{% load static %}
+<nav class="flex bg-white py-3 px-28 shadow-md">
   <ul class="flex w-full gap-4 items-center justify-center">
     <li>
       <a href="{% url 'jobsapp:index' %}" class="text-2xl font-bold"
@@ -8,7 +9,7 @@
     <li class="flex-1">
       <a
         href="{% url 'jobsapp:index' %}"
-        class="border-b-[2px] border-[#386641] text-[#386641] py-2 px-2"
+        class="text-[#386641] py-2 px-2 {% if request.path == '/' or request.path == '/search' %}border-b-[2px] border-[#386641]{% endif %}"
         >Find Jobs</a
       >
     </li>
@@ -23,51 +24,95 @@
       <i class="fa-regular fa-bell"></i>
     </li>
     <li>
-      <!-- <a href="{% url 'profileapp:index' %}"
-        > -->
       <img src="https://picsum.photos/200" class="w-8 h-8 rounded-full" />
-      <!--  </a> -->
     </li>
     <li class="relative">
-      <i class="fa-solid fa-chevron-down text-xs" id="icon_dropdown"></i>
+      <i class="fa-solid fa-chevron-down text-xs" id="iconDropdown"></i>
       <ul
         id="dropdown"
-        class="absolute hidden bg-white border shadow-md mt-2 py-2 px-4 space-y-2 z-10 duration-300 right-0"
+        class="absolute hidden bg-white shadow-md mt-2 py-2 space-y-2 z-10 right-0 rounded-md w-40"
       >
-        <li><a href="{% url 'profileapp:index' %}">Profile</a></li>
-
-        <li><a href="{% url 'accountapp:logout' %}">Logout</a></li>
-        <!-- Add your logout link here -->
+        <li class="px-5"><a href="{% url 'profileapp:index' %}">Profile</a></li>
+        <hr class="mx-3" />
+        <li class="text-red-500 px-5" id="logout-link">
+          <a
+            class="cursor-pointer"
+            onclick="document.getElementById('confirmation-modal').style.display = 'flex'"
+            >Logout</a
+          >
+        </li>
       </ul>
     </li>
     {% else %}
     <!-- visitor -->
     <li
-      class="border border-1 border-[#386641] text-[#386641] w-24 py-1 text-center rounded-md"
+      class="border border-1 border-[#386641] text-[#386641] w-24 py-1 text-center rounded-md text-sm"
     >
-      <a href="{% url 'accountapp:register' %}">Sign In</a>
+      <a href="{% url 'accountapp:login' %}">Sign In</a>
+    </li>
+    <li
+      class="bg-[#386641] text-white w-24 py-1 text-center rounded-md text-sm"
+    >
+      <a href="{% url 'accountapp:register' %}">Register</a>
     </li>
 
     {% endif %}
   </ul>
 </nav>
+
+{% comment %} backdrop {% endcomment %}
+<div
+  id="confirmation-modal"
+  class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50"
+>
+  {% comment %} modal {% endcomment %}
+  <div
+    class="bg-white p-5 rounded-md flex flex-col gap-5 w-full sm:w-[350px] mx-5"
+  >
+    <div class="leading-5">
+      <div class="text-lg font-bold">Logout?</div>
+      <div class="border-l-2 border-black pl-2 ml-3 mt-2 py-1">
+        Are you sure you want to logout?
+      </div>
+    </div>
+
+    <div class="text-right">
+      <button
+        id="cancel-logout"
+        class="boder rounded-md py-1 px-3"
+        onclick="document.getElementById('confirmation-modal').style.display = 'none'"
+      >
+        Cancel
+      </button>
+      <a
+        href="{% url 'accountapp:logout' %}"
+        id="confirm-logout"
+        class="font-semibold bg-red-500 border-red-500 text-white rounded-md py-1.5 px-3"
+        >Continue</a
+      >
+    </div>
+  </div>
+</div>
+
+{% comment %}
+<script type="text/javascript" src="{% static '/js/navbar.js' %}"></script>
+{% endcomment %}
+
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const icon_dropdown = document.querySelector("#icon_dropdown");
-    const dropdown = document.querySelector("#dropdown");
-
-    icon_dropdown.addEventListener("click", function (event) {
+  document
+    .querySelector("#iconDropdown")
+    .addEventListener("click", function (event) {
       event.preventDefault();
-      dropdown.classList.toggle("hidden");
+      document.querySelector("#dropdown").classList.toggle("hidden");
     });
 
-    window.addEventListener("click", function (event) {
-      if (
-        !icon_dropdown.contains(event.target) &&
-        !dropdown.contains(event.target)
-      ) {
-        dropdown.classList.add("hidden");
-      }
-    });
+  {% comment %} close dropdown when click outside {% endcomment %}
+  window.addEventListener("click", function (event) {
+    if (
+      !document.querySelector("#iconDropdown").contains(event.target) &&
+      !document.querySelector("#dropdown").contains(event.target)
+    ) {
+      document.querySelector("#dropdown").classList.add("hidden");
+    }
   });
 </script>

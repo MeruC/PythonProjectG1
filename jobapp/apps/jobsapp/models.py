@@ -16,6 +16,7 @@ class Job(models.Model):
     job_title = models.CharField(max_length=100)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     description = models.TextField()
+    # details = models.TextField()
     status = models.CharField(max_length=8, choices=STATUS_CHOICES)
     type = models.CharField(max_length=9, choices=TYPE_CHOICES)
     type = models.CharField(max_length=9, choices=TYPE_CHOICES)
@@ -26,6 +27,7 @@ class Job(models.Model):
 
     max_salary = models.IntegerField(null=True)
     min_salary = models.IntegerField(null=True)
+    date_posted = models.DateTimeField(auto_now_add=True, null=True)
 
 
 # work experience
