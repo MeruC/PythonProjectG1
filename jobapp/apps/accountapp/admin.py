@@ -38,6 +38,7 @@ class CustomUserAdmin(UserAdmin):
                     "last_name",
                     "is_staff",
                     "is_active",
+                    "profile_img",  # Add profile_img field here
                 )
             },
         ),
@@ -56,6 +57,7 @@ class CustomUserAdmin(UserAdmin):
                     "last_name",
                     "is_staff",
                     "is_active",
+                    "profile_img",  # Add profile_img field here
                 ),
             },
         ),

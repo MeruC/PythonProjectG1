@@ -5,7 +5,7 @@ from datetime import datetime
 class EditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'profile_summary']
+        fields = ['first_name', 'last_name', 'email', 'profile_summary','profile_img']
 
     first_name = forms.CharField(
         label="First name",
@@ -28,6 +28,9 @@ class EditForm(forms.ModelForm):
         label="Profile summary",
         widget=forms.Textarea(attrs={'class': 'block w-full h-55 rounded-md border border-gray-400 outline-none text-sm p-5 resize-none'}),
     )
+    
+    profile_img = forms.ImageField(widget=forms.ClearableFileInput(attrs={'id': 'profileInput'}))
+    
 
 
 
