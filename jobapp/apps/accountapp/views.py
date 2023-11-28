@@ -22,7 +22,7 @@ def Register(request):
     error = {}
 
     if request.user.is_authenticated:
-        return redirect("../../profile/")
+        return redirect("profileapp:index")
 
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -53,7 +53,7 @@ def Register(request):
 # ------------------ Login ------------------
 def Login(request):
     if request.user.is_authenticated:
-        return redirect("../../profile/")
+        return redirect("profileapp:index")
 
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -63,7 +63,7 @@ def Login(request):
             user = User.objects.get(**{check_identifier(identifier): identifier})
             if user.is_active:
                 login(request, user)
-                return redirect("../../profile/")
+                return redirect("profileapp:index")
             else:
                 messages.error(request, "Your account has been disabled.")
 
@@ -76,4 +76,4 @@ def Login(request):
 # ------------------ Logout ------------------
 def Logout(request):
     logout(request)
-    return redirect("login")
+    return redirect("accountapp:login")
