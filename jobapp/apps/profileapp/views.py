@@ -171,11 +171,14 @@ def updatePassword(request, id):
             # load body to get the data sent
             data = json.loads(request.body)
             current_password = data.get('current_password')
+            new_password = data.get('new_password')
             user_auth = authenticate(request, username=user.username, password=current_password)
             
             
             # check current password for validation
             if user_auth is not None:
+                user.set_password(new_password)
+                user.save()
                 return JsonResponse({'status':200,'message':'Successfully updated'})
             else : return JsonResponse({'status':200,'message':'Password unmatched'})
             

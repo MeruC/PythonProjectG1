@@ -124,8 +124,30 @@ $(document).ready(function(){
         }
     });
     
+
+    // check for password status
+    $('input[name="password"]').on('input',function(){
+        let currentVal = $(this).val()
+        let isStrong = isStrongPassword(currentVal)
+
+        if(isStrong){
+            //indicator for strong password
+            $('.weak-msg-pass').addClass('hidden')
+            $('.strong-msg-pass').removeClass('hidden')
+        }
+        else{
+             //indicator for weak password
+             $('.strong-msg-pass').addClass('hidden')
+             $('.weak-msg-pass').removeClass('hidden')
+        }
+    })
 })
 
+
+function isStrongPassword(password){
+    const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return strongRegex.test(password);
+}
 function toggleDropdown(element){
     $('.second-dropdown').toggle()
 
@@ -178,7 +200,7 @@ function updatePassword(id){
 
     $('.unmatch-current-password-msg').addClass('hidden')
     $('.unmatch-new-password-msg').addClass('hidden')
-    if(newPassword === confirm_pass){
+    if(newPassword === confirm_pass && isStrongPassword(newPassword)){
         
         fetch(URL, {
             method: 'POST',
@@ -195,6 +217,7 @@ function updatePassword(id){
                 if(response.message === 'Password unmatched') $('.unmatch-current-password-msg').removeClass('hidden')
                 else{
                     // match and updated password
+                    $('.update-pass-modal').addClass('hidden')
                 }
             }
         })
@@ -203,4 +226,9 @@ function updatePassword(id){
         $('.unmatch-new-password-msg').removeClass('hidden')
     
 }
+
+function togglePassModal(){
+    $('.update-pass-modal').toggle()
+}
+
 

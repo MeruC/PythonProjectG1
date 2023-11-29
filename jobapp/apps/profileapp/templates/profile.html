@@ -86,7 +86,7 @@
               <span class="fa fa-arrow-down text-gray-400 text-xs mt-2 dropdown-arrow" onclick="toggleDropdown($(this))"></span>
             </a>
 
-            <ul class="w-full bg-white absolute -bottom-14 -right-3 rounded-b-md shadow-xl py-2 hidden second-dropdown">
+            <ul class="w-full bg-white absolute -bottom-20 -right-3 rounded-b-md shadow-xl py-2 hidden second-dropdown">
               <li class="cursor-pointer w-full flex items-center justify-center gap-2 hover:bg-gray-300 py-2 transition duration-150 ease-in-out "
                 onclick="isLogout()">
                 <span class="fa fa-sign-out-alt text-gray-500"></span>
@@ -192,9 +192,9 @@
         </div>
 
         <!-- setting tab -->
-        <div class="border border-[#6a994e] h-max max-h-[97%] rounded-lg overflow-y-auto p-5 setting-tab hidden">
+        <div class=" h-max max-h-[97%] rounded-lg overflow-y-auto p-5 setting-tab hidden">
           <div class=" gap-2 text-lg">
-            <form method="POST" action="{% url 'index' %}" class="flex flex-col gap-3" enctype="multipart/form-data">
+            <form method="POST" action="{% url 'profileapp:index' %}" class="flex flex-col gap-3" enctype="multipart/form-data">
               {% csrf_token %}
 
               <div>
@@ -237,7 +237,11 @@
                 {{form.contact_number}}
               </div>
               
-
+              <div class="flex justify-between items-center text-gray-400 mb-2">
+                <label for="">Password</label>
+                <span class="fa fa-edit hover:text-gray-500 cursor-pointer" onclick="togglePassModal()"></span>  
+              </div>
+              
               <div class="flex justify-end gap-2">
                 <button
                   class="bg-[#386641] py-2 px-3 transition duration-200 hover:bg-[#6a994e] rounded-sm text-white font-bold"
@@ -246,6 +250,7 @@
               </div>
 
             </form>
+
           </div>
         </div>
       </main>
@@ -261,7 +266,7 @@
     <div class="w-2/5 rounded-md h-max bg-white p-5">
       <h2 class="font-bold text-[#386641] text-lg pb-5">Add Work History</h2>
 
-      <form method="POST" action="{% url 'addWorkExp' %}">
+      <form method="POST" action="{% url 'profileapp:addWorkExp' %}">
         {% csrf_token %}
         <!-- job title -->
         <div class="flex flex-col gap-2 mt-5 gap-1">
@@ -328,7 +333,7 @@
     <div class="w-2/5 rounded-md h-max bg-white p-5">
 
       <h2 class="font-bold text-[#386641] text-lg pb-5">Add Education</h2>
-      <form action="{% url 'addEducation' %}" method="POST">
+      <form action="{% url 'profileapp:addEducation' %}" method="POST">
         {% csrf_token %}
         <div class="mt-5">
           <label for="{{ education.id_for_label }}">Education Level:</label>
@@ -372,26 +377,31 @@
   
   <!-- update password -->
   <div class="absolute flex p-5 justify-center education-modal top-0 left-0 w-full h-full z-50 bg-black
-    bg-opacity-25">
+    bg-opacity-25 update-pass-modal hidden">
   
-      <div class="w-2/5 rounded-md h-max bg-white p-5">
+      <div class="w-2/5 mx-auto rounded-md h-max bg-white p-5 transition duration-150 ease-in-out">
         <form method="POST">
           {% csrf_token %}
           <h2 class="text-xl py-2 border-b border-gray-300">Change Password</h2>
 
-          <p class="text-sm italic text-red-400 hidden unmatch-current-password-msg">Current password is unmatched!</p>
+          <p class="text-sm italic text-red-400 hidden unmatch-current-password-msg">Incorrect current password</p>
           <label for="{{password_form.current_password.id_for_label}}">Current Password:</label>
           {{password_form.current_password}}
     
-          <label for="{{password_form.password.id_for_label}}">New Password:</label>
+          <div class="flex justify-between mt-2 items-center">
+            <label for="{{password_form.password.id_for_label}}">New Password:</label>
+            <span class="italic text-green-400 strong-msg-pass hidden">Strong Password</span>
+            <span class="italic text-red-400 text-sm weak-msg-pass hidden">Weak Password</span>
+          </div>
           {{password_form.password}}
+          <span class="block text-sm italic text-gray-500">Note: Password must contain: 8 characters, lowercase&uppercase letter, atleast one number, and special charst</span>
     
           <label>Confirm Password:</label>
           <input type="password" name="confirm_pass" class="block rounded-md border border-gray-300 py-3 p-2 outline-none text-sm w-full resize-none"/>
           <p class="text-sm italic text-red-400 hidden unmatch-new-password-msg">New password not match!</p>
           <div class="flex gap-2 justify-end mt-2">
             <button type="button" class="bg-[#6a994e] rounded-md px-3 py-2 text-white hover:bg-[#386641]" onclick="updatePassword('{{user.id}}')">Change password</button>
-            <button type="button">Cancel</button>
+            <button class="hover:text-gray-500 text-gray-400" type="button" onclick="togglePassModal()">Cancel</button>
           </div>
         </form>
       </div>
