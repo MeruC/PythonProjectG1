@@ -93,7 +93,7 @@ edit this later {% endcomment %} {% comment %}
 
     {% comment %} content {% endcomment %}
     {% if user.is_authenticated %}
-    <div class=" gap-5 md:px-20 lg:px-40 " id="jobContent">
+    <div class=" md:gap-5 md:px-20 lg:px-40 flex" id="jobContent">
       <div class="w-full md:w-1/2 flex flex-col  cursor-pointer px-5 md:px-0 py-5 gap-3" id="jobList">
         {% comment %} items {% endcomment %}
 
@@ -103,14 +103,14 @@ edit this later {% endcomment %} {% comment %}
 
       </div>
    
-      <div class=" md:block  w-[1px] bg-gray-300 my-5 "></div>
+      <div class="hidden w-[1px] bg-gray-300 my-5 " id="divider"></div>
       {% comment %} details {% endcomment %}
       
-      <div class=" md:block w-1/2 sticky top-0  h-screen overflow-auto py-5" id="jobDetails">
-        <div class="hidden  min-h-full  flex-col justify-center items-center bg-white rounded-xl border border-gray-300" id="noDetails">
+      <div class="hidden md:block w-1/2 sticky top-0  h-screen overflow-auto py-5" id="jobDetails">
+        <div class="hidden p-5 min-h-full  flex-col justify-center items-center bg-white rounded-xl border border-gray-300" id="noDetails">
 
-          <div class="text-xl font-semibold">You haven't selected a job</div>
-          <div>Select an job on the left to see the details here.</div>
+          <div class="text-xl font-semibold ">You haven't selected a job</div>
+          <div class="text-center">Select a job on the left to see the details here.</div>
 
         </div>
       </div>
@@ -118,9 +118,9 @@ edit this later {% endcomment %} {% comment %}
     </div>
     {% endif %}
     <div class=" gap-5 md:px-20 lg:px-40 " id="jobContent">
-      <div class="w-full sm:w-[550px] md:w-[650px] lg:w-[850px]  {% if not user.is_authenticated %} mt-40 sm:mt-20  {% else %} mt-5{% endif %} px-5 sm:px-0  mx-auto">
+      <div class="w-full sm:w-[550px] md:w-[650px] lg:w-[850px]  {% if not user.is_authenticated %} mt-40 sm:mt-20  {% else %} {% endif %} px-5 sm:px-0  mx-auto">
       {% if not user.is_authenticated %}
-      <div class="bg-white rounded-xl p-10">
+      <div class="bg-white rounded-xl p-10 ">
         Sign in to your account and take the next step in your career journey.
         Whether you're a talented professional or an employer seeking top-tier
         candidates, we're here to make your experience seamless. Let's build
@@ -130,8 +130,8 @@ edit this later {% endcomment %} {% comment %}
           <a href="{% url 'accountapp:login' %}" class="text-[#386641] font-bold underline">Sign In</a>
         </div>
         {% else %}
-        <div class="bg-white rounded-xl p-10 text-center" >
-          No jobs found
+        <div class="text-lg  bg-white rounded-xl p-10  mt-5 flex  justify-center" id="noJob">
+          No Jobs Found
          
          </div>
          {% endif %}

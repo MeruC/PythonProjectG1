@@ -6,7 +6,7 @@ urlpatterns = [
     # render
     path("", views.index, name="index"),
     path("jobs/<int:jobId>/", views.jobDetails, name="jobDetails"),
-    # asycn
+    # asycn (url used in ajax call )
     path(
         "getJobList",
         views.getJobList,
@@ -14,14 +14,9 @@ urlpatterns = [
     ),
     path("getJobDetails/<int:jobId>/", views.getJobDetails, name="getJobDetails"),
     path(
-        "submitApplication/<int:job_id>/",
-        views.submitApplication,
-        name="submitApplication",
-    ),
-    path(
-        "removeApplication/<int:job_id>/",
-        views.removeApplication,
-        name="removeApplication",
+        "manageApplication/<int:jobId>/",
+        views.manageApplication,
+        name="manageApplication",
     ),
     path("searchJob", views.searchJob, name="searchJob"),
     path("getWhatSuggestion/", views.getWhatSuggestion, name="getWhatSuggestion"),

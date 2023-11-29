@@ -19,7 +19,7 @@ def jobDetails(request, jobId):
     return render(request, "jobDetails.html")
 
 
-# async
+# async (views used in ajax call )
 def getJobList(request):
     seekerId = JobSeeker.objects.get(user_id=request.user.id)
     appliedJobs = JobApplication.objects.filter(job_seeker_id=seekerId, status="active")
@@ -59,7 +59,7 @@ def getJobDetails(request, jobId):
         return redirect("jobsapp:index")
 
     hasApplied = JobApplication.objects.filter(
-        job_id=jobId, job_seeker_id=request.user.id
+        job_id=jobId, job_seeker_id=request.user.id, status="active"
     ).exists()
 
     try:
@@ -90,31 +90,27 @@ def getJobDetails(request, jobId):
     return JsonResponse({"success": True, "job": job, "hasApplied": hasApplied})
 
 
-def submitApplication(request, job_id):
-    job = Job.objects.get(id=job_id)
-    job_seeker = JobSeeker.objects.get(user=request.user)
-    existing_application = JobApplication.objects.filter(
-        job=job, job_seeker=job_seeker
-    ).first()
+def manageApplication(request, jobId):
+    if request.method == "POST":
+        job = Job.objects.get(id=jobId)
+        job_seeker = JobSeeker.objects.get(user=request.user)
+        existing_application = JobApplication.objects.filter(
+            job=job, job_seeker=job_seeker
+        ).first()
 
-    if existing_application:
-        if existing_application.status == "deleted":
-            existing_application.status = "active"
+        if existing_application:
+            if existing_application.status == "deleted":
+                existing_application.status = "active"
+            elif existing_application.status == "active":
+                existing_application.status = "deleted"
+            else:
+                pass
             existing_application.save()
-    else:
-        JobApplication.objects.create(job=job, job_seeker=job_seeker, status="active")
-    return JsonResponse({"success": True})
-
-
-def removeApplication(request, job_id):
-    application = JobApplication.objects.filter(
-        job_id=job_id, job_seeker_id=request.user.id
-    ).first()
-
-    if application:
-        application.status = "deleted"
-        application.save()
-    return JsonResponse({"success": True})
+        else:
+            JobApplication.objects.create(
+                job=job, job_seeker=job_seeker, status="active"
+            )
+        return JsonResponse({"success": True})
 
 
 def searchJob(request):
@@ -135,30 +131,48 @@ def searchJob(request):
 
     if type and type != "all":
         base_query &= Q(type=type)
-    jobs = Job.objects.filter(base_query)
+    jobs = (
+        Job.objects.filter(base_query)
+        .select_related("company")
+        .values(
+            "id",
+            "job_title",
+            "description",
+            "status",
+            "type",
+            "skills",
+            "city",
+            "country",
+            "max_salary",
+            "min_salary",
+            "date_posted",
+            "company_id",
+            "company__company_name",
+        )
+    )
 
-    return JsonResponse({"success": True, "jobs": list(jobs.values())})
+    return JsonResponse({"success": True, "jobs": list(jobs)})
 
 
 def getWhatSuggestion(request):
     query = request.GET.get("query", "")
-    suggestions = []
+    suggestions = set()
 
     if query:
         base_query = Q(job_title__icontains=query) | Q(skills__icontains=query)
         jobs = Job.objects.filter(base_query).values("job_title", "skills").distinct()
 
         for job in jobs:
-            suggestions.append(job["job_title"])
+            suggestions.add(job["job_title"])
             skills_list = re.split(r"\W+", job["skills"])
-            suggestions.extend([skill for skill in skills_list if skill])
+            suggestions.update(skill for skill in skills_list if skill)
 
-    return JsonResponse({"success": True, "suggestions": suggestions})
+    return JsonResponse({"success": True, "suggestions": list(suggestions)})
 
 
 def getWhereSuggestion(request):
     query = request.GET.get("query", "")
-    suggestions = []
+    suggestions = set()
 
     if query:
         city_query = Q(city__icontains=query)
@@ -171,6 +185,6 @@ def getWhereSuggestion(request):
 
         for job in jobs:
             suggestion = f"{job['city']}, {job['country']}"
-            suggestions.append(suggestion)
+            suggestions.add(suggestion)
 
-    return JsonResponse({"success": True, "suggestions": suggestions})
+    return JsonResponse({"success": True, "suggestions": list(suggestions)})
