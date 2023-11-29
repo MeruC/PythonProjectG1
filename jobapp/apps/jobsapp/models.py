@@ -1,5 +1,6 @@
 from django.db import models
 from apps.accountapp.models import User
+import datetime as date
 
 
 # company
@@ -21,13 +22,14 @@ class Job(models.Model):
     type = models.CharField(max_length=9, choices=TYPE_CHOICES)
     type = models.CharField(max_length=9, choices=TYPE_CHOICES)
 
+    # temporarily set fields to null=True
     skills = models.TextField(null=True)
     city = models.CharField(max_length=100, null=True)
     country = models.CharField(max_length=100, null=True)
 
     max_salary = models.IntegerField(null=True)
     min_salary = models.IntegerField(null=True)
-    date_posted = models.DateTimeField(auto_now_add=True, null=True)
+    date_posted = models.DateTimeField(default=date.datetime)
 
 
 # work experience
