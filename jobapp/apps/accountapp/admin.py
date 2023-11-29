@@ -15,7 +15,31 @@ class CustomUserAdmin(UserAdmin):
         "last_login",
         "is_staff",
         "is_active",
-        "profile_summary",
+    )
+    list_filter = (
+        "email",
+        "username",
+        "date_joined",
+        "last_login",
+        "is_staff",
+        "is_active",
+    )
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "email",
+                    "username",
+                    "password",
+                    "first_name",
+                    "last_name",
+                    "is_staff",
+                    "is_active",
+                    "profile_img",  # Add profile_img field here
+                )
+            },
+        ),
     )
     add_fieldsets = (
         (
@@ -30,8 +54,7 @@ class CustomUserAdmin(UserAdmin):
                     "first_name",
                     "last_name",
                     "is_staff",
-                    "is_active",
-                    "profile_summary",
+                    "profile_img",  # Add profile_img field here
                 ),
             },
         ),

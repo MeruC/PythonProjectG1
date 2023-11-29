@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "apps.accountapp.apps.AccountappConfig",
     "apps.jobsapp.apps.JobsappConfig",
     "apps.profileapp.apps.ProfileappConfig",
+    "apps.management.apps.ManagementConfig",
     # EXTRAS / LIB
     "tailwind",
     "theme",
@@ -145,6 +146,8 @@ STATICFILES_DIRS = [
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Used for displaying alerts
