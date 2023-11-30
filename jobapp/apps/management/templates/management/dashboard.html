@@ -3,58 +3,8 @@
     Dashboard
 {% endblock title %}
 {% block section %}
-    <h1 class="py-24 text-4xl font-bold text-secondary pl-8">Manage Users</h1>
-    {% comment %} table {% endcomment %}
+    <h1 class="py-24 text-4xl font-bold text-secondary pl-8">Dashboard</h1>
     <div class="container mx-auto">
-        <div class="flex justify-end">
-            <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-4"></i>
-                <input type="search"
-                       placeholder="Type here"
-                       class="daisy-input w-full max-w-xs pl-12" />
-            </div>
-        </div>
-        <table class="daisy-tabl px-12 w-full">
-            <thead class="bg-[#DFFFCB] ">
-                <tr>
-                    <th class="py-2"></th>
-                    <th class="font-bold text-center py-2">Name</th>
-                    <th class="font-bold text-center py-2">Contact</th>
-                    <th class="font-bold text-center py-2">Status</th>
-                    <th class="font-bold text-center py-2">Action</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y bg-white ">
-                <tr>
-                    <td>
-                        <div class="daisy-avatar ">
-                            <div class="w-10 rounded-full">
-                                <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <p>Stephanie Sharkey</p>
-                            <p>patricia651@outlook.com</p>
-                        </div>
-                    </td>
-                    <td>(814) 413-9191</td>
-                    <td>
-                        <div class="daisy-badge daisy-badge-success gap-2">
-                            <div class="daisy-badge daisy-badge-secondary daisy-badge-sm"></div>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            Active
-                        </div>
-                    </td>
-                    <td>
-                        <div class="flex flex-wrap gap-4">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                            <i class="fa-solid fa-trash-can"></i>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
     </div>
 {% endblock section %}
