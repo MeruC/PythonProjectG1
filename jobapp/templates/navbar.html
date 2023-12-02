@@ -1,0 +1,131 @@
+{% load static %}
+<nav class="flex bg-white py-3 px-5 md:px-28 shadow-md">
+  <ul class="flex w-full gap-4 items-center justify-center">
+    <li>
+      <a href="{% url 'jobsapp:index' %}" class="text-2xl font-bold"
+        ><span class="text-[#386641]">Work</span><span class="">It</span></a
+      >
+    </li>
+    <li class="flex-1">
+      <a
+        href="{% url 'jobsapp:index' %}"
+        class="text-[#386641] py-2 px-2 {% if request.path == '/' or request.path == '/search' %}border-b-[2px] border-[#386641]{% endif %}"
+        >Find Jobs</a
+      >
+    </li>
+
+    {% if user.is_authenticated %}
+    <!-- logged in -->
+    <li class="hidden sm:block text-red-500 underline">
+      <a href="{% url 'profileapp:index' %}">Recruit</a>
+    </li>
+    <div class="hidden sm:block w-[1px] h-full bg-gray-300"></div>
+    <li class="underline relative">
+      <div class="w-[7px] h-[7px] bg-red-500 rounded-full absolute top-1 right-0"></div>
+      <i class="text-gray-500  fa-regular fa-bell" id="notifIcon"></i>
+      <ul
+        id="notifContent"
+        class=" hidden absolute  bg-white shadow-md mt-2 py-2 space-y-2 z-10 right-0 rounded-md w-80 px-3"
+      >
+      <div class="font-semibold text-lg">Notifications</div>
+      <hr/>
+      <div class="flex flex-col gap-2 py-1 leading-5">
+        <li >
+
+          <div class="bg-gray-200 p-5 rounded-md relative">
+            <div class="text-[12px] text-gray-500 text-right absolute top-2 right-4">January 01, 2024</div>
+            <div class="font-semibold">Notification Title Here</div>
+            <div class="text-sm">Notification Description Here</div>
+          </div>
+        </li>
+        <li id="notifList">
+
+          <div class="bg-gray-200 p-5 rounded-md relative">
+            <div class="text-[12px] text-gray-500 text-right absolute top-2 right-4">January 01, 2024</div>
+            <div class="font-semibold">Notification Title Here</div>
+            <div class="text-sm">Notification Description Here</div>
+          </div>
+        </li>
+
+      </div>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <img src="https://picsum.photos/200" class="w-8 h-8 rounded-full" />
+    </li>
+    <li class="relative">
+      <i class="fa-solid fa-chevron-down text-xs" id="dropdownIcon"></i>
+      <ul
+        id="dropdownContent"
+        class="absolute hidden bg-white shadow-md mt-2 py-2 space-y-2 z-10 right-0 rounded-md w-40"
+      >
+        <li class="block sm:hidden px-5">
+          <a href="{% url 'profileapp:index' %}">Recruit</a>
+        </li>
+        <li class="px-5"><a href="{% url 'profileapp:index' %}">Profile</a></li>
+        <hr class="mx-3" />
+        <li class="text-red-500 px-5">
+          <a
+            class="cursor-pointer"
+            onclick="document.getElementById('confirmationModal').style.display = 'flex'"
+            >Logout</a
+          >
+        </li>
+      </ul>
+    </li>
+    {% else %}
+    <!-- visitor -->
+    <li
+      class="border border-1 border-[#386641] text-[#386641] w-24 py-1 text-center rounded-md text-sm"
+    >
+      <a href="{% url 'accountapp:login' %}">Sign In</a>
+    </li>
+    <li
+      class="hidden sm:block bg-[#386641] text-white w-24 py-1 text-center rounded-md text-sm"
+    >
+      <a href="{% url 'accountapp:register' %}">Register</a>
+    </li>
+
+    {% endif %}
+  </ul>
+</nav>
+
+{% comment %} backdrop {% endcomment %}
+<div
+  id="confirmationModal"
+  class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50"
+>
+  {% comment %} modal {% endcomment %}
+  <div
+    class="bg-white p-5 rounded-md flex flex-col gap-5 w-full sm:w-[350px] mx-5"
+  >
+    <div class="leading-5">
+      <div class="text-lg font-bold">Logout?</div>
+      <div class="border-l-2 border-black pl-2 ml-3 mt-2 py-1">
+        Are you sure you want to logout?
+      </div>
+    </div>
+
+    <div class="text-right">
+      <a
+        href="{% url 'accountapp:logout' %}"
+        id="confirm-logout"
+        class="font-semibold bg-red-500 border-red-500 text-white rounded-md py-1.5 px-3"
+        >Continue</a
+      >
+      <button
+        id="cancel-logout"
+        class="boder rounded-md py-1 px-3"
+        onclick="document.getElementById('confirmationModal').style.display = 'none'"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript" src="{% static '/js/navbar.js' %}"></script>
+
+</script>

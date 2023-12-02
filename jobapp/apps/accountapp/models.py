@@ -67,7 +67,7 @@ class Education(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     education_level = models.CharField(max_length=4, choices=DEGREE_LEVEL_CHOICES)
     school_name = models.CharField(max_length=120)
-    course = models.CharField(max_length=150,default='')
+    course = models.CharField(max_length=150, default="")
     started_year = models.IntegerField(default=2020)
     ended_year = models.IntegerField(default=2021)
 
