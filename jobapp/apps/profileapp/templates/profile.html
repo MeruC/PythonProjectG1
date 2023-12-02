@@ -25,7 +25,7 @@
 
   {% if user_data %}
 
-  <div class="w-4/5 mx-auto h-screen">
+  <div class="md:w-4/5 mx-auto h-screen">
     <!-- Main navigation container -->
     <nav
       class="flex-no-wrap relative flex w-full items-center justify-between bg-[#FBFBFB] py-2 shadow-md shadow-black/5 dark:bg-neutral-600 dark:shadow-black/10 lg:flex-wrap lg:justify-start lg:py-4">
@@ -95,12 +95,13 @@
             </ul>
             
           </div>
+
         </div>
       </div>
     </nav>
 
-    <div class="flex flex-col md:flex-row gap-2 p-5 h-4/5">
-      <aside class="flex flex-col gap-5 w-full md:w-1/5 h-4/5">
+    <div class="flex flex-col lg:flex-row gap-2 p-5 h-4/5">
+      <aside class="flex flex-col gap-5 w-full md:w-1/5 h-full">
 
         <section class="flex flex-col items-center">
           {% if user.profile_img %}
@@ -124,10 +125,31 @@
             onclick="openTab('profile-tab-btn')">Profile</button>
           <button id="setting-tab-btn" class="text-start" onclick="openTab('setting-tab-btn')">Account Settings</button>
         </section>
+
+
+        <!-- SKill -->
+        <div class="h-1/2">
+          <div class="flex justify-between items-center">
+            <p class="text-lg font-semibold py-2">Skills</p>
+            <span class="fa  fa-add text-gray-400 hover:text-gray-500 cursor-pointer"></span>
+          </div>
+          
+          <div class=" h-full p-3 overflow-y-auto w-full">
+            <form action="">
+              
+            </form>
+            <ul class="list-disc">
+              {% for skill in skill %}
+                <li class="flex justify-between">{{ skill|title }}</li>
+              {% endfor %}
+            </ul>
+            
+          </div>
+        </div>
       </aside>
 
 
-      <main class="w-4/5">
+      <main class="md:w-4/5">
         <div class=" h-max max-h-[97%] rounded-lg overflow-y-auto p-5 profile-tab">
           <!-- profile summary -->
           <div class=" py-3 w-full">
@@ -151,7 +173,7 @@
               </div>
 
               <div>
-                <button class="bg-blue-400 hover:bg-blue-500 text-white p-2 rounded-md">Update</button>
+                <button class="bg-blue-400 hover:bg-blue-500 text-white p-2 rounded-md" onclick="updateEducation('{{education.id}}')">Update</button>
                 <button class="hover:bg-red-500 text-red-400 hover:text-white p-2 rounded-md transition delay-25" onclick="deleteEducation('{{education.id}}',this)">Delete</button>
               </div>
               
@@ -197,9 +219,10 @@
             <form method="POST" action="{% url 'profileapp:index' %}" class="flex flex-col gap-3" enctype="multipart/form-data">
               {% csrf_token %}
 
+              <!-- user image -->
               <div>
-
                 {% if user.profile_img %}
+                    <p>{{user.profile_img}}</p>
                     <img id="img_settings" class="h-36 w-36 rounded-full object-cover mb-5"
                         src="{{ user.profile_img.url }}"
                         alt="">
@@ -376,7 +399,7 @@
 
   
   <!-- update password -->
-  <div class="absolute flex p-5 justify-center education-modal top-0 left-0 w-full h-full z-50 bg-black
+  <div class="absolute flex p-5 justify-center top-0 left-0 w-full h-full z-50 bg-black
     bg-opacity-25 update-pass-modal hidden">
   
       <div class="w-2/5 mx-auto rounded-md h-max bg-white p-5 transition duration-150 ease-in-out">
@@ -409,6 +432,11 @@
     
   </div>
 
+
+  <div class="absolute flex p-5 justify-center top-0 left-0 w-full h-full z-50 bg-black
+  bg-opacity-25 update-pass-modal hidden">
+    
+  </div>
 
 
   {% endif %}

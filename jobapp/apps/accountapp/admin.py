@@ -2,6 +2,7 @@ from django.contrib import admin
 from apps.accountapp.models import User, Education
 from apps.jobsapp.models import WorkExperience
 from django.contrib.auth.admin import UserAdmin
+from apps.profileapp.models import JobSeeker
 
 # Register your models here.
 
@@ -85,4 +86,9 @@ class EducationAdmin(admin.ModelAdmin):
     
 admin.site.register(Education,EducationAdmin)
 
+
+class JobSeekerAdmin(admin.ModelAdmin):
+    list_display = ['qualification','user','experience','skills']
+    
+admin.site.register(JobSeeker,JobSeekerAdmin)
 

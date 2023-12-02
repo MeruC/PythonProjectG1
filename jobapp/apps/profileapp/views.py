@@ -6,6 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from .forms import EditForm, WorkHistoryForm, EducationForm, PasswordForm
 from django.shortcuts import get_object_or_404, render, redirect
 from apps.jobsapp.models import WorkExperience
+from apps.profileapp.models import JobSeeker
 from apps.accountapp.models import Education, User
 from django.core.exceptions import ValidationError
 
@@ -28,6 +29,8 @@ def get_user_work_experience(request):
     work_experience = WorkExperience.objects.filter(user=user)
     return work_experience
 
+
+#retrieve all the education
 def get_user_education(request):
     user = request.user.id
     education = Education.objects.filter(user=user)
@@ -43,13 +46,7 @@ def index(request):
         
         if form.is_valid():  # checking if there's an error
             try:
-                old_profile = request.user.profile_img.url if request.user.profile_img else None
-                form.save()  # update the data of the current user
-                
-                # remove the old profile
-                if old_profile:
-                    request.user.profile_img.storage.delete(old_profile)
-                    
+                form.save()  # update the data of the current user     
                 messages.success(request, 'Profile updated successfully.')
                 return redirect('index')  # direct only to the profile again
             except Exception as e:
@@ -68,6 +65,7 @@ def index(request):
     user_data = get_user_data(request)
     work_experiences = get_user_work_experience(request)
     education = get_user_education(request)
+    skills = get_user_skill(request)
     context = {
         "user_data": user_data, 
         "form": form, 
@@ -76,12 +74,24 @@ def index(request):
         "education":education_form,
         "education_data":education,
         "password_form":password_form,
+        "skill":skills
         }
     
+    print(skills)
     return render(request, template, context)
+  
 
 
-
+#get user skill
+def get_user_skill(request):
+    skill_entry = JobSeeker.objects.filter(user=request.user).values('skills').first()
+    skill = skill_entry['skills'].split(',')
+    return skill
+def retrieveEducation(request, id):
+    education = Education.objects.filter(id=id).values()
+    education_list = list(education)
+    return JsonResponse({'status':200,'data':education_list}, safe=False)
+    
 def addWorkExp(request):
     if request.method == 'POST':
         work_history_form = WorkHistoryForm(request.POST)  # Pass request.POST here, not just request
@@ -188,6 +198,8 @@ def updatePassword(request, id):
     return redirect('index')
 
 #deleting record
+
+# ------ work deletion
 def delete_work(request,id):
     del_work = get_object_or_404(WorkExperience, id=id)
     try:
@@ -199,6 +211,7 @@ def delete_work(request,id):
         
     return redirect('index')
 
+# -----------education deletion
 def delete_education(request,id):
     del_education = get_object_or_404(Education,id=id)
     try:
