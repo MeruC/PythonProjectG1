@@ -11,6 +11,7 @@ urlpatterns = [
     path('updatePassword/<int:id>/',views.updatePassword,name="updatePass"),
     path('delEducation/<int:id>/',views.delete_education,name="deleteEducation"),
     path('education/<int:id>/',views.retrieveEducation,name='education'),
+    path('updateEducation/<int:id>/',views.updateEducation,name="updateEducation"),
     # todo update this later since there's no view for logout yet
-    path("logout/", views.index, name="logout"),
+    # path("logout/", views.index, name="logout"),
 ]

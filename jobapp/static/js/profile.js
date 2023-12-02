@@ -231,4 +231,71 @@ function togglePassModal(){
     $('.update-pass-modal').toggle()
 }
 
+function updateEducationModal(id){
+    educationID = parseInt(id)
+    URL = `/profile/education/${educationID}/`
+    // retrieve data
+    fetch(URL)
+    .then(response=>{return response.json()})
+    .then(response=>{
+        if(response.status===200){
+
+            // data from the database
+            data = response.data[0]
+            educationID = data.id
+            education_level = data.education_level
+            school_name = data.school_name
+            course = data.course
+            started_year = data.started_year
+            ended_year = data.ended_year
+
+            // set up form details for update
+            $('.education-modal').removeClass('hidden')
+            $('select[name="education_level"').val(education_level)
+            $('input[name="school_name"').val(school_name)
+            $('input[name="course"').val(course)
+            $('select[name="started_year"').val(started_year)
+            $('select[name="ended_year"').val(ended_year)
+
+            $('#add-btn').addClass('hidden')
+            $('#update-btn').removeClass('hidden')
+                .on('click', function(){updateEducation(id)})
+        }
+    })
+}
+
+function updateEducation(id){
+    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value; //make the request POST secured
+    const URL = `/profile/updateEducation/${parseInt(id)}/`; //link for views for updating password
+
+
+    education_level = $('select[name="education_level"]').val();
+    school_name = $('input[name="school_name"]').val();
+    course = $('input[name="course"]').val();  // Corrected selector
+    started_year = $('select[name="started_year"]').val();  // Corrected selector
+    ended_year = $('select[name="ended_year"]').val();  // Corrected selector
+
+    data = {
+        "educationlvl": education_level,
+        'school_name':school_name,
+        'course':course,
+        'started_year':started_year,
+        'ended_year':ended_year
+    }
+
+    fetch(URL,{
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response=>{return response.json()})
+    .then(data=>{
+        if(data.message == "Successfully updated"){
+            location.reload()
+        }
+    })
+}
 

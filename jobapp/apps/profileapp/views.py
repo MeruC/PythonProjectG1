@@ -1,3 +1,4 @@
+from django.urls import reverse
 import json
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -48,7 +49,7 @@ def index(request):
             try:
                 form.save()  # update the data of the current user     
                 messages.success(request, 'Profile updated successfully.')
-                return redirect('index')  # direct only to the profile again
+                return redirect('profileapp:index')  # direct only to the profile again
             except Exception as e:
                 messages.error(request, 'Profile update failed. An error occurred.')
         else:
@@ -77,7 +78,6 @@ def index(request):
         "skill":skills
         }
     
-    print(skills)
     return render(request, template, context)
   
 
@@ -123,7 +123,7 @@ def addWorkExp(request):
                 work_experience.save() #add the new work experience
                 
                 messages.success(request, 'Work experience added successfully.')
-                return redirect('index')
+                return redirect('profileapp:index')
             except ValidationError as e:
                  messages.error(request, 'Profile update failed. An error occurred.')
                  print(e)
@@ -152,12 +152,9 @@ def addEducation(request):
                 new_education.save()
 
                 messages.success(request, 'Education added successfully.')
-                print(education_form.cleaned_data)
-                return redirect('index')  # Redirect to the profile again
+                return redirect('profileapp:index')  # Redirect to the profile again
             except Exception as e:
                 messages.error(request,'Education update failed')
-                print(e)
-                pass
             
     user_data = get_user_data(request)
     template = 'profile.html'
@@ -173,7 +170,6 @@ def addEducation(request):
     return render(request,template,context)
 
 def updatePassword(request, id):
-    print(request.POST.get('current_password'))
     if(request.method == 'POST'):
         user = get_object_or_404(User,id=id)
         
@@ -193,10 +189,38 @@ def updatePassword(request, id):
             else : return JsonResponse({'status':200,'message':'Password unmatched'})
             
         except Exception: 
-            return redirect('index')  # Redirect to the profile again
+            return redirect('profileapp:index')  # Redirect to the profile again
         
-    return redirect('index')
+    return redirect('profileapp:index')
 
+def updateEducation(request,id):
+    if(request.method == 'POST'):
+        
+        try:
+            data = json.loads(request.body)
+        
+            educationlvl = data.get('educationlvl')
+            school_name = data.get('school_name')
+            course = data.get('course')
+            started_year = data.get('started_year')
+            ended_year = data.get('ended_year')
+            
+            # update the data 
+            Education.objects.filter(id=id).update(
+                education_level=educationlvl,
+                school_name=school_name,
+                course=course,
+                started_year=started_year,
+                ended_year=ended_year
+                
+            )
+            return JsonResponse({'status':200,'message':'Successfully updated'})
+        except Exception:
+            pass
+    
+        
+        return redirect('profileapp:index')
+    
 #deleting record
 
 # ------ work deletion
@@ -209,7 +233,7 @@ def delete_work(request,id):
     except Exception:
         messages.error(request,'Deletion of work failed')
         
-    return redirect('index')
+    return redirect('profileapp:index')
 
 # -----------education deletion
 def delete_education(request,id):
@@ -221,6 +245,6 @@ def delete_education(request,id):
     except Exception:
         messages.error(request,'Deletion of education failed')
         
-    return redirect('index')
+    return redirect('profileapp:index')
 
 
