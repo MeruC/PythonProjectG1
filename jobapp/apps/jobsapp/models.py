@@ -29,7 +29,7 @@ class Job(models.Model):
 
     max_salary = models.IntegerField(null=True)
     min_salary = models.IntegerField(null=True)
-    date_posted = models.DateTimeField(default=date.datetime)
+    date_posted = models.DateTimeField(default=date.datetime.today)
 
 
 # work experience
