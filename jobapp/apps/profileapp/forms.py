@@ -5,7 +5,7 @@ from datetime import datetime
 class EditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'profile_summary','profile_img']
+        fields = ['first_name', 'last_name','contact_number' ,'email', 'profile_summary','profile_img']
 
     first_name = forms.CharField(
         label="First name",
@@ -18,10 +18,16 @@ class EditForm(forms.ModelForm):
         max_length=100,
         widget=forms.TextInput(attrs={'class': 'block border w-full rounded-md p-2 border-gray-400 outline-none'}),
     )
+    
+    contact_number = forms.CharField(
+        label="Contact number",
+        max_length=12,
+        widget=forms.TextInput(attrs={'class': 'block border w-full rounded-md p-2 border-gray-400 outline-none'}),
+    )
 
     email = forms.EmailField(
         label="Email address",
-        widget=forms.EmailInput(attrs={'class': 'block border bg-gray-200 w-full rounded-md p-2 border-gray-400 outline-none'}),
+        widget=forms.EmailInput(attrs={'class': 'border bg-gray-200 w-full rounded-md p-2 border-gray-400 outline-none'}),
     )
     
     profile_summary = forms.CharField(
@@ -155,4 +161,22 @@ class EducationForm(forms.ModelForm):
         choices=get_year(),
         widget=forms.Select(attrs={'class': 'w-full rounded-md border border-[#B3B3B] outline-none text-sm p-2'}),)
     
+class PasswordForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['password']
+    
+    current_password = forms.CharField(
+        label="Current password",
+        widget= forms.TextInput(
+            attrs={'type':'password',
+                   'class': 'block rounded-md border border-gray-300 py-3 p-2 focus:border-[#6a994e] outline-none text-sm w-full resize-none'})
+    )
+    
+    password = forms.CharField(
+        label="New password",
+        widget= forms.TextInput(
+            attrs={'type':'password',
+                   'class': 'block rounded-md border border-gray-300 py-3 p-2 focus:border-[#6a994e] outline-none text-sm w-full resize-none'})
+    )
     

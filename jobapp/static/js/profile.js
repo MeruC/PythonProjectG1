@@ -124,5 +124,178 @@ $(document).ready(function(){
         }
     });
     
+
+    // check for password status
+    $('input[name="password"]').on('input',function(){
+        let currentVal = $(this).val()
+        let isStrong = isStrongPassword(currentVal)
+
+        if(isStrong){
+            //indicator for strong password
+            $('.weak-msg-pass').addClass('hidden')
+            $('.strong-msg-pass').removeClass('hidden')
+        }
+        else{
+             //indicator for weak password
+             $('.strong-msg-pass').addClass('hidden')
+             $('.weak-msg-pass').removeClass('hidden')
+        }
+    })
 })
+
+
+function isStrongPassword(password){
+    const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return strongRegex.test(password);
+}
+function toggleDropdown(element){
+    $('.second-dropdown').toggle()
+
+    // change icon
+    if (element.hasClass('fa-arrow-down')) {
+        element.removeClass('fa-arrow-down').addClass('fa-arrow-up');
+    } else {
+        element.removeClass('fa-arrow-up').addClass('fa-arrow-down');
+    }
+}
+
+function isLogout(){
+    // confirmation
+    Swal.fire({
+        title: 'Sign out',
+        text: 'Are you sure you want to leave?',
+        icon: 'question',
+        confirmButtonText: 'Sign out',
+        showCancelButton: true,
+        showCloseButton: true
+      }).then(result=>{
+        if(result.isConfirmed){
+            // logout the current user
+            window.open('http://127.0.0.1:8000/account/logout/','_blank')
+        }
+      })
+}
+
+function togglePassword(icon){
+
+    // change icon
+    if(icon.hasClass('fa-edit')) icon.removeClass('fa-edit').addClass('fa-close')
+    else icon.removeClass('fa-close').addClass('fa-edit')
+    
+    $('.password-wrapper').toggle() //password container
+}
+
+function updatePassword(id){
+    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value; //make the request POST secured
+    const URL = `/profile/updatePassword/${parseInt(id)}/`; //link for views for updating password
+    const currentPassword = document.querySelector('input[name="current_password"]').value;
+    const newPassword = $('input[name="password"]').val()
+    const confirm_pass = $('input[name="confirm_pass"]').val()
+
+    // data to be sent
+    const data = {
+        current_password: currentPassword,
+        new_password: newPassword,
+    };
+
+    $('.unmatch-current-password-msg').addClass('hidden')
+    $('.unmatch-new-password-msg').addClass('hidden')
+    if(newPassword === confirm_pass && isStrongPassword(newPassword)){
+        
+        fetch(URL, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(response => {
+            if(response.status === 200){
+                // check for validation
+                if(response.message === 'Password unmatched') $('.unmatch-current-password-msg').removeClass('hidden')
+                else{
+                    // match and updated password
+                    $('.update-pass-modal').addClass('hidden')
+                }
+            }
+        })
+    
+    } else
+        $('.unmatch-new-password-msg').removeClass('hidden')
+    
+}
+
+function togglePassModal(){
+    $('.update-pass-modal').toggle()
+}
+
+function updateEducationModal(id){
+    educationID = parseInt(id)
+    URL = `/profile/education/${educationID}/`
+    // retrieve data
+    fetch(URL)
+    .then(response=>{return response.json()})
+    .then(response=>{
+        if(response.status===200){
+
+            // data from the database
+            data = response.data[0]
+            educationID = data.id
+            education_level = data.education_level
+            school_name = data.school_name
+            course = data.course
+            started_year = data.started_year
+            ended_year = data.ended_year
+
+            // set up form details for update
+            $('.education-modal').removeClass('hidden')
+            $('select[name="education_level"').val(education_level)
+            $('input[name="school_name"').val(school_name)
+            $('input[name="course"').val(course)
+            $('select[name="started_year"').val(started_year)
+            $('select[name="ended_year"').val(ended_year)
+
+            $('#add-btn').addClass('hidden')
+            $('#update-btn').removeClass('hidden')
+                .on('click', function(){updateEducation(id)})
+        }
+    })
+}
+
+function updateEducation(id){
+    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value; //make the request POST secured
+    const URL = `/profile/updateEducation/${parseInt(id)}/`; //link for views for updating password
+
+
+    education_level = $('select[name="education_level"]').val();
+    school_name = $('input[name="school_name"]').val();
+    course = $('input[name="course"]').val();  // Corrected selector
+    started_year = $('select[name="started_year"]').val();  // Corrected selector
+    ended_year = $('select[name="ended_year"]').val();  // Corrected selector
+
+    data = {
+        "educationlvl": education_level,
+        'school_name':school_name,
+        'course':course,
+        'started_year':started_year,
+        'ended_year':ended_year
+    }
+
+    fetch(URL,{
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response=>{return response.json()})
+    .then(data=>{
+        if(data.message == "Successfully updated"){
+            location.reload()
+        }
+    })
+}
 
