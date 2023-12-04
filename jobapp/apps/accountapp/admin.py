@@ -39,6 +39,7 @@ class CustomUserAdmin(UserAdmin):
                     "is_active",
                     "profile_summary",
                     "profile_img",
+                    "skills",
                 )
             },
         ),
@@ -60,6 +61,7 @@ class CustomUserAdmin(UserAdmin):
                     "profile_summary",
                     "profile_img",
                     "contact_number",
+                    "skills",
                 ),
             },
         ),

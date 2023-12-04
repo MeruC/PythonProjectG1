@@ -27,79 +27,7 @@
 
   <div class="md:w-4/5 mx-auto h-screen">
     <!-- Main navigation container -->
-    <nav
-      class="flex-no-wrap relative flex w-full items-center justify-between bg-[#FBFBFB] py-2 shadow-md shadow-black/5 dark:bg-neutral-600 dark:shadow-black/10 lg:flex-wrap lg:justify-start lg:py-4">
-      <div class="flex w-full flex-wrap items-center justify-between px-3">
-        <!-- Hamburger button for mobile view -->
-        <button
-          class="block border-0 bg-transparent px-2 text-neutral-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden"
-          type="button" data-te-collapse-init data-te-target="#navbarSupportedContent1"
-          aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation">
-          <!-- Hamburger icon -->
-          <span class="[&>svg]:w-7">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
-              <path fill-rule="evenodd"
-                d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
-                clip-rule="evenodd" />
-            </svg>
-          </span>
-        </button>
-
-        <!-- Collapsible navigation container -->
-        <div class="!visible hidden flex-grow basis-[100%] items-center lg:!flex lg:basis-auto"
-          id="navbarSupportedContent1" data-te-collapse-item>
-          <!-- Logo -->
-          <a class="mb-4 ml-2 mr-5 mt-3 flex items-center text-neutral-900 hover:text-neutral-900 focus:text-neutral-900 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400 lg:mb-0 lg:mt-0"
-            href="#">
-            <img src="https://tecdn.b-cdn.net/img/logo/te-transparent-noshadows.webp" style="height: 15px" alt="TE Logo"
-              loading="lazy" />
-          </a>
-          <!-- Left navigation links -->
-          <ul class="list-style-none mr-auto flex flex-col pl-0 lg:flex-row" data-te-navbar-nav-ref>
-            <li class="mb-4 lg:mb-0 lg:pr-2" data-te-nav-item-ref>
-              <!-- Dashboard link -->
-              <a class="text-[#6A994E] py-2 hover:border-b-2 border-[#6A994E] transition duration-200 hover:text-[#6A994E] hover:ease-in-out"
-                href="#" data-te-nav-link-ref>Find Job</a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Right elements -->
-        <div class="relative flex items-center">
-          <div class="relative" data-te-dropdown-ref data-te-dropdown-alignment="end">
-            <!-- Second dropdown trigger -->
-            <a class="hidden-arrow flex items-center gap-2 whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none"
-              href="#" id="dropdownMenuButton2" role="button" data-te-dropdown-toggle-ref aria-expanded="false">
-              <!-- User avatar -->
-              {% if user.profile_img %}
-                <img class="h-9 w-9 rounded-full object-cover"
-                src="{{ user.profile_img.url }}"
-                alt="">
-              {% else %}
-                <!-- default image -->
-                <img class="h-9 w-9 rounded-full object-cover"
-                src="{% static '/assets/default_profile.png' %}"
-                alt="">
-              {% endif %}
-              
-              <span class="text-[#6A994E] text-lg font-bold">{{user_data.first_name}} {{user_data.last_name}}</span>
-              <span class="fa fa-arrow-down text-gray-400 text-xs mt-2 dropdown-arrow" onclick="toggleDropdown($(this))"></span>
-            </a>
-
-            <ul class="w-full bg-white absolute -bottom-20 -right-3 rounded-b-md shadow-xl py-2 hidden second-dropdown">
-              <li class="cursor-pointer w-full flex items-center justify-center gap-2 hover:bg-gray-300 py-2 transition duration-150 ease-in-out "
-                onclick="isLogout()">
-                <span class="fa fa-sign-out-alt text-gray-500"></span>
-                <span>Logout</span>
-              </li>
-            </ul>
-            
-          </div>
-
-        </div>
-      </div>
-    </nav>
-
+    
     <div class="flex flex-col lg:flex-row gap-2 p-5 h-4/5">
       <aside class="flex flex-col gap-5 w-full md:w-1/5 h-full">
 
@@ -126,26 +54,6 @@
           <button id="setting-tab-btn" class="text-start" onclick="openTab('setting-tab-btn')">Account Settings</button>
         </section>
 
-
-        <!-- SKill -->
-        <div class="h-1/2">
-          <div class="flex justify-between items-center">
-            <p class="text-lg font-semibold py-2">Skills</p>
-            <span class="fa  fa-add text-gray-400 hover:text-gray-500 cursor-pointer"></span>
-          </div>
-          
-          <div class=" h-full p-3 overflow-y-auto w-full">
-            <form action="">
-              
-            </form>
-            <ul class="list-disc">
-              {% for skill in skill %}
-                <li class="flex justify-between">{{ skill|title }}</li>
-              {% endfor %}
-            </ul>
-            
-          </div>
-        </div>
       </aside>
 
 
@@ -210,6 +118,25 @@
               Work Experience</button>
           </div>
 
+
+          <!-- skills -->
+          <div class=" py-5">
+            <h1 class="text-lg font-bold text-[#6a994e]">Skills</h1>
+
+            <ul>
+              {% for skill in user_data.skills %}
+                <li class="flex justify-between items-center py-2">
+                  <p>{{skill|title}}</p>
+                  <span class="fa fa-close text-gray-400 cursor-pointer hover:text-red-400"></span>
+                </li>
+              {% endfor %}
+            </ul>
+
+            <button
+              class="py-2 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5">
+              Add Skill
+            </button>
+          </div>
 
         </div>
 

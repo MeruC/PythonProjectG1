@@ -20,7 +20,8 @@ def get_user_data(request):
         "first_name": request.user.first_name,
         "last_name": request.user.last_name,
         "profile_summary": request.user.profile_summary,
-        "profile_img": request.user.profile_img
+        "profile_img": request.user.profile_img,
+        "skills":formatted_skill(request.user.skills)
     }
    
 # retrieve all the work experience of user
@@ -74,18 +75,16 @@ def index(request):
         "education":education_form,
         "education_data":education,
         "password_form":password_form,
-        # "skill":skills
         }
     
     return render(request, template, context)
   
 
-
-#get user skill
-# def get_user_skill(request):
-#     skill_entry = JobSeeker.objects.filter(user=request.user).values('skills').first()
-#     skill = skill_entry['skills'].split(',')
-#     return skill
+#user skill
+def formatted_skill(skills):
+    # separate each skill
+    skills_arr = skills.split(',')
+    return skills_arr
 def retrieveEducation(request, id):
     education = Education.objects.filter(id=id).values()
     education_list = list(education)
