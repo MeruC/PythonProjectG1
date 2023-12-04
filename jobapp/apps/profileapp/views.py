@@ -7,7 +7,6 @@ from django.http import HttpResponse, JsonResponse
 from .forms import EditForm, WorkHistoryForm, EducationForm, PasswordForm
 from django.shortcuts import get_object_or_404, render, redirect
 from apps.jobsapp.models import WorkExperience
-from apps.profileapp.models import JobSeeker
 from apps.accountapp.models import Education, User
 from django.core.exceptions import ValidationError
 
@@ -66,7 +65,7 @@ def index(request):
     user_data = get_user_data(request)
     work_experiences = get_user_work_experience(request)
     education = get_user_education(request)
-    skills = get_user_skill(request)
+    # skills = get_user_skill(request)
     context = {
         "user_data": user_data, 
         "form": form, 
@@ -75,7 +74,7 @@ def index(request):
         "education":education_form,
         "education_data":education,
         "password_form":password_form,
-        "skill":skills
+        # "skill":skills
         }
     
     return render(request, template, context)
@@ -83,10 +82,10 @@ def index(request):
 
 
 #get user skill
-def get_user_skill(request):
-    skill_entry = JobSeeker.objects.filter(user=request.user).values('skills').first()
-    skill = skill_entry['skills'].split(',')
-    return skill
+# def get_user_skill(request):
+#     skill_entry = JobSeeker.objects.filter(user=request.user).values('skills').first()
+#     skill = skill_entry['skills'].split(',')
+#     return skill
 def retrieveEducation(request, id):
     education = Education.objects.filter(id=id).values()
     education_list = list(education)

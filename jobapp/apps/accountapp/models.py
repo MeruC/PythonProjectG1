@@ -9,7 +9,7 @@ class User(AbstractUser):
     profile_summary = models.TextField(default="")
     profile_img = models.ImageField(null=True, blank=True,upload_to="images/")
     contact_number = models.CharField(max_length=12, default='')
-
+    skills = models.TextField(null=True,blank=True,default='')
 # class User(models.Model):
 #     username = models.CharField(max_length=100)
 #     email = models.EmailField(max_length=255)
