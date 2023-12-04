@@ -179,4 +179,19 @@ class PasswordForm(forms.ModelForm):
             attrs={'type':'password',
                    'class': 'block rounded-md border border-gray-300 py-3 p-2 focus:border-[#6a994e] outline-none text-sm w-full resize-none'})
     )
+
+
+class SkillForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['skills']
+
     
+    skills = forms.CharField(
+        label="Skill",
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'block rounded-md border border-gray-300 py-3 p-2 focus:border-[#6a994e] outline-none text-sm w-full',
+                'placeholder': 'Enter your new skill'
+                }))

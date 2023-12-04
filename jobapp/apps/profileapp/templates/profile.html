@@ -29,7 +29,7 @@
     <!-- Main navigation container -->
     
     <div class="flex flex-col lg:flex-row gap-2 p-5 h-4/5">
-      <aside class="flex flex-col gap-5 w-full md:w-1/5 h-full">
+      <aside class="flex flex-col gap-5 w-full lg:w-1/5 h-full">
 
         <section class="flex flex-col items-center">
           {% if user.profile_img %}
@@ -48,7 +48,7 @@
           <span class="">{{user_data.email}}</span>
         </section>
 
-        <section class="text-start flex flex-col gap-2">
+        <section class="text-start flex lg:flex-col gap-2 sm:flex-row sm:justify-center">
           <button class="active-tab text-start" id="profile-tab-btn"
             onclick="openTab('profile-tab-btn')">Profile</button>
           <button id="setting-tab-btn" class="text-start" onclick="openTab('setting-tab-btn')">Account Settings</button>
@@ -57,7 +57,7 @@
       </aside>
 
 
-      <main class="md:w-4/5">
+      <main class="lg:w-4/5 w-full">
         <div class=" h-max max-h-[97%] rounded-lg overflow-y-auto p-5 profile-tab">
           <!-- profile summary -->
           <div class=" py-3 w-full">
@@ -127,13 +127,14 @@
               {% for skill in user_data.skills %}
                 <li class="flex justify-between items-center py-2">
                   <p>{{skill|title}}</p>
-                  <span class="fa fa-close text-gray-400 cursor-pointer hover:text-red-400"></span>
+                  <span class="fa fa-close text-gray-300 cursor-pointer hover:text-red-400"></span>
                 </li>
               {% endfor %}
             </ul>
 
             <button
-              class="py-2 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5">
+              class="py-2 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
+              onclick="toggleModal('open-skill-modal')">
               Add Skill
             </button>
           </div>
@@ -149,7 +150,6 @@
               <!-- user image -->
               <div>
                 {% if user.profile_img %}
-                    <p>{{user.profile_img}}</p>
                     <img id="img_settings" class="h-36 w-36 rounded-full object-cover mb-5"
                         src="{{ user.profile_img.url }}"
                         alt="">
@@ -364,6 +364,25 @@
     
   </div>
 
+  <!-- add skill -->
+  <div class="absolute flex p-5 justify-center top-0 left-0 w-full h-full z-50 bg-black
+    bg-opacity-25 hidden skill-modal">
+
+    <div class="w-2/5 mx-auto rounded-md h-max bg-white p-5 transition duration-150 ease-in-out">
+      <form action="{% url 'profileapp:addSkill' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2 class="text-xl py-2 border-b border-gray-300 mb-2">Add Skill</h2>
+        {{skill_form.skills}}
+
+        <div class="flex justify-end gap-2 mt-2">
+          <button type="submit" class="bg-[#6a994e] rounded-md px-3 py-2 text-white hover:bg-[#386641]">Add skill</button>
+          <button class="hover:text-gray-500 text-gray-400" type="button" onclick="toggleModal('close-skill-modal')">Cancel</button>
+        </div>
+        
+      </form>
+    </div>
+    
+  </div>
   {% endif %}
   {% endif %}
 

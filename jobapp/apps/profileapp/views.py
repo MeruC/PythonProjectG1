@@ -1,10 +1,9 @@
-from django.urls import reverse
 import json
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.http import HttpResponse, JsonResponse
-from .forms import EditForm, WorkHistoryForm, EducationForm, PasswordForm
+from .forms import EditForm, WorkHistoryForm, EducationForm, PasswordForm, SkillForm
 from django.shortcuts import get_object_or_404, render, redirect
 from apps.jobsapp.models import WorkExperience
 from apps.accountapp.models import Education, User
@@ -44,7 +43,7 @@ def index(request):
         work_history_form = WorkHistoryForm(request.POST)  # Pass request.POST here, not just request
         education_form = EducationForm(request.POST)
         password_form = PasswordForm(request.POST)
-        
+        skill_form = SkillForm(request.POST)
         if form.is_valid():  # checking if there's an error
             try:
                 form.save()  # update the data of the current user     
@@ -60,13 +59,14 @@ def index(request):
         work_history_form = WorkHistoryForm()  # Create a blank instance for rendering in the template
         education_form = EducationForm()
         password_form = PasswordForm()
+        skill_form = SkillForm()
 
     # data of the current user to be displayed on the profile section
     template = "profile.html"
     user_data = get_user_data(request)
     work_experiences = get_user_work_experience(request)
     education = get_user_education(request)
-    # skills = get_user_skill(request)
+
     context = {
         "user_data": user_data, 
         "form": form, 
@@ -75,6 +75,7 @@ def index(request):
         "education":education_form,
         "education_data":education,
         "password_form":password_form,
+        "skill_form":skill_form,
         }
     
     return render(request, template, context)
@@ -166,6 +167,19 @@ def addEducation(request):
         }
     
     return render(request,template,context)
+
+def addSkill(request):
+    
+    if request.method == 'POST':
+        current_skill = request.user.skills #skill of the user
+        added_skill = request.POST.get('skills')    
+        
+        # concatenating the skills already available (if any) in the newly added skill
+        new_skill = f"{current_skill},{added_skill}" if current_skill !="" else added_skill
+        
+        User.objects.filter(username = request.user.username).update(skills=new_skill)# update skill data
+    return redirect('profileapp:index')
+
 
 def updatePassword(request, id):
     if(request.method == 'POST'):
