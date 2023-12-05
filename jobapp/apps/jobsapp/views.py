@@ -3,63 +3,94 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.db.models import Q
 
-from ..profileapp.models import JobApplication, JobSeeker
+from ..profileapp.models import JobApplication
 from .models import Job
 
 
 # render
 def index(request):
-    return render(request, "index/base.html")
+    if request.user.is_authenticated:
+        user = request.user
+        if user.contact_number and user.skills and user.profile_summary:
+            hasInfo = True
+        else:
+            hasInfo = False
+    else:
+        hasInfo = False
+    return render(request, "index/base.html", {"hasInfo": hasInfo})
 
 
 def jobDetails(request, jobId):
     if not request.user.is_authenticated:
+        hasInfo = False
         return redirect("jobsapp:index")
+    else:
+        user = request.user
+        if user.contact_number and user.skills and user.profile_summary:
+            hasInfo = True
+        else:
+            hasInfo = False
 
-    return render(request, "jobDetails.html")
+        if not Job.objects.filter(id=jobId).exists():
+            return redirect("jobsapp:index")
+    return render(request, "jobDetails.html", {"hasInfo": hasInfo})
 
 
 # async (views used in ajax call )
 def getJobList(request):
-    seekerId = JobSeeker.objects.get(user_id=request.user.id)
-    appliedJobs = JobApplication.objects.filter(job_seeker_id=seekerId, status="active")
-    appliedJobsId = appliedJobs.values_list("job_id", flat=True)
-    # jobs = Job.objects.select_related("company").filter(status="active")
-    jobs = (
-        Job.objects.filter(status="active")
-        .select_related("company")
-        .values(
-            "id",
-            "job_title",
-            "description",
-            "status",
-            "type",
-            "skills",
-            "city",
-            "country",
-            "max_salary",
-            "min_salary",
-            "date_posted",
-            "company_id",
-            "company__company_name",
+    if request.user.is_authenticated:
+        appliedJobs = JobApplication.objects.filter(
+            user=request.user.id, status="active"
         )
-    )
+        appliedJobsId = appliedJobs.values_list("job_id", flat=True)
+        jobs = (
+            Job.objects.filter(status="active")
+            .select_related("company")
+            .values(
+                "id",
+                "job_title",
+                "description",
+                "status",
+                "type",
+                "skills",
+                "city",
+                "country",
+                "max_salary",
+                "min_salary",
+                "date_posted",
+                "company_id",
+                "company__company_name",
+            )
+        )
 
-    return JsonResponse(
-        {
-            "success": True,
-            "jobs": list(jobs),
-            "appliedJobsId": list(appliedJobsId),
-        }
-    )
+        return JsonResponse(
+            {
+                "success": True,
+                "jobs": list(jobs),
+                "appliedJobsId": list(appliedJobsId),
+            }
+        )
+    else:
+        return JsonResponse(
+            {
+                "success": False,
+            }
+        )
 
 
 def getJobDetails(request, jobId):
+    user = request.user
+
+    if user.contact_number and user.skills and user.profile_summary:
+        hasInfo = True
+    else:
+        hasInfo = False
+
     if not request.user.is_authenticated:
         return redirect("jobsapp:index")
 
     hasApplied = JobApplication.objects.filter(
-        job_id=jobId, job_seeker_id=request.user.id, status="active"
+        job_id=jobId, user_id=request.user.id, status="active"
     ).exists()
 
     try:
@@ -87,15 +118,18 @@ def getJobDetails(request, jobId):
 
     except Job.DoesNotExist:
         return redirect("jobsapp:index")
-    return JsonResponse({"success": True, "job": job, "hasApplied": hasApplied})
+    return JsonResponse(
+        {"success": True, "job": job, "hasApplied": hasApplied, "hasInfo": hasInfo}
+    )
 
 
 def manageApplication(request, jobId):
     if request.method == "POST":
         job = Job.objects.get(id=jobId)
-        job_seeker = JobSeeker.objects.get(user=request.user)
+
+        # job_seeker = JobSeeker.objects.get(user=request.user)
         existing_application = JobApplication.objects.filter(
-            job=job, job_seeker=job_seeker
+            job=job, user=request.user.id
         ).first()
 
         if existing_application:
@@ -108,7 +142,7 @@ def manageApplication(request, jobId):
             existing_application.save()
         else:
             JobApplication.objects.create(
-                job=job, job_seeker=job_seeker, status="active"
+                job_id=job.id, user_id=request.user.id, status="active"
             )
         return JsonResponse({"success": True})
 
@@ -117,7 +151,7 @@ def searchJob(request):
     what = request.GET.get("what", "")
     where = request.GET.get("where", "")
     type = request.GET.get("type", "all")
-    base_query = Q()
+    base_query = Q(status="active")
 
     if what:
         skills_list = re.split(r"\W+", what)

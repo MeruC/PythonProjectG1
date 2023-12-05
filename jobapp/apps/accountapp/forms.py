@@ -18,7 +18,7 @@ class LoginForm(forms.Form):
                 "placeholder": "juandelacruz or juandelacruz@email.com",
                 "autocomplete": "off",
                 "required": "true",
-            }
+            },
         ),
     )
     password = forms.CharField(
@@ -29,7 +29,8 @@ class LoginForm(forms.Form):
                 "placeholder": "••••••••",
                 "autocomplete": "off",
                 "required": "true",
-            }
+            },
+            render_value=True,
         ),
     )
 
@@ -67,7 +68,7 @@ class RegisterForm(forms.Form):
                 "placeholder": "Juan",
                 "autocomplete": "off",
                 "required": "true",
-            }
+            },
         ),
     )
     last_name = forms.CharField(
@@ -108,7 +109,8 @@ class RegisterForm(forms.Form):
                 "placeholder": "••••••••",
                 "autocomplete": "off",
                 "required": "true",
-            }
+            },
+            render_value=True,
         ),
     )
     confirm_password = forms.CharField(
@@ -118,7 +120,8 @@ class RegisterForm(forms.Form):
                 "placeholder": "••••••••",
                 "autocomplete": "off",
                 "required": "true",
-            }
+            },
+            render_value=True,
         ),
     )
 
