@@ -20,17 +20,19 @@ function password_requirment(password_id, requirement_id) {
   const password_input = document.getElementById(password_id);
   const requirement_div = document.getElementById(requirement_id);
 
+  function updateRequirementDisplay(password) {
+    const meets_Requirement = checkPasswordRequirement(password);
+    requirement_div.classList.toggle("text-red-500", !meets_Requirement);
+    requirement_div.style.display = meets_Requirement ? "none" : "block";
+  }
+
+  const initial_password = password_input.value;
+  if (initial_password !== "") {
+    updateRequirementDisplay(initial_password);
+  }
+
   password_input.addEventListener("input", function () {
-    const password = password_input.value;
-    const meets_requirement = checkPasswordRequirement(password);
-    console.log("fdsfsf");
-    if (meets_requirement) {
-      requirement_div.classList.remove("text-red-500");
-      requirement_div.style.display = "none";
-    } else {
-      requirement_div.classList.add("text-red-500");
-      requirement_div.style.display = "block";
-    }
+    updateRequirementDisplay(password_input.value);
   });
 
   function checkPasswordRequirement(password) {
