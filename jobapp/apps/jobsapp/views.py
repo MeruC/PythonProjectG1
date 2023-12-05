@@ -152,7 +152,8 @@ def searchJob(request):
     where = request.GET.get("where", "")
     type = request.GET.get("type", "all")
     base_query = Q(status="active")
-
+    appliedJobs = JobApplication.objects.filter(user=request.user.id, status="active")
+    appliedJobsId = appliedJobs.values_list("job_id", flat=True)
     if what:
         skills_list = re.split(r"\W+", what)
         for part in skills_list:
@@ -185,7 +186,13 @@ def searchJob(request):
         )
     )
 
-    return JsonResponse({"success": True, "jobs": list(jobs)})
+    return JsonResponse(
+        {
+            "success": True,
+            "jobs": list(jobs),
+            "appliedJobsId": list(appliedJobsId),
+        }
+    )
 
 
 def getWhatSuggestion(request):

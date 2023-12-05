@@ -201,8 +201,12 @@ async function searchJob(event) {
               .map(function (job) {
                 let hasApplied = false;
 
-                hasApplied = true;
-
+                if (jsonResponse.appliedJobsId.length > 0) {
+                  if (jsonResponse.appliedJobsId.includes(job.id)) {
+                    console.log(job.id);
+                    hasApplied = true;
+                  }
+                }
                 return renderJobs(job, hasApplied);
               })
               .join("")}
