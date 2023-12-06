@@ -1,5 +1,6 @@
 from django.db import models
 import datetime as date
+from datetime import datetime
 from django.contrib.auth.models import AbstractUser
 
 
@@ -37,6 +38,10 @@ class Alerts(models.Model):
         ("Applicant", "New Applicant Applied to your post"),
         ("MatchSkill", "Job matches your skill"),
     ]
+    STATUS_CHOICES = [("active", "Active"), ("deleted", "Deleted")]
+    notification = models.CharField(max_length=11,choices=NOTIF_ACTION,default='')
+    timestamp = models.DateTimeField(default=datetime.today)
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES,default='')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
