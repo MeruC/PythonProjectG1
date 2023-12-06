@@ -27,7 +27,7 @@
 
   <div class="md:w-4/5 mx-auto h-screen">
     <!-- Main navigation container -->
-    
+    {% include 'navbar.html' %}
     <div class="flex flex-col lg:flex-row gap-2 p-5 h-4/5">
       <aside class="flex flex-col gap-5 w-full lg:w-1/5 h-full">
 
@@ -352,7 +352,7 @@
           <span class="block text-sm italic text-gray-500">Note: Password must contain: 8 characters, lowercase&uppercase letter, atleast one number, and special charst</span>
     
           <label>Confirm Password:</label>
-          <input type="password" name="confirm_pass" class="block rounded-md border border-gray-300 py-3 p-2 outline-none text-sm w-full resize-none"/>
+          <input type="password" name="confirm_pass" autocomplete="confirm-password" class="block rounded-md border border-gray-300 py-3 p-2 outline-none text-sm w-full resize-none"/>
           <p class="text-sm italic text-red-400 hidden unmatch-new-password-msg">New password not match!</p>
           <div class="flex gap-2 justify-end mt-2">
             <button type="button" class="bg-[#6a994e] rounded-md px-3 py-2 text-white hover:bg-[#386641]" onclick="updatePassword('{{user.id}}')">Change password</button>
