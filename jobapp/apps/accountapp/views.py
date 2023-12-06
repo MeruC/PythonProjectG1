@@ -88,8 +88,10 @@ def Logout(request):
 # ----------------- notification -----------
 MAX_LIMIT = 20
 def Notification(request, offset):
-    user_id = request.user.id
+    user_id = request.user.id #current user
+    
+    #offset with max to 20 notif
     limit = offset + MAX_LIMIT
     notifications = Alerts.objects.filter(user_id=user_id)[offset:limit].values()
-
-    return JsonResponse(list(notifications), safe=False)
+    notification_list = list(notifications)
+    return JsonResponse(notification_list, safe=False)
