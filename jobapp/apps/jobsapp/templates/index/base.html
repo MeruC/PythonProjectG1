@@ -51,7 +51,7 @@ edit this later {% endcomment %} {% comment %}
           <div class="relative">
             <input type="text" id="what" name="what" value="{{ what }}"
               class="w-full px-2 py-1 pr-8 rounded-md border border-gray-300 focus:outline-none focus:border-[#386641]" 
-              placeholder="Skills, Job Title, Keywords" {% if not user.is_authenticated %} disabled {% endif %} />
+              placeholder="Job Title, Skills" {% if not user.is_authenticated %} disabled {% endif %} />
             <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
               <div><i class="fa-solid fa-location-dot"></i></div>
             </div>
@@ -69,7 +69,7 @@ edit this later {% endcomment %} {% comment %}
               <i class="fa-solid fa-magnifying-glass"></i>
             </div>
             <div id="whereSuggestion" class="absolute z-10 hidden bg-white rounded-md shadow-md mt-2 w-full">
-         
+                
             </div>
           </div>
         </div>
@@ -145,7 +145,13 @@ edit this later {% endcomment %} {% comment %}
 <script type="text/javascript"  src="{% static '/js/index.js' %}"></script>
 
 <script>
+
+  const  hasInfo = "{{ hasInfo }}";
+
+</script>
+<script>
   document.addEventListener("DOMContentLoaded", function() {
+   
     getJobList();
 
     document.getElementById("searchJobForm").addEventListener("submit", searchJob);

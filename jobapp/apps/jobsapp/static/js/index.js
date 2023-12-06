@@ -100,6 +100,7 @@ async function getJobDetails() {
         } else {
           document.getElementById(`applyButton`).innerHTML = "Apply Now";
         }
+
         document
           .querySelector("#applyButton")
           .addEventListener("click", async function () {
@@ -200,8 +201,12 @@ async function searchJob(event) {
               .map(function (job) {
                 let hasApplied = false;
 
-                hasApplied = true;
-
+                if (jsonResponse.appliedJobsId.length > 0) {
+                  if (jsonResponse.appliedJobsId.includes(job.id)) {
+                    console.log(job.id);
+                    hasApplied = true;
+                  }
+                }
                 return renderJobs(job, hasApplied);
               })
               .join("")}
@@ -244,73 +249,74 @@ function handleJobClick(
 }
 
 function getWhatSuggestion(query) {
+  const whatSuggestion = document.getElementById("whatSuggestion");
   document.getElementById("whatSuggestion").innerHTML = "";
 
   fetch(`/getWhatSuggestion?query=${query}`)
     .then((response) => response.json())
     .then((data) => {
-      if (data.success && data.suggestions.length > 0) {
-        console.log(data);
-        data.suggestions.forEach((suggestion) => {
-          const suggestionItem = document.createElement("div");
-          suggestionItem.classList.add(
-            "p-2",
-            "cursor-pointer",
-            "hover:bg-gray-100"
-          );
-          suggestionItem.textContent = suggestion;
-          suggestionItem.addEventListener("click", () => {
-            document.getElementById("what").value = suggestion;
-
-            document.getElementById("whatSuggestion").classList.add("hidden");
+      if (document.getElementById("what").value !== "") {
+        if (data.success && data.suggestions.length > 0) {
+          data.suggestions.forEach((suggestion) => {
+            const suggestionItem = createSuggestionElement(suggestion, "what");
+            whatSuggestion.appendChild(suggestionItem);
           });
-          document.getElementById("whatSuggestion").appendChild(suggestionItem);
-        });
 
-        document.getElementById("whatSuggestion").classList.remove("hidden");
+          whatSuggestion.classList.remove("hidden");
+        } else {
+          const suggestionItem = createSuggestionElement("No result", "what");
+          whatSuggestion.appendChild(suggestionItem);
+
+          whatSuggestion.classList.remove("hidden");
+        }
       } else {
-        document.getElementById("whatSuggestion").classList.add("hidden");
+        whatSuggestion.classList.add("hidden");
       }
     })
-    .catch((error) => {
-      console.error("Error fetching suggestions:", error);
-    });
+    .catch((error) => console.error("Error", error));
 }
 
 function getWhereSuggestion(query) {
-  document.getElementById("whereSuggestion").innerHTML = "";
+  const whereSuggestion = document.getElementById("whereSuggestion");
+  whereSuggestion.innerHTML = "";
 
   fetch(`/getWhereSuggestion?query=${query}`)
     .then((response) => response.json())
     .then((data) => {
-      if (data.success && data.suggestions.length > 0) {
-        console.log(data);
-        data.suggestions.forEach((suggestion) => {
-          const suggestionItem = document.createElement("div");
-          suggestionItem.classList.add(
-            "p-2",
-            "cursor-pointer",
-            "hover:bg-gray-100"
-          );
-          suggestionItem.textContent = suggestion;
-          suggestionItem.addEventListener("click", () => {
-            document.getElementById("where").value = suggestion;
-
-            document.getElementById("whereSuggestion").classList.add("hidden");
+      if (document.getElementById("where").value !== "") {
+        if (data.success && data.suggestions.length > 0) {
+          data.suggestions.forEach((suggestion) => {
+            const suggestionItem = createSuggestionElement(suggestion, "where");
+            whereSuggestion.appendChild(suggestionItem);
           });
-          document
-            .getElementById("whereSuggestion")
-            .appendChild(suggestionItem);
-        });
 
-        document.getElementById("whereSuggestion").classList.remove("hidden");
+          whereSuggestion.classList.remove("hidden");
+        } else {
+          const suggestionItem = createSuggestionElement("No result", "where");
+          whereSuggestion.appendChild(suggestionItem);
+
+          whereSuggestion.classList.remove("hidden");
+        }
       } else {
-        document.getElementById("whereSuggestion").classList.add("hidden");
+        whereSuggestion.classList.add("hidden");
       }
     })
-    .catch((error) => {
-      console.error("Error", error);
+    .catch((error) => console.error("Error", error));
+}
+
+function createSuggestionElement(text, type) {
+  const suggestionItem = document.createElement("div");
+  suggestionItem.classList.add("p-2", "cursor-pointer", "hover:bg-gray-100");
+  suggestionItem.textContent = text;
+  if (text !== "No result") {
+    suggestionItem.addEventListener("click", () => {
+      document.getElementById(type == "what" ? "what" : "where").value = text;
+      document
+        .getElementById(type == "what" ? "whatSuggestion" : "whereSuggestion")
+        .classList.toggle("hidden");
     });
+  }
+  return suggestionItem;
 }
 
 async function jobApplication(target, jobId, hasApplied) {
@@ -334,14 +340,6 @@ async function jobApplication(target, jobId, hasApplied) {
               : "Apply Now"
           }`;
         } else {
-          // console.log("run");
-          // console.log(
-          //   document.getElementById(`applyButton-${jobId}`).innerHTML ==
-          //     "Apply Now"
-          // );
-          // console.log(
-          //   document.getElementById(`applyButton-${jobId}`).innerHTML
-          // );
           document.getElementById(`applyButton-${jobId}`).innerHTML = `${
             document.getElementById(`applyButton-${jobId}`).innerHTML.trim() ==
             "Apply Now"
@@ -357,7 +355,7 @@ async function jobApplication(target, jobId, hasApplied) {
   }
 }
 
-/* jobDetails.html */
+/* base.html */
 function showJobDetails(
   id,
   title,
@@ -374,6 +372,7 @@ function showJobDetails(
   document.querySelectorAll(".job").forEach((job) => {
     job.classList.remove("border-[#386641]");
   });
+  console.log(hasInfo);
   document.getElementById(`job-${id}`).classList.add("border-[#386641]");
   document.getElementById("jobDetails").innerHTML = `
             <div class="min-h-full bg-white rounded-xl border border-gray-300 p-5 leading-5">
@@ -390,13 +389,23 @@ function showJobDetails(
                 <div>
                     <span class="text-[#6A994E] font-semibold">${salary}</span> per month
                 </div>
-                
-                <button id="applyButton-${id}" class="inline text-sm py-2 px-4 mt-3 mb-4 rounded-md font-semibold bg-[#BC4749] text-white"
-  onclick="jobApplication('jobList','${id}', ${hasApplied})">
+                <div class="mt-3 mb-4">
+                <button id="applyButton-${id}" class=" inline text-sm py-2 px-4  rounded-md font-semibold bg-[#BC4749] text-white disabled:cursor-not-allowed"
+  onclick="jobApplication('jobList','${id}', ${hasApplied})" ${
+    hasInfo == "True" ? "" : (disabled = "disabled")
+  }>
   ${hasApplied == true ? "Withraw Application" : "Apply Now"}
   
 </button>
 
+<div class=" text-xs text-red-500 mt-1 ${
+    hasInfo == "True" ? "hidden " : "block"
+  }">
+  <i class="fa-solid fa-circle-exclamation mr-1"></i>Set up 
+ <a href="/profile/" class="underline">your profile</a> to apply for  job
+  
+  </div>
+  </div>
                 <div class="text-sm text-gray-700">Posted ${posted}</div>
                 <hr class="my-5 bg-gray-300" />
                 <h1 class="font-semibold">Job Details</h1>
