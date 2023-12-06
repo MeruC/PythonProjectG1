@@ -96,7 +96,12 @@ class WorkHistoryForm(forms.ModelForm):
     
     started_year = forms.ChoiceField(
         choices=get_year(),
-        widget=forms.Select(attrs={'class': 'w-full rounded-md border border-[#B3B3B] outline-none text-sm p-2'}),)
+        widget=forms.Select(
+            attrs={
+                'id':'started-year',
+                'class': 'w-full rounded-md border border-[#B3B3B] outline-none text-sm p-2'
+                }),
+        )
     
     end_month = forms.ChoiceField(
         choices=STARTED_MONTH_CHOICES,
@@ -170,6 +175,8 @@ class PasswordForm(forms.ModelForm):
         label="Current password",
         widget= forms.TextInput(
             attrs={'type':'password',
+                   'id':'current-pass',
+                   'autocomplete':'current-password',
                    'class': 'block rounded-md border border-gray-300 py-3 p-2 focus:border-[#6a994e] outline-none text-sm w-full resize-none'})
     )
     
@@ -177,6 +184,8 @@ class PasswordForm(forms.ModelForm):
         label="New password",
         widget= forms.TextInput(
             attrs={'type':'password',
+                   'id':'new-pass',
+                   'autocomplete':'new-password',
                    'class': 'block rounded-md border border-gray-300 py-3 p-2 focus:border-[#6a994e] outline-none text-sm w-full resize-none'})
     )
 
