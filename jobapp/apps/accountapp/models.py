@@ -34,16 +34,24 @@ class User(AbstractUser):
 
 
 class Alerts(models.Model):
+    
+    # -----------Choices ---------------
     NOTIF_ACTION = [
         ("Applicant", "New Applicant Applied to your post"),
         ("MatchSkill", "Job matches your skill"),
     ]
+    APPLICATION_STATUS = [('accepted','Accepted'),('rejected','Rejected'),]
+    NOTIF_STATUS = [('read',"Read"),('unread','Unread'),]
     STATUS_CHOICES = [("active", "Active"), ("deleted", "Deleted")]
+    
+    # ------------fields ----------------
     notification = models.CharField(max_length=11,choices=NOTIF_ACTION,default='')
     timestamp = models.DateTimeField(default=datetime.today)
     status = models.CharField(max_length=8, choices=STATUS_CHOICES,default='')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
+    action_user = models.CharField(max_length=220,default='',blank=True) #who trigger the action (fullname) can be person/company
+    user = models.ForeignKey(User, on_delete=models.CASCADE) #the owner who will receive the notification
+    application_status = models.CharField(max_length=10,choices=APPLICATION_STATUS,blank=True,default='',null=True)
+    is_read = models.CharField(max_length=7,choices=NOTIF_STATUS,default='')
 
 class ActivityLog(models.Model):
     ACTION_CHOICES = [
