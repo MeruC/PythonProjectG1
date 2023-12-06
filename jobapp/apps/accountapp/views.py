@@ -1,6 +1,7 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
-
+from .models import Alerts
 from django.contrib.auth import login, logout
 
 from django.contrib import messages
@@ -81,3 +82,14 @@ def Login(request):
 def Logout(request):
     logout(request)
     return redirect("accountapp:login")
+
+
+
+# ----------------- notification -----------
+MAX_LIMIT = 20
+def Notification(request, offset):
+    user_id = request.user.id
+    limit = offset + MAX_LIMIT
+    notifications = Alerts.objects.filter(user_id=user_id)[offset:limit].values()
+
+    return JsonResponse(list(notifications), safe=False)
