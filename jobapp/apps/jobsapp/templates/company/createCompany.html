@@ -1,13 +1,45 @@
 {% extends "base.html" %} 
 {% block title %}Create Company{% endblock title %} 
 {%block content %}
-<div class="bg-[#F1F8F9] min-h-screen">
+<div class="bg-[#F1F8F9] min-h-screen text-base">
   <div class="h-[80px] w-full bg-white shadow-sm">
     <div class="max-w-[1120px] h-full flex items-center mx-auto">
-      <a href="#" class="font-black text-3xl">
+      <a href="{% url 'jobsapp:index' %}" class="font-black text-3xl">
         <span class="text-secondary">Work</span><span>It!</span>
       </a>
     </div>
+  </div>
+  <div class="mt-[40px] flex flex-col items-center gap-5">
+    <div class="p-[30px] px-[50px] max-w-[1120px] bg-primary rounded-md shadow">
+      <h1 class="font-bold text-xl">Set-up Company Profile</h1>
+      <p>
+        Make your company stand out in the competitive job market. Craft a compelling Company Profile to connect with top talent and build a team that shares your vision.
+      </p>
+    </div>
+    <form class="p-[50px] max-w-[1120px] w-full flex flex-col gap-5 bg-white rounded-md shadow">
+      <div>
+        <i class="fa-solid fa-building text-2xl text-secondary"></i>        
+        <h3 class="text-xl font-bold text-secondary">Company Details</h3>
+      </div>
+      <div class="form-group flex flex-col gap-1">
+        <label for="company_name" class="font-semibold">Company Name</label>
+        <input type="text" name="company_name" id="company_name" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Enter Company Name">
+      </div>
+      <div class="form-group flex flex-col gap-1">
+        <div>
+          <label for="description" class="font-semibold">Company Description</label>
+          <p>Provide a brief overview of your company, its history, and mission.</p>
+        </div>
+        <textarea name="description" rows="5" id="description" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Enter Company Description"> </textarea>
+      </div>
+      <div class="form-group flex flex-col gap-1">
+        <label for="location" class="font-semibold">Location (City)</label>
+        <input type="text" name="location" id="location" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Enter Company Location (City)">
+      </div>
+      <div class="action">
+        <button type="submit" class="px-5 py-2 text-white bg-secondary rounded">Submit</button>
+      </div>
+    </form>
   </div>
 </div>
 {% endblock %}
