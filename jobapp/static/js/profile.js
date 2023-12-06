@@ -143,6 +143,27 @@ $(document).ready(function(){
              $('.weak-msg-pass').removeClass('hidden')
         }
     })
+
+
+    // check the skill first
+    $('#submit-skill').on('click',function(){
+        const new_skill = $('input[name="skills"]').val().trim()
+        const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value; //make the request POST secured
+        const URL = `/profile/checkskill/${new_skill}/`; //link for views for deletion
+
+        fetch(URL,{
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'X-CSRFToken': csrfToken
+            }
+        }).then(data=>{return data.json()})
+        .then(data=>{
+            // assess the returned checking for newly_added skill
+            if(data.status === 200 && !data.isAvailable) $('#skill-form').submit() //add the new skill
+            else $('.msg-skill-error').removeClass('hidden')
+        })
+    })
 })
 
 
