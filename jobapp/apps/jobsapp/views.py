@@ -35,6 +35,13 @@ def jobDetails(request, jobId):
             return redirect("jobsapp:index")
     return render(request, "jobDetails.html", {"hasInfo": hasInfo})
 
+def createCompany(request):
+    # TODO
+    # - User must be logged in to create a company
+    # - User must not have a company already
+
+
+    return render(request, "company/createCompany.html")
 
 # async (views used in ajax call )
 def getJobList(request):
