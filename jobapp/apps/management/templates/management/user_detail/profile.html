@@ -1,0 +1,31 @@
+{% extends "management/user_detail.html" %}
+{% block user_section %}
+    {% include 'management/messages.html' %}
+    <form method="post"
+          enctype="multipart/form-data"
+          action="{% url 'managementapp:user_detail' user.id %}">
+        {% csrf_token %}
+        <h1 class="text-xl font-bold  ">Profile Picture</h1>
+        {{ profileForm.profile_img }}
+        <div class="flex gap-4">
+            <div class="w-1/2">
+                <label for="{{ profileForm.first_name.id_for_label }}">First name:</label>
+                {{ profileForm.first_name }}
+            </div>
+            <div class="w-1/2">
+                <label for="{{ profileForm.last_name.id_for_label }}">Last name:</label>
+                {{ profileForm.last_name }}
+            </div>
+        </div>
+        <label for="{{ profileForm.profile_summary.id_for_label }}">Profile summary</label>
+        {{ profileForm.profile_summary }}
+        <label for="{{ profileForm.email_address.id_for_label }}">Email address:</label>
+        {{ profileForm.email }}
+        <label for="profileForm.contact_number.id_for_label">Contact No.</label>
+        <div class="flex gap-2 items-center">
+            <span>+63</span>
+            {{ profileForm.contact_number }}
+        </div>
+        <button type="submit" class="daisy-btn daisy-btn-primary">Save</button>
+    </form>
+{% endblock user_section %}

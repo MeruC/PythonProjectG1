@@ -5,6 +5,7 @@
 {% endblock title %}
 {% block section %}
     <h1 class="py-24 text-4xl font-bold text-secondary pl-8">Manage Users</h1>
+    {% include "management/messages.html" %}
     {% comment %} Use datatable  {% endcomment %}
     <div class="container mx-auto">
         <div class="flex justify-end">
@@ -32,7 +33,12 @@
                                 <div class="flex flex-row gap-2">
                                     <div class="daisy-avatar ">
                                         <div class="w-10 h-10 rounded-full bg-slate-600 ">
-                                            {% if user.profile_img %}<img src="/media/{{ user.profile_img }}" alt="profile image of the user">{% endif %}
+                                            {% if user.profile_img %}
+                                                <img width="40px"
+                                                     height="40px"
+                                                     src="{{ user.profile_img.url }}"
+                                                     alt="profile image of the user">
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div>
@@ -61,8 +67,7 @@
                         <td>
                             <div class="flex flex-wrap gap-4">
                                 <a href="">
-                                 <i class="fa-regular fa-pen-to-square"></i>
-
+                                    <i class="fa-regular fa-pen-to-square"></i>
                                 </a>
                                 <a href=""><i class="fa-solid fa-trash-can"></i></a>
                             </div>

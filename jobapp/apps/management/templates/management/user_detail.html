@@ -32,12 +32,35 @@
             </li>
         </ul>
     </div>
-    <a class="daisy-btn daisy-btn-md w-fit daisy-btn-secondary"
-       href="{% url 'managementapp:manage_users' %}">
-        <i class="fa-solid fa-arrow-left"></i>
-    Back</a>
-    <h1 class="py-24 text-lg font-bold text-secondary pl-8">{{ user.first_name|title }} {{ user.last_name|title }}</h1>
-    <div class="container mx-auto">
-        <div class="relative"></div>
+    <div class="flex gap-4 items-center">
+        <a class="daisy-btn daisy-btn-md w-fit daisy-btn-secondary"
+           href="{% url 'managementapp:manage_users' %}">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back
+        </a>
+        <h1 class="text-lg font-bold text-secondary pl-8">{{ user.first_name|title }} {{ user.last_name|title }}</h1>
+    </div>
+    <!-- Divides into 2 section-->
+    <div class="container mx-auto flex flex-wrap">
+        
+        <ul class="daisy-menu bg-base-transparent min-h-full w-56 p-0 [&_li>*]:rounded-none">
+            <li>
+                <a>Profile</a>
+            </li>
+            <li>
+                <a>Qualifications</a>
+            </li>
+            <li>
+                <a>Application History</a>
+            </li>
+            <li>
+                <a>Account Actions</a>
+            </li>
+            <li>
+                <a>Activity Log</a>
+            </li>
+        </ul>
+
+        <section class="flex-1">{% block user_section %}{% endblock user_section %}</section>
     </div>
 {% endblock section %}
