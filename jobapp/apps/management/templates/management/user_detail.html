@@ -1,0 +1,15 @@
+{% extends "management/base_management.html" %}
+{% load static %}
+{% block title %}
+    User
+{% endblock title %}
+{% block section %}
+    {% comment %} TODO back button {% endcomment %}
+    <h1 class="py-24 text-4xl font-bold text-secondary pl-8">User</h1>
+    <div class="container mx-auto">
+            <div class="relative">
+                <h1>{{ user.id }}</h1>
+                <h1>{{ user.first_name }}</h1>
+            </div>
+    </div>
+{% endblock section %}
