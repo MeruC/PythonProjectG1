@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block metaData %}
     <!-- Datatables StyleSheet-->
     <link rel="stylesheet"
@@ -13,9 +14,9 @@
     <link rel="stylesheet"
           href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
     <!-- END Datatables StyleSheet-->
-    <link rel="preload"
-          as="font"
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900" />
+    <!--Sweetalert styles-->
+    <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css " rel="stylesheet">
+    
 {% endblock metaData %}
 {% block content %}
     <nav class="daisy-drawer lg:daisy-drawer-open bg-white ">
@@ -27,14 +28,14 @@
             <label for="my-drawer-2"
                    class="daisy-btn daisy-btn-secondary daisy-drawer-button lg:hidden">Menu</label>
         </div>
-        <div class="daisy-drawer-side">
+        <div class="daisy-drawer-side flex items-center flex-col ">
             <h1 class="py-8 text-4xl text-secondary font-bold text-center">
                 Work<span class="text-gray-800">It</span>
             </h1>
             <label for="my-drawer-2"
                    aria-label="close sidebar"
                    class="daisy-drawer-overlay"></label>
-            <ul class="daisy-menu bg-white p-4 w-80 min-h-full  text-base-content flex flex-col flex-nowrap gap-4 [&>*>a]:py-4">
+            <ul class="daisy-menu bg-white p-4 w-80 min-h-full lg:min-h-[80%] text-base-content flex flex-col flex-nowrap gap-4 [&>*>a]:py-4">
                 <!-- Sidebar content here -->
                 <li>
                     <a class="font-bold" href="{% url 'managementapp:index' %}">
@@ -61,6 +62,9 @@
                     </a>
                 </li>
             </ul>
+            <div class="flex justify-center">
+                <button class="daisy-btn w-10/12 " id="logoutBtn">Logout</button>
+            </div>
         </div>
     </nav>
     <!-- Plugins and Libraries-->
@@ -73,4 +77,8 @@
     <script src="https://cdn.datatables.net/searchpanes/2.2.0/js/dataTables.searchPanes.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <!--Sweet Alert-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- User Defined JS-->
+    <script type="module" src="{% static 'management/base.js' %}"></script>
 {% endblock content %}
