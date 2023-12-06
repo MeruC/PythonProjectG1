@@ -65,6 +65,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # EXTRAS / LIB
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    # Requires superuser login on managementapp
+    "apps.management.middleware.SuperuserRequiredMiddleware",
 ]
 
 ROOT_URLCONF = "jobapp.urls"
@@ -146,8 +148,8 @@ STATICFILES_DIRS = [
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Used for displaying alerts
