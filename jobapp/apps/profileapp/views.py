@@ -260,3 +260,31 @@ def delete_education(request,id):
     return redirect('profileapp:index')
 
 
+# ===== Skill Deletion
+def delete_skill(request,skill):
+    current_ID = request.user.id
+    user_skill = User.objects.get(id=current_ID)
+    skills_arr = formatted_skill(user_skill.skills) # format the string into array
+    
+    skills_arr.remove(skill) # remove specific item in the list
+    updated_skill = ",".join(skills_arr)
+    
+    User.objects.filter(id=current_ID).update(skills=updated_skill) #update the skill data
+    return redirect('profileapp:index')
+
+
+#===========Check if the newly added skill is already existing
+def isSkillAvailable(request,skill):
+    if request.method == 'POST':
+        try:
+            user_obj = User.objects.get(id=request.user.id)
+            current_skill = formatted_skill(user_obj.skills) #format into list
+            isAvailable = True if skill in current_skill else False
+                
+            return JsonResponse({'status':200,'isAvailable':isAvailable})
+        except:
+            messages.error(request,'Education update failed')
+            return redirect('profileapp:index')
+        
+    
+    return redirect('profileapp:index')

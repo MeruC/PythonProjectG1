@@ -127,7 +127,10 @@
               {% for skill in user_data.skills %}
                 <li class="flex justify-between items-center py-2">
                   <p>{{skill|title}}</p>
-                  <span class="fa fa-close text-gray-300 cursor-pointer hover:text-red-400"></span>
+                  <a href="{% url 'profileapp:deleteSkill' skill=skill %}">
+                    <span class="fa fa-close text-gray-300 cursor-pointer hover:text-red-400"></span>
+                  </a>
+          
                 </li>
               {% endfor %}
             </ul>
@@ -369,13 +372,14 @@
     bg-opacity-25 hidden skill-modal">
 
     <div class="w-2/5 mx-auto rounded-md h-max bg-white p-5 transition duration-150 ease-in-out">
-      <form action="{% url 'profileapp:addSkill' %}" method="POST" enctype="multipart/form-data">
+      <form id="skill-form" action="{% url 'profileapp:addSkill' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <h2 class="text-xl py-2 border-b border-gray-300 mb-2">Add Skill</h2>
+        <p class="text-red-400 text-sm italic text-end msg-skill-error hidden">Skill is already included</p>
         {{skill_form.skills}}
 
         <div class="flex justify-end gap-2 mt-2">
-          <button type="submit" class="bg-[#6a994e] rounded-md px-3 py-2 text-white hover:bg-[#386641]">Add skill</button>
+          <button type="button" id="submit-skill" class="bg-[#6a994e] rounded-md px-3 py-2 text-white hover:bg-[#386641]">Add skill</button>
           <button class="hover:text-gray-500 text-gray-400" type="button" onclick="toggleModal('close-skill-modal')">Cancel</button>
         </div>
         
@@ -383,6 +387,7 @@
     </div>
     
   </div>
+  
   {% endif %}
   {% endif %}
 
