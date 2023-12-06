@@ -127,7 +127,10 @@
               {% for skill in user_data.skills %}
                 <li class="flex justify-between items-center py-2">
                   <p>{{skill|title}}</p>
-                  <span class="fa fa-close text-gray-300 cursor-pointer hover:text-red-400"></span>
+                  <a href="{% url 'profileapp:deleteSkill' skill=skill %}">
+                    <span class="fa fa-close text-gray-300 cursor-pointer hover:text-red-400"></span>
+                  </a>
+          
                 </li>
               {% endfor %}
             </ul>
@@ -383,6 +386,10 @@
     </div>
     
   </div>
+
+
+  {% include 'errormodal.html' %}
+  
   {% endif %}
   {% endif %}
 

@@ -260,3 +260,14 @@ def delete_education(request,id):
     return redirect('profileapp:index')
 
 
+# ===== Skill Deletion
+def delete_skill(request,skill):
+    current_ID = request.user.id
+    user_skill = User.objects.get(id=current_ID)
+    skills_arr = formatted_skill(user_skill.skills) # format the string into array
+    
+    skills_arr.remove(skill) # remove specific item in the list
+    updated_skill = ",".join(skills_arr)
+    
+    User.objects.filter(id=current_ID).update(skills=updated_skill) #update the skill data
+    return redirect('profileapp:index')
