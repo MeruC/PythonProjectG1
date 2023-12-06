@@ -29,7 +29,6 @@
                 {% for user in users %}
                     <tr>
                         <td>
-                            <a href="{% url 'managementapp:user_detail' user.id %}">
                                 <div class="flex flex-row gap-2">
                                     <div class="daisy-avatar ">
                                         <div class="w-10 h-10 rounded-full bg-slate-600 ">
@@ -46,7 +45,7 @@
                                         <p>{{ user.email }}</p>
                                     </div>
                                 </div>
-                            </a>
+                            
                         </td>
                         <td>{{ user.contact_number|default:"No Contact" }}</td>
                         <td>
@@ -66,7 +65,8 @@
                         </td>
                         <td>
                             <div class="flex flex-wrap gap-4">
-                                <a href="">
+                                <a href="{% url 'managementapp:user_detail' user.id %}" class="hover:bg-primary">
+
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </a>
                                 <a href=""><i class="fa-solid fa-trash-can"></i></a>
