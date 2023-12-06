@@ -63,6 +63,8 @@ def Login(request):
             user = User.objects.get(**{check_identifier(identifier): identifier})
             if user.is_active:
                 login(request, user)
+                if user.is_superuser:
+                    return redirect("managementapp:index")
                 return redirect("jobsapp:index")
             else:
                 messages.error(request, "Your account has been disabled.")
