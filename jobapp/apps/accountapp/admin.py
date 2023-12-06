@@ -94,6 +94,9 @@ class EducationAdmin(admin.ModelAdmin):
 admin.site.register(Education, EducationAdmin)
 
 class NotificationAdmin(admin.ModelAdmin):
-    list_display = ['notification','timestamp','status','user']
+    list_display = [
+        'notification','timestamp','status','action_user',
+            'user','application_status','is_read'
+    ]
     
 admin.site.register(Alerts,NotificationAdmin)
