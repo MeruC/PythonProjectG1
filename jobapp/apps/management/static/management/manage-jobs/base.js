@@ -10,10 +10,10 @@ $(document).ready(function() {
     });
 });
 
-function onDeleteJobHandler(jobId) {
+function onDeleteJobHandler(jobId, jobTitle) {
     Swal.fire({
         title: "Delete?",
-        text: "Are you sure you want to delete this record?",
+        text: `Are you sure you want to delete ${jobTitle}?`,
         icon: "warning",
         confirmButtonText: "Delete",
         confirmButtonColor: "#EF5350",

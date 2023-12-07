@@ -5,11 +5,7 @@
 {% endblock title %}
 {% block section %}
 
-<style>
-    .dataTables_filter {
-        display: none;
-    }
-</style>
+
 <div class="mx-14">
     <h1 class="py-24 text-3xl font-bold text-secondary">Manage Job Listings</h1>
  
@@ -59,7 +55,7 @@
                         <td>
                             <div class="flex flex-wrap gap-4 text-lg">
                                 <i class="fa-regular fa-pen-to-square   text-gray-400 cursor-pointer hover:text-secondary" onclick="onEditJobHandler({{ job.id }})"></i>
-                                <i class="fa-solid fa-trash-can  text-gray-400 cursor-pointer hover:text-red-500" onclick="onDeleteJobHandler({{ job.id }})"></i>
+                                <i class="fa-solid fa-trash-can  text-gray-400 cursor-pointer hover:text-red-500" onclick="onDeleteJobHandler({{ job.id }}, {{job.job_title}})"></i>
                             </div>
                         </td>
                     </tr>
@@ -70,6 +66,6 @@
     </div>
 </div>
 
-<script src="{% static 'management/manage-job/base.js' %}"></script>
+<script src="{% static 'management/manage-jobs/base.js' %}"></script>
 
   {% endblock section %}

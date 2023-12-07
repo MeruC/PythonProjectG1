@@ -40,7 +40,7 @@ def manage_users(request):
 def manage_jobs(request):
     jobs = Job.objects.all()
     context = {'jobs': jobs}
-    return render(request, "management/jobs/manage_jobs.html", context)
+    return render(request, "management/manage-jobs/manage_jobs.html", context)
 
 
 def edit_job(request, job_id):
@@ -76,7 +76,7 @@ def edit_job(request, job_id):
         })
 
     context = {'job': job, 'form': form}
-    return render(request, 'management/jobs/job_edit.html', context)
+    return render(request, 'management/manage-jobs/job_edit.html', context)
 
 
 
@@ -103,7 +103,7 @@ def action_job(request, job_id):
             print(e)
   
     context = {'job': job}
-    return render(request, 'management/jobs/job_action.html', context)
+    return render(request, 'management/manage-jobs/job_action.html', context)
 
 
 
