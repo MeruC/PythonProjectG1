@@ -1,35 +1,50 @@
 {% extends "base.html" %}
+{% load static %}
 {% block metaData %}
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-          rel="stylesheet" />
+    <!-- Datatables StyleSheet-->
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <!-- Searchpane style-->
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/searchpanes/2.2.0/css/searchPanes.dataTables.min.css">
+    <!-- extenstion select style-->
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
+    <!-- extension button StyleSheet-->
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+    <!-- END Datatables StyleSheet-->
+    <!--Sweetalert styles-->
+    <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css " rel="stylesheet">
+    
 {% endblock metaData %}
 {% block content %}
     <nav class="daisy-drawer lg:daisy-drawer-open bg-white ">
         <input id="my-drawer-2" type="checkbox" class="daisy-drawer-toggle" />
         <div class="daisy-drawer-content flex flex-col bg-[#F1F8F9]">
-            <!-- Page content here -->
             {% block section %}
+                {% comment %} Insert the right Page content here {% endcomment %}
             {% endblock section %}
             <label for="my-drawer-2"
-                   class="daisy-btn daisy-btn-secondary daisy-drawer-button lg:hidden">Open drawer</label>
+                   class="daisy-btn daisy-btn-secondary daisy-drawer-button lg:hidden">Menu</label>
         </div>
-        <div class="daisy-drawer-side">
+        <div class="daisy-drawer-side flex items-center flex-col ">
             <h1 class="py-8 text-4xl text-secondary font-bold text-center">
                 Work<span class="text-gray-800">It</span>
             </h1>
             <label for="my-drawer-2"
                    aria-label="close sidebar"
                    class="daisy-drawer-overlay"></label>
-            <ul class="daisy-menu bg-white p-4 w-80 min-h-full  text-base-content flex flex-col flex-nowrap gap-4 [&>*>a]:py-4">
+            <ul class="daisy-menu bg-white p-4 w-80 min-h-full lg:min-h-[80%] text-base-content flex flex-col flex-nowrap gap-4 [&>*>a]:py-4">
                 <!-- Sidebar content here -->
                 <li>
-                    <a class="font-bold">
+                    <a class="font-bold" href="{% url 'managementapp:index' %}">
                         <i class="fa-solid fa-chart-line fa-xl"></i>
                         <span class="ml-2">Dashboard</span>
                     </a>
                 </li>
                 <li>
-                    <a class="font-bold">
+                    <a class="font-bold" href="{% url 'managementapp:manage_users' %}">
                         <i class="fa-solid fa-user-group fa-xl"></i>
                         <span class="ml-2">Users</span>
                     </a>
@@ -47,6 +62,23 @@
                     </a>
                 </li>
             </ul>
+            <div class="flex justify-center">
+                <button class="daisy-btn w-10/12 " id="logoutBtn">Logout</button>
+            </div>
         </div>
     </nav>
+    <!-- Plugins and Libraries-->
+    <!-- Jquery-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Jquery UI-->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <!-- Datatables-->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/searchpanes/2.2.0/js/dataTables.searchPanes.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <!--Sweet Alert-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js "></script>
+    <!-- User Defined JS-->
+    <script type="module" src="{% static 'management/base.js' %}"></script>
 {% endblock content %}

@@ -20,7 +20,7 @@
       <a href="{% url 'profileapp:index' %}">Recruit</a>
     </li>
     <div class="hidden sm:block w-[1px] h-full bg-gray-300"></div>
-    <li class="underline relative">
+    <li class="underline relative cursor-pointer">
       <div class="w-[7px] h-[7px] bg-red-500 rounded-full absolute top-1 right-0"></div>
       <i class="text-gray-500  fa-regular fa-bell" id="notifIcon"></i>
       <ul
@@ -51,11 +51,13 @@
         </li>
       </ul>
     </li>
-    <li>
-      <img src="https://picsum.photos/200" class="w-8 h-8 rounded-full" />
+    <li  >
+      <img class="w-8 h-8 rounded-full"
+      src="{% if user.profile_img %}{{ user.profile_img.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
+      alt="">
     </li>
-    <li class="relative">
-      <i class="fa-solid fa-chevron-down text-xs" id="dropdownIcon"></i>
+    <li class="relative cursor-pointer">
+      <i class="fa-solid fa-chevron-down text-xs " id="dropdownIcon"></i>
       <ul
         id="dropdownContent"
         class="absolute hidden bg-white shadow-md mt-2 py-2 space-y-2 z-10 right-0 rounded-md w-40"
@@ -68,7 +70,7 @@
         <li class="text-red-500 px-5">
           <a
             class="cursor-pointer"
-            onclick="document.getElementById('confirmationModal').style.display = 'flex'"
+            onclick="onLogoutHandler()"
             >Logout</a
           >
         </li>
@@ -92,11 +94,11 @@
 </nav>
 
 {% comment %} backdrop {% endcomment %}
-<div
+{% comment %} <div
   id="confirmationModal"
   class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50"
 >
-  {% comment %} modal {% endcomment %}
+
   <div
     class="bg-white p-5 rounded-md flex flex-col gap-5 w-full sm:w-[350px] mx-5"
   >
@@ -123,9 +125,7 @@
       </button>
     </div>
   </div>
-</div>
-
-
+</div> {% endcomment %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.min.css">
 <script type="text/javascript" src="{% static '/js/navbar.js' %}"></script>
-
-</script>

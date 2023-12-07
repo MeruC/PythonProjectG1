@@ -52,7 +52,9 @@ def Register(request):
 
 # ------------------ Login ------------------
 def Login(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.is_superuser:
+        return redirect("managementapp:index")
+    elif request.user.is_authenticated:
         return redirect("jobsapp:index")
 
     if request.method == "POST":
@@ -63,6 +65,8 @@ def Login(request):
             user = User.objects.get(**{check_identifier(identifier): identifier})
             if user.is_active:
                 login(request, user)
+                if user.is_superuser:  # user is an admin
+                    return redirect("managementapp:index")
                 return redirect("jobsapp:index")
             else:
                 messages.error(request, "Your account has been disabled.")
