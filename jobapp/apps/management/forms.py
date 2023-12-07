@@ -1,5 +1,6 @@
+from datetime import datetime
 from django import forms
-from apps.accountapp.models import User
+from apps.accountapp.models import User, Education
 from django.forms.widgets import ClearableFileInput
 
 
@@ -95,3 +96,98 @@ class ProfileForm(forms.ModelForm):
             }
         ),
     )
+
+
+# form field for education
+class EducationForm(forms.ModelForm):
+    class Meta:
+        model = Education
+        fields = [
+            "education_level",
+            "school_name",
+            "course",
+            "started_year",
+            "ended_year",
+            "id",
+        ]
+
+    @staticmethod
+    def get_year():
+        years = []
+
+        # Get year from the current year to 1980
+        today = datetime.today()
+        current_year = today.year
+        stopping_year = 1980
+        step = -1
+
+        for i in range(current_year, stopping_year + step, step):
+            years.append((i, str(i)))
+
+        return years
+
+    options = Education.DEGREE_LEVEL_CHOICES
+    education_level = forms.ChoiceField(
+        label="Education Level",
+        choices=options,
+        widget=forms.Select(
+            attrs={
+                "class": (
+                    "w-full rounded-md border border-[#B3B3B] outline-none"
+                    " text-sm p-2"
+                )
+            }
+        ),
+    )
+
+    school_name = forms.CharField(
+        max_length=150,
+        widget=forms.TextInput(
+            attrs={
+                "class": (
+                    "w-full rounded-md border border-[#B3B3B] outline-none"
+                    " text-sm p-2"
+                ),
+                "placeholder": "Enter your school",
+            }
+        ),
+    )
+
+    course = forms.CharField(
+        max_length=250,
+        widget=forms.TextInput(
+            attrs={
+                "class": (
+                    "w-full rounded-md border border-[#B3B3B] outline-none"
+                    " text-sm p-2"
+                ),
+                "placeholder": "Enter your course",
+            }
+        ),
+    )
+
+    started_year = forms.ChoiceField(
+        choices=get_year(),
+        widget=forms.Select(
+            attrs={
+                "class": (
+                    "w-full rounded-md border border-[#B3B3B] outline-none"
+                    " text-sm p-2"
+                )
+            }
+        ),
+    )
+
+    ended_year = forms.ChoiceField(
+        choices=get_year(),
+        widget=forms.Select(
+            attrs={
+                "class": (
+                    "w-full rounded-md border border-[#B3B3B] outline-none"
+                    " text-sm p-2"
+                )
+            }
+        ),
+    )
+
+    id = forms.IntegerField(widget=forms.HiddenInput(), required=False)

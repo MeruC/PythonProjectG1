@@ -1,6 +1,7 @@
 {% extends "management/user_detail.html" %}
+{% load static %}
 {% block user_section %}
-    {% include 'management/messages.html' %}
+    {% include "management/messages.html" %}
     <form method="post"
           enctype="multipart/form-data"
           action="{% url 'managementapp:user_detail' user.id %}">
@@ -28,4 +29,5 @@
         </div>
         <button type="submit" class="daisy-btn daisy-btn-primary">Save</button>
     </form>
+    <script src="{% static 'management/manage-users/manage.js' %}"></script>
 {% endblock user_section %}

@@ -1,0 +1,76 @@
+{% extends "management/user_detail.html" %}
+{% load static %}
+{% block user_section %}
+    {% include "management/messages.html" %}
+    <h1 class="text-xl font-bold  ">Education</h1>
+    {% for education in education_list %}
+        <div class="flex flex-col">
+            <div class="flex flex-row justify-between bg-white p-4 w-6/12">
+                <div class="flex flex-col">
+                    <h3 class="text-lg font-bold">{{ education.course }}</h3>
+                    <p class="text-sm">{{ education.school_name }}</p>
+                    <p class="text-sm">{{ education.started_year }} -  {{ education.ended_year }}</p>
+                </div>
+                <!-- Edit Buttons-->
+                <div class="flex flex-wrap gap-4">
+                    <button data-education-id="{{ education.id }}"
+                            class="educationEditModalBtn hover:text-primary ">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </button>
+                    <form name="delete-education-form" id="deleteEducationForm" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="education_id" value="{{ education.id }}">
+                    </form>
+                    <button 
+                            class="educationDeleteModalBtn hover:text-primary">
+                        <i class="fa-solid fa-trash-can "></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <h1 class="text-xl font-bold  ">Work History</h1>
+    <dialog id="educationModal" class="daisy-modal">
+        <div class="daisy-modal-box w-11/12 max-w-5xl">
+            <h3 class="font-bold text-lg  text-[#386641]  pb-5">Update Education</h3>
+            <form  name="edit_education_form" id="education_form"  method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="edit">
+
+                <input type="hidden" name="education_id" id="education_id" value="">
+                <div>
+                    <label for="{{ education_form.id_for_label }}">Institution / School / University:</label>
+                    {{ education_form.school_name }}
+                </div>
+                <div class="mt-5">
+                    <label for="{{ education_form.id_for_label }}">Education Level:</label>
+                    {{ education_form.education_level }}
+                </div>
+                <div>
+                    <label for="{{ education_form.id_for_label }}">Field of Study:</label>
+                    {{ education_form.course }}
+                </div>
+                <div class="flex gap-2">
+                    <div>
+                        <label for="{{ education_form.id_for_label }}">Start year:</label>
+                        {{ education_form.started_year }}
+                    </div>
+                    <div>
+                        <label for="{{ education_form.id_for_label }}">Ended year:</label>
+                        {{ education_form.ended_year }}
+                    </div>
+                </div>
+                <div class="flex justify-end mt-2 gap-3"></div>
+            </form>
+            <div class="daisy-modal-action">
+                <form method="dialog">
+                    <button id="updateEducationbtn" class="daisy-btn-primary daisy-btn">Update</button>
+                    <!-- if there is a button, it will close the modal -->
+                    <button class="daisy-btn daisy-btn-outline">Close</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    <script src="{% static 'management/manage-users/manage.js' %}"></script>
+{% endblock user_section %}

@@ -42,25 +42,26 @@
     </div>
     <!-- Divides into 2 section-->
     <div class="container mx-auto flex flex-wrap">
-        
         <ul class="daisy-menu bg-base-transparent min-h-full w-56 p-0 [&_li>*]:rounded-none">
             <li>
-                <a>Profile</a>
+                <a href="{% url 'managementapp:user_detail' user.id %}">Profile</a>
             </li>
             <li>
-                <a>Qualifications</a>
+                <a href="{% url 'managementapp:user_qualification' user.id %}">Qualifications</a>
             </li>
             <li>
-                <a>Application History</a>
+                <a href="{% url 'managementapp:user_history' user.id %}">Application History</a>
             </li>
             <li>
-                <a>Account Actions</a>
+                <a href="{% url 'managementapp:user_actions' user.id %}">Account Actions</a>
             </li>
             <li>
                 <a>Activity Log</a>
             </li>
         </ul>
-
-        <section class="flex-1">{% block user_section %}{% endblock user_section %}</section>
+        <section class="flex-1">
+            {% block user_section %}
+            {% endblock user_section %}
+        </section>
     </div>
 {% endblock section %}
