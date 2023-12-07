@@ -1,0 +1,32 @@
+{% extends "management/jobs/job_sidebar.html" %} {% block job_section %}
+
+<form
+  method="post"
+  action="{% url 'managementapp:action_job' job_id=job.id %}"
+  class="flex flex-col gap-3 w-full p-10 pt-20"
+>
+  {% csrf_token %}
+
+  <div class="text-xl font-bold text-secondary mt-5">
+    {% if job.status == 'active' %} Delete {% else %} Activate {% endif %}
+  </div>
+
+  <div>
+    {% if job.status == 'active' %} Deleting a job post will make it
+    inaccessible to potential applicants, although it can be reactivated later.
+    Please ensure that your action is necessary before proceeding. {% else %}
+    Activating a job post will make it visible to potential applicants, though
+    it can still be deleted later. Please ensure that your action is necessary
+    before proceeding. {% endif %}
+  </div>
+
+  <button
+    type="submit"
+    class="w-52 bg-transparent border-secondary text-secondary p-2 font-semibold rounded-md mt-5"
+    style="border: 3px solid"
+  >
+    {% if job.status == 'active' %} Delete {% else %} Activate {% endif %}
+  </button>
+</form>
+
+{% endblock job_section %}

@@ -16,8 +16,11 @@
     <!-- END Datatables StyleSheet-->
     <!--Sweetalert styles-->
     <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css " rel="stylesheet">
+    <!--Toastr styles-->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     
 {% endblock metaData %}
+
 {% block content %}
     <nav class="daisy-drawer lg:daisy-drawer-open bg-white ">
         <input id="my-drawer-2" type="checkbox" class="daisy-drawer-toggle" />
@@ -56,9 +59,9 @@
                     </a>
                 </li>
                 <li>
-                    <a class="font-bold">
+                    <a class="font-bold" href="{% url 'managementapp:manage_jobs' %}">
                         <i class="fa-solid fa-briefcase fa-xl"></i>
-                        <span class="ml-2">Users</span>
+                        <span class="ml-2">Jobs</span>
                     </a>
                 </li>
             </ul>
@@ -67,9 +70,12 @@
             </div>
         </div>
     </nav>
-    <!-- Plugins and Libraries-->
+   
+
+<!-- Plugins and Libraries-->
     <!-- Jquery-->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
     <!-- Jquery UI-->
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <!-- Datatables-->
@@ -79,6 +85,29 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <!--Sweet Alert-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js "></script>
+    <!--Toastr-->
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <!-- User Defined JS-->
+    <script type="text/javascript" src="{% static '/js/main.js' %}"></script>
     <script type="module" src="{% static 'management/base.js' %}"></script>
-{% endblock content %}
+
+   <script>
+    toastr.options = {
+        positionClass: 'toast-top-right',
+        preventDuplicates: true,
+        progressBar: true,
+      };
+{% comment %} display success and error messages {% endcomment %}
+        {% if messages %} {% for message in messages %}
+        {% if 'success' in message.tags  %}
+        console.log("{{ message }}");
+          toastr.success("{{ message }}");
+        {% elif 'error' in  message.tags %}
+          toastr.error("{{ message }}");
+          console.log("{{ message }}");
+        {% endif %}
+        {% endfor %} {% endif %}
+   
+   </script>
+
+    {% endblock content %}

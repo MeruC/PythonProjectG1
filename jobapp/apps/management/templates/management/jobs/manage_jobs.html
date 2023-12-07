@@ -1,0 +1,75 @@
+{% extends "management/base_management.html" %}
+{% load static %}
+{% block title %}
+    Manage Users
+{% endblock title %}
+{% block section %}
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+<div class="mx-14">
+    <h1 class="py-24 text-3xl font-bold text-secondary">Manage Job Listings</h1>
+ 
+    <div class="container mx-auto">
+        <div class="flex justify-end py-5">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-gray-400" ></i>
+                <input type="search"
+                       placeholder="Type here"
+                       class="daisy-input w-full max-w-xs pl-12" id="jobsSearchField" />
+            </div>
+        </div>
+     
+        <table class="daisy-table w-full"  id="jobsTable">
+            <thead class="bg-[#DFFFCB] font-bold text-center py-2 ">
+                <tr class="font-bold text-center py-2">
+                 
+                    <th >Job Title</th>
+                    <th >Company Name</th>
+                    <th >Location</th>
+                    <th>Date Posted</th>
+                    <th >Status</th>
+                    <th >Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y bg-white">
+                {% for job in jobs %}
+                    <tr data-job-id="{{ job.id }}">
+                        
+                        <td>
+                            <div>
+                                <p>{{ job.job_title }}</p>
+                      
+                            </div>
+                        </td>
+                        <td>{{ job.company.company_name }}</td>
+                        <td>{{ job.city }}, {{ job.country }}</td>
+                        <td>{{ job.date_posted|date:"M d, Y" }}<br>
+                            {{ job.date_posted|time:"g:i a" }}</td>
+                        
+                        <td>
+                            <div class="daisy-badge gap-2   {% if job.status == 'active' %} daisy-badge-success bg-[#BCF09D]{% else %} daisy-badge-error bg-[#FF8F92] {% endif %}">
+                            <div class="w-2 h-2 rounded-full {% if job.status == 'active' %} bg-[#386641] {% else %} bg-[#BC4749] {% endif %}"></div>
+                               <p class=" font-semibold  {% if job.status == 'active' %} text-[#386641] {% else %} text-[#BC4749]{% endif %}"> {% if job.status == 'active' %} Activate {% else %} Inactive {% endif %}</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="flex flex-wrap gap-4 text-lg">
+                                <i class="fa-regular fa-pen-to-square   text-gray-400 cursor-pointer hover:text-secondary" onclick="onEditJobHandler({{ job.id }})"></i>
+                                <i class="fa-solid fa-trash-can  text-gray-400 cursor-pointer hover:text-red-500" onclick="onDeleteJobHandler({{ job.id }})"></i>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            
+        </table>
+    </div>
+</div>
+
+<script src="{% static 'management/manage-job/base.js' %}"></script>
+
+  {% endblock section %}
