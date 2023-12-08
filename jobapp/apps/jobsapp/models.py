@@ -24,10 +24,6 @@ class Job(models.Model):
     description = models.TextField()
     status = models.CharField(max_length=8, choices=STATUS_CHOICES)
     type = models.CharField(max_length=9,choices=TYPE_CHOICES)
-    skills = models.CharField(max_length=255)
-    minimum_salary = models.DecimalField(max_digits=10, decimal_places=2)
-    maximum_salary = models.DecimalField(max_digits=10, decimal_places=2)
-    date_created = models.DateTimeField()
     
 
 #work experience
