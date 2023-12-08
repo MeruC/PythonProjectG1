@@ -1,0 +1,29 @@
+{% extends "management/user_detail.html" %}
+{% load static %}
+{% block user_section %}
+    {% include "management/messages.html" %}
+    <h1>Recent Applications</h1>
+    <table class="daisy-table daisy-table-zebra ">
+        <thead class="bg-primary">
+                <tr>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Lead Software Engineer</td>
+                <td>Auto Works</td>
+                <td>Status</td>
+                <td>
+                    <button>
+                        <i class="fa-solid fa-square-xmark"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script src="{% static 'management/manage-users/manage.js' %}"></script>
+{% endblock user_section %}
