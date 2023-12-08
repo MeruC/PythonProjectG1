@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 
 # Create your views here.
+def index(request):
+    return render(request, "index.html")
+def createCompany(request):
+    # TODO
+    # - User must be logged in to create a company
+    # - User must not have a company already
+    return render(request, "company/createCompany.html")
