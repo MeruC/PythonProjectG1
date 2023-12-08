@@ -20,10 +20,10 @@
                     <form name="delete-education-form" id="deleteEducationForm" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="form_name" value="education">
                         <input type="hidden" name="education_id" value="{{ education.id }}">
                     </form>
-                    <button 
-                            class="educationDeleteModalBtn hover:text-primary">
+                    <button class="educationDeleteModalBtn hover:text-primary">
                         <i class="fa-solid fa-trash-can "></i>
                     </button>
                 </div>
@@ -31,12 +31,41 @@
         </div>
     {% endfor %}
     <h1 class="text-xl font-bold  ">Work History</h1>
+    {% for work in work_list %}
+        <div class="flex flex-col">
+            <div class="flex flex-row justify-between bg-white p-4 w-6/12">
+                <div class="flex flex-col">
+                    <h3 class="text-lg font-bold">{{ work.work_title }}</h3>
+                    <p class="text-sm">{{ work.company_name }}</p>
+                    <p class="text-sm">{{ work.start_date }} -  {{ work.end_date }}</p>
+                </div>
+                <!-- Edit Buttons-->
+                <div class="flex flex-wrap gap-4">
+                    <button data-work-id="{{ work.id }}"
+                            class="workEditModalBtn hover:text-primary ">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </button>
+                    <form name="delete-work-form" id="deleteWorkForm" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="form_name" value="work">
+                        <input type="hidden" name="work_id" value="{{ work.id }}">
+                    </form>
+                    <button class="workDeleteModalBtn hover:text-primary">
+                        <i class="fa-solid fa-trash-can "></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% comment %} Edit education Modal {% endcomment %}
     <dialog id="educationModal" class="daisy-modal">
         <div class="daisy-modal-box w-11/12 max-w-5xl">
             <h3 class="font-bold text-lg  text-[#386641]  pb-5">Update Education</h3>
-            <form  name="edit_education_form" id="education_form"  method="post">
+            <form name="edit_education_form" id="education_form"  method="post">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="form_name" value="education">
 
                 <input type="hidden" name="education_id" id="education_id" value="">
                 <div>
@@ -66,6 +95,62 @@
             <div class="daisy-modal-action">
                 <form method="dialog">
                     <button id="updateEducationbtn" class="daisy-btn-primary daisy-btn">Update</button>
+                    <!-- if there is a button, it will close the modal -->
+                    <button class="daisy-btn daisy-btn-outline">Close</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    {% comment %} Edit work Modal {% endcomment %}
+    <dialog id="workModal" class="daisy-modal">
+        <div class="daisy-modal-box w-11/12 max-w-5xl">
+            <h3 class="font-bold text-lg  text-[#386641]  pb-5">Update Work History</h3>
+            <form method="post" id="work_form">
+                {% csrf_token %}
+                <input type="hidden" name="form_name" value="work">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="work_id" id="work_id" value="">
+                <!-- job title -->
+                <div class="flex flex-col  mt-5 gap-1">
+                    <label for="{{ work_form.id_for_label }}">Job Title</label>
+                    {{ work_form.work_title }}
+                </div>
+                <!-- company name -->
+                <div class="flex flex-col mt-3 gap-1">
+                    <label for="{{ work_form.id_for_label }}">Company Name</label>
+                    {{ work_form.company_name }}
+                </div>
+                <!-- job position -->
+                <div class="flex flex-col mt-3 gap-1">
+                    <label for="{{ work_form.id_for_label }}">Position</label>
+                    {{ work_form.position }}
+                </div>
+                <!-- started -->
+                <div class="flex flex-col gap-2 mt-3">
+                    <label for="{{ work_form.started_month.id_for_label }}">Started</label>
+                    <div class="flex gap-2">
+                        {{ work_form.started_month }}
+                        {{ work_form.started_year }}
+                    </div>
+                </div>
+                <!-- end -->
+                <div class="flex flex-col gap-2 mt-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <label for="{{ work_form.id_for_label }}">End</label>
+                        <div class="text-gray-600">
+                            <span>Present</span>
+                            <input name="present" onclick="toggleEndWork()" type="checkbox">
+                        </div>
+                    </div>
+                    <div class="flex gap-2 end-work-data">
+                        {{ work_form.end_month }}
+                        {{ work_form.end_year }}
+                    </div>
+                </div>
+            </form>
+            <div class="daisy-modal-action">
+                <form method="dialog">
+                    <button id="updateWorknbtn" class="daisy-btn-primary daisy-btn">Update</button>
                     <!-- if there is a button, it will close the modal -->
                     <button class="daisy-btn daisy-btn-outline">Close</button>
                 </form>

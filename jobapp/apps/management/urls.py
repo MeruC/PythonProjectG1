@@ -12,6 +12,7 @@ urlpatterns = [
         views.qualifications,
         name="user_qualification",
     ),
+    path("job_history/<int:id>", views.get_work_api, name="job_history"),
     path("users/<int:id>/history", views.history, name="user_history"),
     path("users/<int:id>/actions", views.action, name="user_actions"),
 ]

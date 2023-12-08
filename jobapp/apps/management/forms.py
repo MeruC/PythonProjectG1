@@ -2,6 +2,7 @@ from datetime import datetime
 from django import forms
 from apps.accountapp.models import User, Education
 from django.forms.widgets import ClearableFileInput
+from apps.jobsapp.models import WorkExperience
 
 
 class CustomClearableFileInput(ClearableFileInput):
@@ -191,3 +192,140 @@ class EducationForm(forms.ModelForm):
     )
 
     id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+
+
+# form field for work
+class WorkHistoryForm(forms.ModelForm):
+    class Meta:
+        model = WorkExperience  # Specify the associated model
+        fields = [
+            "work_title",
+            "company_name",
+            "started_month",
+            "started_year",
+            "end_month",
+            "end_year",
+        ]
+
+    @staticmethod
+    def get_year():
+        years = []
+
+        # Get year from the current year to 1980
+        today = datetime.today()
+        current_year = today.year
+        stopping_year = 1980
+        step = -1
+
+        for i in range(current_year, stopping_year + step, step):
+            years.append((i, str(i)))
+
+        return years
+
+    STARTED_MONTH_CHOICES = [
+        ("Jan", "January"),
+        ("Feb", "February"),
+        ("Mar", "March"),
+        ("Apr", "April"),
+        ("May", "May"),
+        ("Jun", "June"),
+        ("Jul", "July"),
+        ("Aug", "August"),
+        ("Sep", "September"),
+        ("Oct", "October"),
+        ("Nov", "November"),
+        ("Dec", "December"),
+    ]
+
+    # fields for adding work experience
+    work_title = forms.CharField(
+        label="Job Title",
+        max_length=150,
+        widget=forms.TextInput(
+            attrs={
+                "class": (
+                    "w-full rounded-md border border-[#B3B3B] outline-none"
+                    " text-sm p-2"
+                ),
+                "placeholder": "Enter your Job Title",
+            }
+        ),
+    )
+
+    position = forms.CharField(
+        label="Position",
+        max_length=90,
+        widget=forms.TextInput(
+            attrs={
+                "class": (
+                    "w-full rounded-md border border-[#B3B3B] outline-none"
+                    " text-sm p-2"
+                ),
+                "placeholder": "Enter your Job Title",
+            }
+        ),
+    )
+    company_name = forms.CharField(
+        label="Company Name",
+        max_length=150,
+        widget=forms.TextInput(
+            attrs={
+                "class": (
+                    "w-full rounded-md border border-[#B3B3B] outline-none"
+                    " text-sm p-2"
+                ),
+                "placeholder": "Enter your Company Name",
+            }
+        ),
+    )
+    started_month = forms.ChoiceField(
+        choices=STARTED_MONTH_CHOICES,
+        widget=forms.Select(
+            attrs={
+                "class": (
+                    "w-max rounded-md border border-[#B3B3B] outline-none"
+                    " text-sm p-2"
+                ),
+                "placeholder": "Enter your Start Month",
+            }
+        ),
+    )
+
+    started_year = forms.ChoiceField(
+        choices=get_year(),
+        widget=forms.Select(
+            attrs={
+                "id": "started-year",
+                "class": (
+                    "w-full rounded-md border border-[#B3B3B] outline-none"
+                    " text-sm p-2"
+                ),
+            }
+        ),
+    )
+
+    end_month = forms.ChoiceField(
+        choices=STARTED_MONTH_CHOICES,
+        required=False,
+        widget=forms.Select(
+            attrs={
+                "class": (
+                    "w-max rounded-md border border-[#B3B3B] outline-none"
+                    " text-sm p-2"
+                ),
+                "placeholder": "Enter your End Month",
+            }
+        ),
+    )
+
+    end_year = forms.ChoiceField(
+        choices=get_year(),
+        widget=forms.Select(
+            attrs={
+                "class": (
+                    "w-full rounded-md border border-[#B3B3B] outline-none"
+                    " text-sm p-2"
+                )
+            }
+        ),
+    )

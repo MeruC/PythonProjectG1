@@ -1,7 +1,10 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import get_user_model
+from django.core import serializers
 from apps.accountapp.models import Education
-from .forms import EducationForm, ProfileForm
+from apps.jobsapp.models import WorkExperience
+from .forms import EducationForm, ProfileForm, WorkHistoryForm
 from django.contrib import messages
 
 
@@ -16,6 +19,23 @@ def manage_users(request):
     return render(
         request, "management/manage_users.html", {"users": normal_users}
     )
+
+
+def get_work_api(request, id):
+    work = get_object_or_404(WorkExperience, pk=id)
+    # return json api,
+    if work:
+        data = {
+            "id": work.id,
+            "work_title": work.work_title,
+            "company_name": work.company_name,
+            "position": work.position,
+            "start_date": work.start_date,
+            "end_date": work.end_date,
+        }
+        return JsonResponse({"status": 200, "data": data}, safe=False)
+    else:
+        return JsonResponse({"status": 404, "data": {}}, safe=False)
 
 
 def user_detail(request, id):
@@ -53,6 +73,60 @@ def user_detail(request, id):
         )
 
 
+def qualifications(request, id):
+    User = get_user_model()
+    user = get_object_or_404(User, pk=id)
+    forms = {
+        "education": {"edit": edit_education, "delete": delete_education},
+        "work": {"edit": edit_work, "delete": delete_work},
+    }
+
+    if request.method == "POST":
+        print(request.POST)
+
+        try:
+            form_name = request.POST.get("form_name")
+            if form_name == "education":
+                education_id = request.POST.get("education_id")
+                education = Education.objects.get(pk=education_id)
+                action = request.POST.get("action")
+                method_function = forms["education"][action]
+                method_function(request, education)
+
+            elif form_name == "work":
+                print("I ran")
+                work_id = request.POST.get("work_id")
+                work = WorkExperience.objects.get(pk=work_id)
+                action = request.POST.get("action")
+                method_function = forms["work"][action]
+                method_function(request, work)
+
+            return redirect("managementapp:user_qualification", id=id)
+
+        except Exception as e:
+            messages.error(
+                request, f"Education update failed. An error occurred. {e}"
+            )
+            return redirect("managementapp:user_qualification", id=id)
+
+    education_form = EducationForm()
+    work_experience = WorkHistoryForm()
+    # get all the education of the user
+    education_list = user.education_set.all()
+    work_list = user.workexperience_set.all()
+    return render(
+        request,
+        "management/user_detail/qualification.html",
+        {
+            "education_list": education_list,
+            "work_list": work_list,
+            "work_form": work_experience,
+            "education_form": education_form,
+            "user": user,
+        },
+    )
+
+
 def delete_education(request, education):
     try:
         education.delete()
@@ -77,37 +151,25 @@ def edit_education(request, education):
         return redirect("managementapp:user_qualification", id=id)
 
 
-def qualifications(request, id):
-    User = get_user_model()
-    user = get_object_or_404(User, pk=id)
+def edit_work(request, work):
+    work_form = WorkHistoryForm(request.POST, instance=work)
+    if work_form.is_valid():
+        work_form.save()
+        messages.success(request, "work added successfully.")
+    else:
+        messages.error(
+            request,
+            f"work update failed. Please check the form. {work_form.errors}",
+        )
+        return redirect("managementapp:user_qualification", id=id)
 
-    if request.method == "POST":
-        print(request.POST)
-        education_id = request.POST.get("education_id")
-        education = Education.objects.get(pk=education_id)
-        try:
-            action = request.POST.get("action")
-            if action == "delete":
-                delete_education(request, education)
-            else:
-                edit_education(request, education)
 
-            return redirect("managementapp:user_qualification", id=id)
-
-        except Exception as e:
-            messages.error(
-                request, f"Education update failed. An error occurred. {e}"
-            )
-            return redirect("managementapp:user_qualification", id=id)
-
-    education_form = EducationForm(instance=user)
-    # get all the education of the user
-    education_list = user.education_set.all()
-    return render(
-        request,
-        "management/user_detail/qualification.html",
-        {"education_form": education_form, "education_list": education_list},
-    )
+def delete_work(request, work):
+    try:
+        work.delete()
+        messages.success(request, "work deleted successfully.")
+    except Exception as e:
+        messages.error(request, f"work delete failed. An error occurred. {e}")
 
 
 def action(request, id):
