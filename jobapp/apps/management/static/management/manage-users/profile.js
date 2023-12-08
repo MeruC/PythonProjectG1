@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  function handleProfileConfirmation() {
+  function handleProfileConfirmation(form) {
     Swal.fire({
       title: "Confirm Edit Information?",
       text: "Are you sure you want to edit your information?",
@@ -11,7 +11,7 @@ $(document).ready(function () {
     }).then((result) => {
       if (result.isConfirmed) {
         // run some post form submission code here
-        $("#profile-form").submit();
+        form.submit();
       }
     });
   }
@@ -70,7 +70,7 @@ $(document).ready(function () {
     errorClass: "daisy-label-text-alt text-red-500 block",
 
     submitHandler: function (form) {
-      handleProfileConfirmation();
+      handleProfileConfirmation(form);
     },
   });
 });
