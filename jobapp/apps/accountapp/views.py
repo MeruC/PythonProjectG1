@@ -95,3 +95,11 @@ def Notification(request, offset):
     notifications = Alerts.objects.filter(user_id=user_id)[offset:limit].values()
     notification_list = list(notifications)
     return JsonResponse(notification_list, safe=False)
+
+# ------------------ check user notification unread ---------
+def hasUnreadNotif(request):
+    #check for unread notification
+    query = Alerts.objects.filter(user=request.user,is_read="unread").count()
+    
+    hasUnread = query>0 #check if it has unread
+    return hasUnread

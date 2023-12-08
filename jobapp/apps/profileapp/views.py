@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from apps.jobsapp.models import WorkExperience
 from apps.accountapp.models import Education, User
 from django.core.exceptions import ValidationError
+from ..accountapp.views import hasUnreadNotif
 
 
 #retrieve current user data
@@ -76,6 +77,7 @@ def index(request):
         "education_data":education,
         "password_form":password_form,
         "skill_form":skill_form,
+        "hasUnreadNotif":hasUnreadNotif(request)
         }
     
     return render(request, template, context)

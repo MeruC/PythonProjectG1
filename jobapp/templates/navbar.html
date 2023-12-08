@@ -21,7 +21,9 @@
     </li>
     <div class="hidden sm:block w-[1px] h-full bg-gray-300"></div>
     <li class="underline relative cursor-pointer">
-      <div class="w-[7px] h-[7px] bg-red-500 rounded-full absolute top-1 right-0"></div>
+      {% if hasUnreadNotif %}
+        <div class="w-[7px] h-[7px] bg-red-500 rounded-full absolute top-1 right-0"></div>
+      {% endif %}
       <i class="text-gray-500  fa-regular fa-bell" id="notifIcon"></i>
       <ul
         id="notifContent"
