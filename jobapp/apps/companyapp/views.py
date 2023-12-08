@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 
 # Create your views here.
 def index(request):
@@ -12,3 +12,8 @@ def companyProfile(request):
     # TODO
     # - User must be logged in to view a company
     return render(request, "company/companyProfile.html")
+
+def companyProfileSettings(request):
+    # TODO
+    # - User must be the owner of the company to view this page
+    return render(request, "company/companySettings.html")

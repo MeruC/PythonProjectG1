@@ -8,4 +8,5 @@ urlpatterns = [
     path("createCompany/", views.createCompany, name="createCompany"),
     # TODO: change this to dynamic url
     path("companyId/", views.companyProfile, name="companyProfile"),
+    path("myCompany/settings", views.companyProfileSettings, name="companyProfileSettings")
 ]
