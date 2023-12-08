@@ -1,0 +1,31 @@
+{% extends "management/user_detail.html" %}
+{% load static %}
+{% block user_section %}
+    {% include "management/messages.html" %}
+    <h2 class="text-secondary font-bold text-2xl">Change Password</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user.id }}">
+        <input type="hidden" name="type" value="password">
+        <div class="flex flex-col w-8/12 items-start gap-2">
+            <div>
+                <label for="new_password" class="block">New Password</label>
+                <input id="new_password" type="password" class="form-input rounded">
+            </div>
+            <button type="submit"
+                    id="updatePassBtn"
+                    class="daisy-btn daisy-btn-outline daisy-btn-accent">Update Password</button>
+        </div>
+    </form>
+    <h2 class="text-accent font-bold text-2xl">Deactivate Account</h2>
+    <p>
+        This action will make the account <span class="text-accent">temporarily disabled and the user will not be able to login.</span>
+    </p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user.id }}">
+        <input type="hidden" name="type" value="deactivate">
+        <button class="daisy-btn daisy-btn-outline daisy-btn-accent" type="submit">Deactivate Account</button>
+    </form>
+    <script src="{% static 'management/manage-users/manage.js' %}"></script>
+{% endblock user_section %}
