@@ -4,24 +4,54 @@
 <div class="bg-[#F1F8F9] min-h-screen w-full">
     {% include "navbar.html" %}
     <div class="container mx-auto">
-      <header class="mt-2 mb-10 flex flex-col gap-2">
-        <div class="w-full h-[300px] rounded-md overflow-hidden">
+      <header class="mb-10 flex flex-col gap-2">
+        <div class="w-full h-[300px] rounded-b-lg overflow-hidden">
+          {% comment %} TODO: Insert company cover photo {% endcomment %}
           <img src="https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="cover" class="w-full h-full object-cover object-center" />
         </div>
-        <div class="flex flex-col items-center relative sm:flex-row sm:px-10">
+        <div class="flex flex-col items-center justify-between relative sm:flex-row sm:px-10">
           <div class="w-[150px] h-[150px] absolute -top-28 p-5 rounded-full bg-white shadow-md overflow-hidden sm:-top-20">
+            {% comment %} TODO: Insert company logo {% endcomment %}
             <img src="https://img.logoipsum.com/296.svg" class="w-full h-full object-contain object-center" alt="logo" />
           </div>
           <div class="flex flex-col items-center mt-[50px] text-center sm:items-start sm:ml-[170px] sm:mt-0 sm:text-left">
+            {% comment %} TODO: Insert company name {% endcomment %}
             <h1 class="text-3xl font-bold">Tech Innovations Co.</h1>
+            {% comment %} TODO: Insert company location {% endcomment %}
             <p class="text-gray-500 flex items-center gap-1 sm:ml-1"><i class="fa-solid fa-location-dot text-sm"></i> Philippines, Makati City</p>
           </div>
+          {% comment %} 
+            TODO: 
+              - Only show this button if the user is the owner of the company
+              - Link to company profile settings page
+          {% endcomment %}
+          <button class="py-3 px-5 text-secondary border border-secondary rounded hover:bg-secondary hover:text-white transition-all duration-100">Edit Company Profile</button>
         </div>
       </header>
-      <section class="p-5 mx-5 flex flex-col gap-2 bg-white shadow rounded sm:mx-10 sm:p-10">
+      {% comment %} -- JOB INFORMATION -- {% endcomment %}
+      <section class="p-5 mx-5 flex flex-col gap-2 bg-white shadow rounded-lg sm:mx-10 sm:p-10">
         <h3 class="font-bold text-xl text-secondary">Company Description</h3>
+        {% comment %} -- TODO: Insert company description {% endcomment %}
         <p class="text-gray-500">Welcome to Tech Innovations Co., where cutting-edge technology meets innovation. Established in 2010, we are a dynamic and forward-thinking company dedicated to pushing the boundaries of technological solutions. Our mission is to empower businesses with innovative tools and solutions that drive success in the digital age. </p>
       </section>
+      {% comment %} -- END JOB INFORMATION -- {% endcomment %}
+      <hr class="my-10 mx-5 sm:mx-10">
+      <h3 class="mx-5 mb-5 text-2xl font-bold sm:mx-10">Job Lists</h3>
+      <div class="grid grid-cols-1 gap-5 mx-5 pb-10 sm:mx-10 sm:grid-cols-2">
+        {% comment %} -- JOB LIST ITEM --
+          - TODO: Clicking this should redirect user to the specific job page
+        {% endcomment %}
+        <div class="min-h-[200px] p-5 flex flex-col justify-between bg-white rounded-lg shadow md:p-10 hover:shadow-lg hover:-translate-y-1 transition-all duration-100 cursor-pointer">
+          <div>
+            <h4 class="mb-2 text-lg font-semibold">Lead Software Engineer</h4>
+            <p class="line-clamp-3">
+              Tech Innovations Co. is seeking a highly skilled Software Engineer to join our dynamic team. As a Software Engineer, you will be responsible for designing, developing, and maintaining high-quality software ...
+            </p>
+          </div>
+          <p class="text-gray-500">Poster 2d ago</p>
+        </div>
+        {% comment %} -- END JOB LIST ITEM --{% endcomment %}
+      </div>
     </div>
 </div>
 {% endblock %}
