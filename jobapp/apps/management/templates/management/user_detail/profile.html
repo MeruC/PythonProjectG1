@@ -4,11 +4,12 @@
     {% include "management/messages.html" %}
     <form method="post"
           enctype="multipart/form-data"
+            id="profile-form"
           action="{% url 'managementapp:user_detail' user.id %}">
         {% csrf_token %}
-        <h1 class="text-xl font-bold  ">Profile Picture</h1>
+        <h2 class="text-xl font-bold mb-8 ">Profile Picture</h2>
         {{ profileForm.profile_img }}
-        <div class="flex gap-4">
+        <div class="flex gap-4 ">
             <div class="w-1/2">
                 <label for="{{ profileForm.first_name.id_for_label }}">First name:</label>
                 {{ profileForm.first_name }}
@@ -18,16 +19,20 @@
                 {{ profileForm.last_name }}
             </div>
         </div>
-        <label for="{{ profileForm.profile_summary.id_for_label }}">Profile summary</label>
+        <label for="{{ profileForm.profile_summary.id_for_label }}">Profile Summary:</label>
         {{ profileForm.profile_summary }}
-        <label for="{{ profileForm.email_address.id_for_label }}">Email address:</label>
+        <label for="{{ profileForm.email_address.id_for_label }}">Email Address:</label>
         {{ profileForm.email }}
-        <label for="profileForm.contact_number.id_for_label">Contact No.</label>
+        <label for="profileForm.contact_number.id_for_label">Contact Number</label>
         <div class="flex gap-2 items-center">
             <span>+63</span>
             {{ profileForm.contact_number }}
         </div>
-        <button type="submit" class="daisy-btn daisy-btn-primary">Save</button>
+        <button type="button"
+                id="update-profile-btn"
+                class="daisy-btn daisy-btn-secondary text-white my-8 hover:bg-primary transition-all">
+            Update Profile
+        </button>
     </form>
-    <script src="{% static 'management/manage-users/manage.js' %}"></script>
+    <script src="{% static 'management/manage-users/profile.js' %}"></script>
 {% endblock user_section %}

@@ -14,25 +14,23 @@
             </tr>
         </thead>
         <tbody>
-            
             {% for application in application_list %}
-            <tr>
-                <td>{{ application.job_title }} </td>
-                <td>{{ application.company_name }}</td>
-                <td>
-                    <div class="daisy-badge daisy-badge-primary gap-2 py-3">{{ application.status }}</div>
-                </td>
-                <td>{{ application.date_posted }}</td>
-                <td>
-                    <button data-id=" {{ application.id }} ">
-                        <i class="fa-solid fa-square-xmark"></i>
-                    </button>
-                </td>
-            </tr>
+                <tr>
+                    <td>{{ application.job_title }}</td>
+                    <td>{{ application.company_name }}</td>
+                    <td>
+                        <div class="daisy-badge daisy-badge-primary gap-2 py-3">{{ application.status }}</div>
+                    </td>
+                    <td>{{ application.date_posted }}</td>
+                    <td>
+                        <button data-id=" {{ application.id }} ">
+                            <i class="fa-solid fa-square-xmark"></i>
+                        </button>
+                    </td>
+                </tr>
             {% endfor %}
-                
-
         </tbody>
+        <h2 class="text-2xl font-bold text-accent bg-yellow-300">TODO No data yet</h2>
     </table>
     <script src="{% static 'management/manage-users/manage.js' %}"></script>
 {% endblock user_section %}

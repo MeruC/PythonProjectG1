@@ -4,64 +4,38 @@
     User
 {% endblock title %}
 {% block section %}
-    <div class="text-sm daisy-breadcrumbs">
-        <ul>
-            <li>
-                <a>
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         class="w-4 h-4 stroke-current">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z">
-                        </path>
-                    </svg>
-                    Manage Users
-                </a>
-            </li>
-            <li>
-                <span class="inline-flex gap-2 items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         class="w-4 h-4 stroke-current">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                        </path>
-                    </svg>
-                    {{ user.first_name|title }} {{ user.last_name|title }}
-                </span>
-            </li>
-        </ul>
-    </div>
-    <div class="flex gap-4 items-center">
-        <a class="daisy-btn daisy-btn-md w-fit daisy-btn-secondary"
-           href="{% url 'managementapp:manage_users' %}">
-            <i class="fa-solid fa-arrow-left"></i>
-            Back
-        </a>
-        <h1 class="text-lg font-bold text-secondary pl-8">{{ user.first_name|title }} {{ user.last_name|title }}</h1>
-    </div>
-    <!-- Divides into 2 section-->
-    <div class="container mx-auto flex flex-wrap">
-        <ul class="daisy-menu bg-base-transparent min-h-full w-56 p-0 [&_li>*]:rounded-none">
-            <li>
-                <a href="{% url 'managementapp:user_detail' user.id %}">Profile</a>
-            </li>
-            <li>
-                <a href="{% url 'managementapp:user_qualification' user.id %}">Qualifications</a>
-            </li>
-            <li>
-                <a href="{% url 'managementapp:user_history' user.id %}">Application History</a>
-            </li>
-            <li>
-                <a href="{% url 'managementapp:user_actions' user.id %}">Account Actions</a>
-            </li>
-            <li>
-                <a  href="{% url 'managementapp:user_logs' user.id %}">Activity Log</a>
-            </li>
-        </ul>
-        <section class="flex-1">
-            {% block user_section %}
-            {% endblock user_section %}
-        </section>
-    </div>
+    <section class="p-4">
+        <div class="flex gap-4 items-center">
+            <a class="daisy-btn w-fit daisy-btn-sm text-gray-400 hover:text-gray-800 daisy-glass"
+               href="{% url 'managementapp:manage_users' %}">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back
+            </a>
+            <h1 class="text-xl font-bold text-secondary ">{{ user.first_name|title }} {{ user.last_name|title }}</h1>
+        </div>
+        <!-- Divides into 2 section-->
+        <div class=" container mx-auto flex flex-wrap mt-8">
+            <ul class="daisy-menu bg-base-transparent min-h-full w-56 p-0 [&_li>*]:rounded-none gap-2">
+                <li>
+                    <a href="{% url 'managementapp:user_detail' user.id %}">Profile</a>
+                </li>
+                <li>
+                    <a href="{% url 'managementapp:user_qualification' user.id %}">Qualifications</a>
+                </li>
+                <li>
+                    <a href="{% url 'managementapp:user_history' user.id %}">Application History</a>
+                </li>
+                <li>
+                    <a href="{% url 'managementapp:user_actions' user.id %}">Account Actions</a>
+                </li>
+                <li>
+                    <a href="{% url 'managementapp:user_logs' user.id %}">Activity Log</a>
+                </li>
+            </ul>
+            <section class="flex-1 px-6">
+                {% block user_section %}
+                {% endblock user_section %}
+            </section>
+        </div>
+    </section>
 {% endblock section %}

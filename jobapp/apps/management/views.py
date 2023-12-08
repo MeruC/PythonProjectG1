@@ -228,6 +228,8 @@ def deactivate_user_account(user):
 
 
 def history(request, id):
+    User = get_user_model()
+    user = get_object_or_404(User, pk=id)
     # get all the recent applications of the user.
     application_list = JobApplication.objects.filter(user_id=id).values(
         "id",
@@ -242,5 +244,5 @@ def history(request, id):
     return render(
         request,
         "management/user_detail/history.html",
-        {"applications": application_list},
+        {"applications": application_list, "user": user},
     )
