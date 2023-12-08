@@ -1,0 +1,93 @@
+{% extends "management/manage-companies/company_sidebar.html" %} {% block company_section %}
+{% comment %} action="{% url 'managementapp:edit_company' company_id=company.id %}" {% endcomment %}
+{% load static %}
+<form
+  method="post"
+  
+
+  class="flex flex-col gap-3 w-full  pl-3 py-32 text-[14px]"
+  enctype="multipart/form-data"
+>
+  {% csrf_token %}
+
+  <div>
+    <div>
+      Posted by:
+      <span class="font-bold underline">{{ company.company_name }}</span>
+    </div>
+    <div>Created in: {{ company.user.date_joined|date:"F d, Y" }}</div>
+  </div>
+
+
+
+  <div>
+  <div class="text-lg font-bold text-secondary mt-5" >Company Logo</div>
+  <div class="flex items-center gap-8 mt-8">
+    <div class="w-44 h-44 rounded-full">
+     
+      <img class="w-full h-full object-cover rounded-full"
+      id="img_settings"
+      src="{% if company.company_img %}{{ company.company_img.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
+      alt="">
+  </div>
+   
+    <div>
+  
+      <label for="{{ form.company_img.id_for_label }}" class="bg-[#E0E0E0] text-[#4E4E4E] p-2.5 px-5 rounded-lg cursor-pointer">Change Picture</label>
+      {{ form.company_img }}
+    
+    </div>
+  </div>
+</div>
+<hr class="my-7 border-[#BABABA]">
+<div class="text-lg font-bold text-secondary">Company Details</div>
+  
+<div class="">
+  <label for="{{ form.company_name.id_for_label }}">Company Name</label>
+  {{ form.company_name }} {% if form.errors.company_name %}
+  <div class="text-[13px] text-red-500 ">{{ form.errors.company_name}}</div>
+  {% endif %}
+</div>
+
+<div>
+  <label for="{{ form.description.id_for_label }}">Company Description</label>
+  {{ form.description }} {% if form.errors.description %}
+  <div class="text-[13px] text-red-500 ">
+    {{ form.errors.description}}
+  </div>
+  {% endif %}
+</div>
+<div>
+  <label for="{{ form.location.id_for_label }}">Location</label>
+  {{ form.location }} {% if form.errors.location %}
+  <div class="text-[13px] text-red-500 ">
+    {{ form.errors.location}}
+  </div>
+  {% endif %}
+</div>
+
+  <button
+    type="submit"
+    class="w-44 bg-secondary text-white p-2.5 font-semibold rounded-md mt-5"
+  >
+    Update Company
+  </button>
+</form>
+<script>
+  document.getElementById('company_img').addEventListener('change', function () {
+    console.log('changed');
+    var selectedFile = this.files[0];
+
+    if (selectedFile) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            document.getElementById('img_settings').src = e.target.result;
+        };
+
+        reader.readAsDataURL(selectedFile);
+    }
+});
+
+</script>
+{% endblock company_section %}

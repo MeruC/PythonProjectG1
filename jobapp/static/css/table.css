@@ -1,0 +1,19 @@
+
+table.dataTable thead tr {
+    background-color: #DFFFCB;
+    font-weight: bold;
+    padding: 5px;
+    color: black;
+    font-size: 14px;
+}
+table.dataTable tbody {
+    background-color: white;
+    font-size: 16px;
+}
+
+table.dataTable .sorting:after,table.dataTable .sorting:before {
+    display: none!important;
+}
+#jobsTable_filter, #companiesTable_filter,.buttons-html5, .buttons-print {
+    display: none!important;
+}

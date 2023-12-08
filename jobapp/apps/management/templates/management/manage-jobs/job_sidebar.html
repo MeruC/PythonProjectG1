@@ -2,7 +2,7 @@
 {% block title%} Edit Job 
 {% endblock title %} {% block section %} 
 {%csrf_token %}
-<nav class="daisy-drawer lg:daisy-drawer-open ">
+<nav class="daisy-drawer daisy-drawer-open px-10">
   <input id="my-drawer-2" type="checkbox" class="daisy-drawer-toggle" />
   <div class="daisy-drawer-content flex flex-col bg-[#F1F8F9]" >
     {% block job_section %} 
@@ -16,12 +16,12 @@
       class="daisy-drawer-overlay"
     ></label>
     <ul
-      class="p-5 pt-20 w-80 min-h-screen flex flex-col  gap-2 "
+      class="p-5 pt-20 w-80 min-h-screen flex flex-col  gap-2 text-[14px] "
     >
       <div class="flex gap-4 text-sm items-center">
-        <span class="text-gray-400 bg-gray-200 my-auto px-3 py-1 rounded-md">
+        <span class="text-xs text-gray-400 bg-gray-200 my-auto px-3 py-1 rounded-md">
           <a class="" href="{% url 'managementapp:manage_jobs' %}"
-            ><i class="fa-solid fa-arrow-left-long"></i> Back</a
+            ><i class=" fa-solid fa-arrow-left-long"></i> Back</a
           >
         </span>
         <p class="font-bold text-secondary text-2xl">Job Post</p>
@@ -29,14 +29,14 @@
 
       <li class="mt-10">
         <a href="{% url 'managementapp:edit_job'  job_id=job.id%}"
-        class="block py-2 px-5 rounded-lg hover:bg-gray-200 {% if 'edit' in request.path %}border-b-[2px] bg-gray-200{% endif %}"
+        class="block py-2 px-5 rounded-lg hover:bg-gray-200 {% if request.resolver_match.view_name == 'managementapp:edit_job' %} border-b-[2px] bg-gray-200 {% endif %}"
         >
           Job Details
         </a>
       </li>
       <li class="">
         <a href="{% url 'managementapp:action_job'  job_id=job.id%}"
-        class="block py-2 px-5 rounded-lg hover:bg-gray-200 {% if 'action' in request.path %}border-b-[2px] bg-gray-200{% endif %}"
+        class="block py-2 px-5 rounded-lg hover:bg-gray-200 {% if request.resolver_match.view_name == 'managementapp:action_job' %}border-b-[2px] bg-gray-200{% endif %}"
         >
           Job Post Actions
         </a>

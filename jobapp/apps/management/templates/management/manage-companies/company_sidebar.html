@@ -1,0 +1,48 @@
+{% extends "management/base_management.html" %} 
+{% block title%} Edit Job 
+{% endblock title %} {% block section %} 
+{%csrf_token %}
+<nav class="daisy-drawer daisy-drawer-open px-10">
+  <input id="my-drawer-2" type="checkbox" class="daisy-drawer-toggle" />
+  <div class="daisy-drawer-content flex flex-col bg-[#F1F8F9]" >
+    {% block company_section %} 
+    {% endblock company_section %}
+  </div>
+
+  <div class="daisy-drawer-side flex items-center flex-col">
+    <label
+      for="my-drawer-2"
+      aria-label="close sidebar"
+      class="daisy-drawer-overlay"
+    ></label>
+    <ul
+      class="pr-3 pt-14 w-72 min-h-screen flex flex-col  gap-2 text-[14px] "
+    >
+      <div class="flex gap-4 text-xs items-center">
+        <span class="text-xs text-gray-400 bg-gray-200 my-auto px-3 py-1 rounded-md">
+          <a class="" href="{% url 'managementapp:manage_companies' %}"
+            ><i class="  fa-solid fa-arrow-left-long"></i> Back</a
+          >
+        </span>
+        <p class="font-bold text-secondary text-2xl">Company</p>
+      </div>
+
+      <li class="mt-10">
+        <a href="{% url 'managementapp:edit_company' company_id=company.id%}"
+        
+        class="block py-2 px-5 rounded-md hover:bg-gray-200 {% if request.resolver_match.view_name == 'managementapp:edit_company' %} border-b-[2px] bg-gray-200 {% endif %}"
+        >
+          Company Details
+        </a>
+      </li>
+      <li class="">
+        <a href="{% url 'managementapp:action_company' company_id=company.id%}"
+        class="block py-2 px-5 rounded-md hover:bg-gray-200 {% if request.resolver_match.view_name == 'managementapp:action_company' %} border-b-[2px] bg-gray-200 {% endif %}"
+        >
+        Company Actions
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+{% endblock section %}

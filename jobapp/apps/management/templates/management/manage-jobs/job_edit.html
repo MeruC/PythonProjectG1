@@ -3,7 +3,7 @@
 <form
   method="post"
   action="{% url 'managementapp:edit_job' job_id=job.id %}"
-  class="flex flex-col gap-3 w-full p-10 pt-20"
+  class="flex flex-col gap-3 w-full  pl-3 py-32 text-[14px]"
 >
   {% csrf_token %}
 
@@ -12,21 +12,21 @@
       Posted by:
       <span class="font-bold underline">{{ job.company.company_name }}</span>
     </div>
-    <div>Created in: {{ job.date_posted|date:"M d, Y" }}</div>
+    <div>Created in: {{ job.date_posted|date:"F d, Y" }}</div>
   </div>
-  <div class="text-xl font-bold text-secondary mt-5">Job Details</div>
+  <div class="text-lg font-bold text-secondary mt-5">Job Details</div>
 
   <div class="">
     <label for="{{ form.job_title.id_for_label }}">Job Title</label>
     {{ form.job_title }} {% if form.errors.job_title %}
-    <div class="text-[13px] text-red-500 ml-1">{{ form.errors.job_title}}</div>
+    <div class="text-[13px] text-red-500">{{ form.errors.job_title}}</div>
     {% endif %}
   </div>
 
   <div>
     <label for="{{ form.description.id_for_label }}">Job Description</label>
     {{ form.description }} {% if form.errors.description %}
-    <div class="text-[13px] text-red-500 ml-1">
+    <div class="text-[13px] text-red-500">
       {{ form.errors.description}}
     </div>
     {% endif %}
@@ -36,21 +36,21 @@
     <div class="w-full md:w-1/3">
       <label for="{{ form.type.id_for_label }}">Job Type</label>
       {{ form.type }} {% if form.errors.type %}
-      <div class="text-[13px] text-red-500 ml-1">{{ form.errors.type}}</div>
+      <div class="text-[13px] text-red-500">{{ form.errors.type}}</div>
       {% endif %}
     </div>
 
     <div class="w-full md:w-3/4">
       <label for="{{ form.skills.id_for_label }}">Skills</label>
       {{ form.skills }} {% if form.errors.skills %}
-      <div class="text-[13px] text-red-500 ml-1">{{ form.errors.skills}}</div>
+      <div class="text-[13px] text-red-500">{{ form.errors.skills}}</div>
       {% endif %}
     </div>
   </div>
 
   <button
     type="submit"
-    class="w-52 bg-secondary text-white p-2 font-semibold rounded-md mt-5"
+    class="w-44 bg-secondary text-white p-2.5 font-semibold rounded-md mt-5"
   >
     Update Job Details
   </button>

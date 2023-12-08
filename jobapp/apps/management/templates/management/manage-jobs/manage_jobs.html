@@ -1,27 +1,48 @@
 {% extends "management/base_management.html" %}
 {% load static %}
 {% block title %}
-    Manage Users
+    Manage Jobs
 {% endblock title %}
 {% block section %}
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 
 
-<div class="mx-14">
-    <h1 class="py-24 text-3xl font-bold text-secondary">Manage Job Listings</h1>
+<link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+<script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+
+<link href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.colVis.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.colVis.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+
+
+<link rel="stylesheet" href="{% static 'css/table.css' %}">
+<div class="min-h-screen overflow-scroll mx-10">
+    <h1 class="py-24 text-2xl font-bold text-secondary">Manage Job Listings</h1>
  
-    <div class="container mx-auto">
-        <div class="flex justify-end py-5">
-            <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-gray-400" ></i>
+    <div>
+        <div class="py-3 flex justify-end items-center gap-3">
+            <div class="relative w-80">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-400" ></i>
                 <input type="search"
-                       placeholder="Type here"
-                       class="daisy-input w-full max-w-xs pl-12" id="jobsSearchField" />
+                       placeholder="Search"
+                       class="w-full rounded-md pl-12 border-none" id="jobsSearchField" 
+                       />
+                       
             </div>
+            <button onClick="jobsReport()" class="py-2 px-5 bg-secondary text-white rounded-lg">Generate Report</button>
         </div>
      
-        <table class="daisy-table w-full"  id="jobsTable">
-            <thead class="bg-[#DFFFCB] font-bold text-center py-2 ">
-                <tr class="font-bold text-center py-2">
+        <table   id="jobsTable" class="row-border">
+            <thead>
+                <tr >
                  
                     <th >Job Title</th>
                     <th >Company Name</th>
@@ -31,7 +52,7 @@
                     <th >Action</th>
                 </tr>
             </thead>
-            <tbody class="divide-y bg-white">
+            <tbody>
                 {% for job in jobs %}
                     <tr data-job-id="{{ job.id }}">
                         
@@ -53,9 +74,9 @@
                             </div>
                         </td>
                         <td>
-                            <div class="flex flex-wrap gap-4 text-lg">
+                            <div class="flex flex-wrap gap-4 text-md">
                                 <i class="fa-regular fa-pen-to-square   text-gray-400 cursor-pointer hover:text-secondary" onclick="onEditJobHandler({{ job.id }})"></i>
-                                <i class="fa-solid fa-trash-can  text-gray-400 cursor-pointer hover:text-red-500" onclick="onDeleteJobHandler({{ job.id }}, {{job.job_title}})"></i>
+                                <i class="fa-solid fa-trash-can  text-gray-400 cursor-pointer hover:text-red-500" onclick="onDeleteJobHandler({{ job.id }}, '{{job.job_title}}')"></i>
                             </div>
                         </td>
                     </tr>
@@ -66,6 +87,5 @@
     </div>
 </div>
 
-<script src="{% static 'management/manage-jobs/base.js' %}"></script>
 
   {% endblock section %}
