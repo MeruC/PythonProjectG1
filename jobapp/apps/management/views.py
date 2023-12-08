@@ -128,6 +128,12 @@ def qualifications(request, id):
     )
 
 
+def get_logs(request, id):
+    User = get_user_model()
+    user = get_object_or_404(User, pk=id)
+    return render(request, "management/user_detail/logs.html", {"user": user})
+
+
 def delete_education(request, education):
     try:
         education.delete()
@@ -208,10 +214,12 @@ def change_user_password(user, new_password):
     user.set_password(new_password)
     user.save()
 
+
 def activate_user_account(user):
     # activate the user
     user.is_active = True
     user.save()
+
 
 def deactivate_user_account(user):
     # deactivate the user
