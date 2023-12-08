@@ -4,35 +4,46 @@
     {% include "management/messages.html" %}
     <form method="post"
           enctype="multipart/form-data"
-            id="profile-form"
+          id="profile-form"
           action="{% url 'managementapp:user_detail' user.id %}">
         {% csrf_token %}
         <h2 class="text-xl font-bold mb-8 ">Profile Picture</h2>
-        {{ profileForm.profile_img }}
-        <div class="flex gap-4 ">
-            <div class="w-1/2">
-                <label for="{{ profileForm.first_name.id_for_label }}">First name:</label>
-                {{ profileForm.first_name }}
+        <div class="space-y-4">
+            {{ profileForm.profile_img }}
+            <div class="flex gap-4 ">
+                <div class="w-1/2">
+                    <label class="font-semibold" for="{{ profileForm.first_name.id_for_label }}">First Name:</label>
+                    {{ profileForm.first_name }}
+                </div>
+                <div class="w-1/2">
+                    <label class="font-semibold" for="{{ profileForm.last_name.id_for_label }}">Last Name:</label>
+                    {{ profileForm.last_name }}
+                </div>
             </div>
-            <div class="w-1/2">
-                <label for="{{ profileForm.last_name.id_for_label }}">Last name:</label>
-                {{ profileForm.last_name }}
+            <div>
+                <label class="font-semibold"
+                       for="{{ profileForm.profile_summary.id_for_label }}">Profile Summary:</label>
+                {{ profileForm.profile_summary }}
+            </div>
+            <div>
+                <label class="font-semibold"
+                       for="{{ profileForm.email_address.id_for_label }}">Email Address:</label>
+                {{ profileForm.email }}
+            </div>
+            <div>
+                <label class="font-semibold" for="profileForm.contact_number.id_for_label">Contact Number</label>
+                <div class="flex gap-2 items-center">
+                    <span>+63</span>
+                    <div>{{ profileForm.contact_number }}</div>
+                </div>
             </div>
         </div>
-        <label for="{{ profileForm.profile_summary.id_for_label }}">Profile Summary:</label>
-        {{ profileForm.profile_summary }}
-        <label for="{{ profileForm.email_address.id_for_label }}">Email Address:</label>
-        {{ profileForm.email }}
-        <label for="profileForm.contact_number.id_for_label">Contact Number</label>
-        <div class="flex gap-2 items-center">
-            <span>+63</span>
-            {{ profileForm.contact_number }}
-        </div>
-        <button type="button"
+        <button type="submit"
                 id="update-profile-btn"
                 class="daisy-btn daisy-btn-secondary text-white my-8 hover:bg-primary transition-all">
             Update Profile
         </button>
     </form>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script src="{% static 'management/manage-users/profile.js' %}"></script>
 {% endblock user_section %}

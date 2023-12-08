@@ -1,6 +1,5 @@
 $(document).ready(function () {
-  $("#update-profile-btn").on("click", function () {
-    // make a sweet alert dialog confirmation
+  function handleProfileConfirmation() {
     Swal.fire({
       title: "Confirm Edit Information?",
       text: "Are you sure you want to edit your information?",
@@ -15,5 +14,63 @@ $(document).ready(function () {
         $("#profile-form").submit();
       }
     });
+  }
+
+  $("#profile-form").validate({
+    rules: {
+      first_name: {
+        required: true,
+      },
+      last_name: {
+        required: true,
+      },
+      profile_summary: {
+        required: true,
+      },
+      email: {
+        required: true,
+        email: true,
+      },
+      contact_number: {
+        required: true,
+        number: true,
+        minlength: 10,
+        maxlength: 12,
+      },
+    },
+    messages: {
+      first_name: {
+        required: "Please enter your first name",
+      },
+      last_name: {
+        required: "Please enter your last name",
+      },
+      profile_summary: {
+        required: "Please enter your profile summary",
+      },
+      email: {
+        required: "Please enter your email address",
+        email: "Please enter a valid email address",
+      },
+      contact_number: {
+        required: "Please enter your phone number",
+        number: "Please enter a valid phone number",
+        minlength: "Phone number should be at least 10 digits",
+        maxlength: "Phone number should not exceed 12 digits",
+      },
+    },
+    highlight: function (element, errorClass) {
+      $(element).addClass("border-red-500"); // Add a class to change the border color
+      $(element).removeClass("border-green-500");
+    },
+    unhighlight: function (element, errorClass) {
+      $(element).removeClass("border-red-500"); // Remove the class to reset the border color
+      $(element).addClass("border-green-500");
+    },
+    errorClass: "daisy-label-text-alt text-red-500 block",
+
+    submitHandler: function (form) {
+      handleProfileConfirmation();
+    },
   });
 });
