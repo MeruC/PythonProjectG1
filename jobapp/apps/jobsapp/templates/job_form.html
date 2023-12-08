@@ -1,0 +1,165 @@
+{% comment %} Homepage Working draft {% endcomment %} {% comment %} TODO might
+edit this later {% endcomment %} {% comment %} <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homepage</title>
+  </head>
+  <body class="min-h-screen"></body>
+</html>
+{% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Homepage</title>
+  </head>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <body class="bg-[#F1F8F9] min-h-screen">
+    <div
+      class="bg-white rounded-xl mx-20 my-5 mt-5 p-10 w-[700px] mx-auto relative"
+    >
+      <form
+        action=""
+        method="post"
+        class="flex flex-col gap-3 w-full"
+        autocomplete="off"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <div class="text-2xl font-bold mb-6">Job Details</div>
+
+        <div class="">
+          <label
+            for="{{ form.job_title.id_for_label }}"
+            class="text-sm font-semibold"
+            >Job Title</label
+          >
+          {{ form.job_title }}
+          {{ form.job_title.errors }}
+        </div>
+
+        <div class="">
+          <label
+            for="{{ form.description.id_for_label }}"
+            class="text-sm font-semibold"
+            >Job Description</label
+          >
+          {{ form.media }}
+          {{ form.description }}
+          {{ form.description.errors }}
+        </div>
+
+        <div>
+          <span class="block text-base font-semibold">Location</span>
+          <div class="flex flex-wrap -mx-3 mb-2">
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label
+                for="{{ form.minimum_salary.id_for_label }}"
+                class="text-sm font-semibold"
+                >City</label
+              >
+              {{ form.city }}
+              {{ form.city.errors }}
+            </div>
+
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label
+                for="{{ form.maximum_salary.id_for_label }}"
+                class="text-sm font-semibold"
+                >Country</label
+              >
+              {{ form.country }}
+              {{ form.country.errors }}
+            </div>
+          </div>
+        </div>
+
+        <div class="">
+          <label
+            for="{{ form.skills.id_for_label }}"
+            class="text-sm font-semibold"
+            >Skills</label
+          >
+          {{ form.skills }}
+          {{ form.skills.errors }}
+        </div>
+
+        <div class="flex flex-wrap -mx-3 mb-2">
+          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label
+              for="{{ form.type.id_for_label }}"
+              class="text-sm font-semibold"
+              >Job Type</label
+            >
+            {{ form.type }}
+            {{ form.type.errors }}
+          </div>
+
+          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label
+              for="{{ form.status.id_for_label }}"
+              class="text-sm font-semibold"
+              >Job Status</label
+            >
+            {{ form.status }}
+            {{ form.status.errors }}
+          </div>
+        </div>
+
+        <div>
+          <span class="block text-base font-semibold">Salary</span>
+          <div class="flex flex-wrap -mx-3 mb-2">
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label
+                for="{{ form.minimum_salary.id_for_label }}"
+                class="text-sm font-semibold"
+                >Minimum</label
+              >
+              {{ form.min_salary }}
+              {{ form.min_salary.errors }}
+            </div>
+
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label
+                for="{{ form.maximum_salary.id_for_label }}"
+                class="text-sm font-semibold"
+                >Maximum</label
+              >
+              {{ form.max_salary }}
+              {{ form.max_salary.errors }}
+            </div>
+          </div>
+        </div>
+
+        <div class="hidden">{{form.date_posted}}</div>
+        <br /><br /><br />
+        <div class="absolute bottom-10 right-10">
+          <a
+            class="inline-block align-baseline font-bold text-red-500 hover:text-red-800 px-4"
+            href="{% url "jobsapp:jobListings" %}"
+          >
+            Back
+          </a>
+          <button
+            type="submit"
+            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+          >
+            Post a Job
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

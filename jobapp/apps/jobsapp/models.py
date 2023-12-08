@@ -1,6 +1,9 @@
 from django.db import models
 from apps.accountapp.models import User
 import datetime as date
+from django.utils import timezone
+
+
 
 
 # company
@@ -12,14 +15,13 @@ class Company(models.Model):
 
 # job
 class Job(models.Model):
-    STATUS_CHOICES = [("active", "Active"), ("deleted", "Deleted")]
+    STATUS_CHOICES = [("active", "Active"), ("inactive", "Inactive")]
     TYPE_CHOICES = [("fulltime", "Full-time"), ("parttime", "Part-time")]
     job_title = models.CharField(max_length=100)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField()
     # details = models.TextField()
     status = models.CharField(max_length=8, choices=STATUS_CHOICES)
-    type = models.CharField(max_length=9, choices=TYPE_CHOICES)
     type = models.CharField(max_length=9, choices=TYPE_CHOICES)
 
     # temporarily set fields to null=True
@@ -29,7 +31,7 @@ class Job(models.Model):
 
     max_salary = models.IntegerField(null=True)
     min_salary = models.IntegerField(null=True)
-    date_posted = models.DateTimeField(default=date.datetime.today)
+    date_posted = models.DateTimeField(default=timezone.now)
 
 
 # work experience

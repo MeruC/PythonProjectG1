@@ -14,7 +14,7 @@ urlpatterns = [
     path("", include(jobs_urls)),
     path("account/", include(account_urls)),
     path("core/", include(core_urls)),
-    path("job/", include(jobs_urls)),
+    path("company/", include(jobs_urls)),
     path("management/", include(management_urls)),
     path("profile/", include(profile_urls)),
     # EXTRAS / LIB
