@@ -5,24 +5,33 @@
     <h1>Recent Applications</h1>
     <table class="daisy-table daisy-table-zebra ">
         <thead class="bg-primary">
-                <tr>
-                    <th>Job Title</th>
-                    <th>Company</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
+            <tr>
+                <th>Job Title</th>
+                <th>Company</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody>
+            
+            {% for application in application_list %}
             <tr>
-                <td>Lead Software Engineer</td>
-                <td>Auto Works</td>
-                <td>Status</td>
+                <td>{{ application.job_title }} </td>
+                <td>{{ application.company_name }}</td>
                 <td>
-                    <button>
+                    <div class="daisy-badge daisy-badge-primary gap-2 py-3">{{ application.status }}</div>
+                </td>
+                <td>{{ application.date_posted }}</td>
+                <td>
+                    <button data-id=" {{ application.id }} ">
                         <i class="fa-solid fa-square-xmark"></i>
                     </button>
                 </td>
             </tr>
+            {% endfor %}
+                
+
         </tbody>
     </table>
     <script src="{% static 'management/manage-users/manage.js' %}"></script>

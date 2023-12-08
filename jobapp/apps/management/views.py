@@ -1,11 +1,12 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import get_user_model
-from django.core import serializers
 from apps.accountapp.models import Education
-from apps.jobsapp.models import WorkExperience
+from apps.profileapp.models import JobApplication
+from apps.jobsapp.models import WorkExperience, Job
 from .forms import EducationForm, ProfileForm, WorkHistoryForm
 from django.contrib import messages
+from django.db.models import F
 
 
 def index(request):
@@ -177,4 +178,19 @@ def action(request, id):
 
 
 def history(request, id):
-    return render(request, "management/user_detail/history.html")
+    # get all the recent applications of the user.
+    application_list = JobApplication.objects.filter(user_id=id).values(
+        "id",
+        "status",
+        "user_id",
+        company_name=F("job__company__company_name"),
+        date_posted=F("job__date_posted"),
+    )
+
+    print(application_list)
+
+    return render(
+        request,
+        "management/user_detail/history.html",
+        {"applications": application_list},
+    )
