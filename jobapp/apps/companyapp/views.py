@@ -8,3 +8,7 @@ def createCompany(request):
     # - User must be logged in to create a company
     # - User must not have a company already
     return render(request, "company/createCompany.html")
+def companyProfile(request):
+    # TODO
+    # - User must be logged in to view a company
+    return render(request, "company/companyProfile.html")

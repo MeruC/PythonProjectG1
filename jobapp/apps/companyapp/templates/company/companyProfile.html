@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-[#F1F8F9] min-h-screen w-full">
+    {% include "navbar.html" %}
+    <div class="container mx-auto">
+      <header class="mt-2 flex flex-col gap-2">
+        <div class="w-full h-[300px] rounded-md overflow-hidden">
+          <img src="https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="cover" class="w-full h-full object-cover object-center" />
+        </div>
+        <div class="flex flex-col items-center relative sm:flex-row sm:px-10">
+          <div class="w-[150px] h-[150px] absolute -top-28 p-5 rounded-full bg-white shadow-md overflow-hidden sm:-top-20">
+            <img src="https://img.logoipsum.com/296.svg" class="w-full h-full object-contain object-center" alt="logo" />
+          </div>
+          <div class="flex flex-col items-center mt-[50px] text-center sm:items-start sm:ml-[170px] sm:mt-0 sm:text-left">
+            <h1 class="text-3xl font-bold">Tech Innovations Co.</h1>
+            <p class="text-gray-500 flex items-center gap-1 sm:ml-1"><i class="fa-solid fa-location-dot text-sm"></i> Philippines, Makati City</p>
+          </div>
+        </div>
+      </header>
+  </div>
+  </div>
+{% endblock %}
