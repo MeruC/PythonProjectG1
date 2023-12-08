@@ -10,14 +10,15 @@
         <div class="flex flex-col w-8/12 items-start gap-4 my-8">
             <div class="w-full">
                 <label for="new_password" class="block">New Password</label>
-                <div class="relative flex flex-col w-full">
+                <div id="password-container" class="relative flex flex-col w-full">
                     <input name="new_password"
                            id="new_password"
                            type="password"
                            placeholder="••••••••"
                            required
+                           minlength="8"
                            class="form-input rounded">
-                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                    <div  class="absolute inset-y-0 right-0 pr-3 flex items-center ">
                         <button type="button"
                                 id="new_password_toggle"
                                 class="text-gray-600 focus:outline-none">
@@ -26,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button"
+            <button type="submit"
                     id="updatePassBtn"
                     class="daisy-btn daisy-btn-outline daisy-btn-accent">Update Password</button>
         </div>
@@ -61,7 +62,6 @@
         {% endif %}
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
-
     <script src="{% static 'js/account.js' %}"></script>
     <script src="{% static 'management/manage-users/action.js' %}"></script>
 {% endblock user_section %}
