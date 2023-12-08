@@ -174,7 +174,44 @@ def delete_work(request, work):
 
 
 def action(request, id):
-    return render(request, "management/user_detail/action.html")
+    if request.method == "POST":
+        print(request.POST)
+        action = request.POST.get("action")
+        user_id = request.POST.get("user_id")
+        User = get_user_model()
+        # get the user
+        user = get_object_or_404(User, pk=user_id)
+        if not user:
+            messages.error(request, "User not found.")
+            return redirect("managementapp:manage_users")
+
+        if action == "change_password":
+            new_password = request.POST.get("new_password")
+            print("password", new_password)
+            user.set_password(new_password)
+            user.save()
+            messages.success(request, "Password changed successfully.")
+            return redirect("managementapp:user_actions", id=id)
+        elif action == "deactivate":
+            deactivate_user_account(user)
+            messages.success(request, "User deactivated successfully.")
+            return redirect("managementapp:user_actions", id=id)
+    User = get_user_model()
+    user = get_object_or_404(User, pk=id)
+
+    return render(request, "management/user_detail/action.html", {"user": user})
+
+
+def change_user_password(user, new_password):
+    # change the password of the user
+    user.set_password(new_password)
+    user.save()
+
+
+def deactivate_user_account(user):
+    # deactivate the user
+    user.is_active = False
+    user.save()
 
 
 def history(request, id):

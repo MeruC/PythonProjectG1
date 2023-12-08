@@ -6,26 +6,42 @@
     <form method="post">
         {% csrf_token %}
         <input type="hidden" name="user_id" value="{{ user.id }}">
-        <input type="hidden" name="type" value="password">
-        <div class="flex flex-col w-8/12 items-start gap-2">
-            <div>
+        <input type="hidden" name="action" value="change_password">
+        <div class="flex flex-col w-8/12 items-start gap-4 my-8">
+            <div class="w-full">
                 <label for="new_password" class="block">New Password</label>
-                <input id="new_password" type="password" class="form-input rounded">
+                <div class="relative flex flex-col w-full">
+                    <input name="new_password"
+                           id="new_password"
+                           type="password"
+                           placeholder="••••••••"
+                           class="form-input rounded">
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                        <button type="button"
+                                id="new_password_toggle"
+                                class="text-gray-600 focus:outline-none">
+                            <i class="fa-solid text-gray-500 fa-eye-slash" id="new_password_icon"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
             <button type="submit"
                     id="updatePassBtn"
                     class="daisy-btn daisy-btn-outline daisy-btn-accent">Update Password</button>
         </div>
     </form>
-    <h2 class="text-accent font-bold text-2xl">Deactivate Account</h2>
-    <p>
-        This action will make the account <span class="text-accent">temporarily disabled and the user will not be able to login.</span>
-    </p>
-    <form method="post">
-        {% csrf_token %}
-        <input type="hidden" name="user_id" value="{{ user.id }}">
-        <input type="hidden" name="type" value="deactivate">
-        <button class="daisy-btn daisy-btn-outline daisy-btn-accent" type="submit">Deactivate Account</button>
-    </form>
-    <script src="{% static 'management/manage-users/manage.js' %}"></script>
+    <div class="space-y-4">
+        <h2 class="text-accent font-bold text-2xl">Deactivate Account</h2>
+        <p>
+            This action will make the account <span class="text-accent">temporarily disabled and the user will not be able to login.</span>
+        </p>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{ user.id }}">
+            <input type="hidden" name="action" value="deactivate">
+            <button class="daisy-btn daisy-btn-outline daisy-btn-accent" type="submit">Deactivate Account</button>
+        </form>
+    </div>
+    <script src="{% static 'js/account.js' %}"></script>
+    <script src="{% static 'management/manage-users/action.js' %}"></script>
 {% endblock user_section %}
