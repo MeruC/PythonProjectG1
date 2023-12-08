@@ -1,5 +1,6 @@
 from django.db import models
 import datetime as date
+from datetime import datetime
 from django.contrib.auth.models import AbstractUser
 
 
@@ -8,9 +9,8 @@ class User(AbstractUser):
     # add additional fields here
     profile_summary = models.TextField(default="")
     profile_img = models.ImageField(null=True, blank=True,upload_to="images/")
-    pass
-
-
+    contact_number = models.CharField(max_length=12, default='')
+    skills = models.TextField(null=True,blank=True,default='')
 # class User(models.Model):
 #     username = models.CharField(max_length=100)
 #     email = models.EmailField(max_length=255)
@@ -34,12 +34,24 @@ class User(AbstractUser):
 
 
 class Alerts(models.Model):
+    
+    # -----------Choices ---------------
     NOTIF_ACTION = [
         ("Applicant", "New Applicant Applied to your post"),
         ("MatchSkill", "Job matches your skill"),
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
+    APPLICATION_STATUS = [('accepted','Accepted'),('rejected','Rejected'),]
+    NOTIF_STATUS = [('read',"Read"),('unread','Unread'),]
+    STATUS_CHOICES = [("active", "Active"), ("deleted", "Deleted")]
+    
+    # ------------fields ----------------
+    notification = models.CharField(max_length=11,choices=NOTIF_ACTION,default='')
+    timestamp = models.DateTimeField(default=datetime.today)
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES,default='')
+    action_user = models.CharField(max_length=220,default='',blank=True) #who trigger the action (fullname) can be person/company
+    user = models.ForeignKey(User, on_delete=models.CASCADE) #the owner who will receive the notification
+    application_status = models.CharField(max_length=10,choices=APPLICATION_STATUS,blank=True,default='',null=True)
+    is_read = models.CharField(max_length=7,choices=NOTIF_STATUS,default='')
 
 class ActivityLog(models.Model):
     ACTION_CHOICES = [
@@ -67,7 +79,7 @@ class Education(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     education_level = models.CharField(max_length=4, choices=DEGREE_LEVEL_CHOICES)
     school_name = models.CharField(max_length=120)
-    course = models.CharField(max_length=150,default='')
+    course = models.CharField(max_length=150, default="")
     started_year = models.IntegerField(default=2020)
     ended_year = models.IntegerField(default=2021)
 

@@ -1,6 +1,7 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
-
+from .models import Alerts
 from django.contrib.auth import login, logout
 
 from django.contrib import messages
@@ -22,7 +23,7 @@ def Register(request):
     error = {}
 
     if request.user.is_authenticated:
-        return redirect("../../profile/")
+        return redirect("jobsapp:index")
 
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -42,7 +43,7 @@ def Register(request):
                 request,
                 "Registration successful. You can now login to your account.",
             )
-            return redirect("login")
+            return redirect("accountapp:login")
 
     else:
         form = RegisterForm()
@@ -52,8 +53,10 @@ def Register(request):
 
 # ------------------ Login ------------------
 def Login(request):
-    if request.user.is_authenticated:
-        return redirect("../../profile/")
+    if request.user.is_authenticated and request.user.is_superuser:
+        return redirect("managementapp:index")
+    elif request.user.is_authenticated:
+        return redirect("jobsapp:index")
 
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -63,7 +66,9 @@ def Login(request):
             user = User.objects.get(**{check_identifier(identifier): identifier})
             if user.is_active:
                 login(request, user)
-                return redirect("../../profile/")
+                if user.is_superuser:  # user is an admin
+                    return redirect("managementapp:index")
+                return redirect("jobsapp:index")
             else:
                 messages.error(request, "Your account has been disabled.")
 
@@ -76,4 +81,17 @@ def Login(request):
 # ------------------ Logout ------------------
 def Logout(request):
     logout(request)
-    return redirect("login")
+    return redirect("accountapp:login")
+
+
+
+# ----------------- notification -----------
+MAX_LIMIT = 20
+def Notification(request, offset):
+    user_id = request.user.id #current user
+    
+    #offset with max to 20 notif
+    limit = offset + MAX_LIMIT
+    notifications = Alerts.objects.filter(user_id=user_id)[offset:limit].values()
+    notification_list = list(notifications)
+    return JsonResponse(notification_list, safe=False)

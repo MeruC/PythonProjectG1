@@ -42,18 +42,18 @@ INSTALLED_APPS = [
     "apps.accountapp.apps.AccountappConfig",
     "apps.jobsapp.apps.JobsappConfig",
     "apps.profileapp.apps.ProfileappConfig",
+    "apps.management.apps.ManagementConfig",
     # EXTRAS / LIB
     "tailwind",
     "theme",
     "django_browser_reload",
+    "django.contrib.humanize",
 ]
 
 TAILWIND_APP_NAME = "theme"
 NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
-INTERNAL_IPS = [
-  "127.0.0.1"
-]
+INTERNAL_IPS = ["127.0.0.1"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -65,6 +65,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # EXTRAS / LIB
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    # Requires superuser login on managementapp
+    "apps.management.middleware.SuperuserRequiredMiddleware",
 ]
 
 ROOT_URLCONF = "jobapp.urls"
@@ -146,8 +148,8 @@ STATICFILES_DIRS = [
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Used for displaying alerts

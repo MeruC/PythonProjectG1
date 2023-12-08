@@ -1,0 +1,6 @@
+// provides intellisense on jquery
+{
+  "typeAcquisition": {
+    "include": ["jquery"]
+  }
+}
