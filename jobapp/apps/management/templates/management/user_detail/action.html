@@ -31,16 +31,29 @@
         </div>
     </form>
     <div class="space-y-4">
-        <h2 class="text-accent font-bold text-2xl">Deactivate Account</h2>
-        <p>
-            This action will make the account <span class="text-accent">temporarily disabled and the user will not be able to login.</span>
-        </p>
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="user_id" value="{{ user.id }}">
-            <input type="hidden" name="action" value="deactivate">
-            <button class="daisy-btn daisy-btn-outline daisy-btn-accent" type="submit">Deactivate Account</button>
-        </form>
+        {% if user.is_active %}
+            <h2 class="text-accent font-bold text-2xl">Deactivate Account</h2>
+            <p>
+                This action will make the account <span class="text-accent">temporarily disabled and the user will not be able to login.</span>
+            </p>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+                <input type="hidden" name="action" value="deactivate">
+                <button class="daisy-btn daisy-btn-outline daisy-btn-accent" type="submit">Deactivate Account</button>
+            </form>
+        {% else %}
+            <h2 class="text-primary font-bold text-2xl">Activate Account</h2>
+            <p>
+                This action will make the account <span class="text-primary">active and the user will be able to login.</span>
+            </p>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+                <input type="hidden" name="action" value="activate">
+                <button class="daisy-btn daisy-btn-outline daisy-btn-primary" type="submit">Activate Account</button>
+            </form>
+        {% endif %}
     </div>
     <script src="{% static 'js/account.js' %}"></script>
     <script src="{% static 'management/manage-users/action.js' %}"></script>
