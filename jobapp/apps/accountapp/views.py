@@ -92,7 +92,7 @@ def Notification(request, offset):
     
     #offset with max to 20 notif
     limit = offset + MAX_LIMIT
-    notifications = Alerts.objects.filter(user_id=user_id)[offset:limit].values()
+    notifications = Alerts.objects.filter(user_id=user_id).order_by("-timestamp")[offset:limit].values()
     notification_list = list(notifications)
     return JsonResponse(notification_list, safe=False)
 
