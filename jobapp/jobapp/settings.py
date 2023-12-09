@@ -43,11 +43,13 @@ INSTALLED_APPS = [
     "apps.jobsapp.apps.JobsappConfig",
     "apps.profileapp.apps.ProfileappConfig",
     "apps.management.apps.ManagementConfig",
+    "apps.companyapp.apps.CompanyappConfig",
     # EXTRAS / LIB
     "tailwind",
     "theme",
     "django_browser_reload",
     "django.contrib.humanize",
+    "ckeditor",
 ]
 
 TAILWIND_APP_NAME = "theme"
@@ -78,6 +80,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, "apps/accountapp/templates"),
             os.path.join(BASE_DIR, "apps/jobsapp/templates"),
             os.path.join(BASE_DIR, "apps/profileapp/templates"),
+            os.path.join(BASE_DIR, "apps/companyapp/templates"),
             # JOIN GENERAL TEMPLATES
             os.path.join(BASE_DIR, "templates"),
         ],
@@ -163,3 +166,5 @@ MESSAGE_TAGS = {
 }
 
 AUTH_USER_MODEL = "accountapp.User"
+
+CKEDITOR_UPLOAD_PATH = "uploads/"

@@ -6,6 +6,7 @@ from apps.core import urls as core_urls
 from apps.jobsapp import urls as jobs_urls
 from apps.management import urls as management_urls
 from apps.profileapp import urls as profile_urls
+from apps.companyapp import urls as company_urls
 from django.conf.urls.static import static
 
 urlpatterns = [
@@ -14,9 +15,10 @@ urlpatterns = [
     path("", include(jobs_urls)),
     path("account/", include(account_urls)),
     path("core/", include(core_urls)),
-    path("job/", include(jobs_urls)),
+    path("company/", include(jobs_urls)),
     path("management/", include(management_urls)),
     path("profile/", include(profile_urls)),
+    path("company/", include(company_urls)),
     # EXTRAS / LIB
     path("__reload__/", include("django_browser_reload.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
