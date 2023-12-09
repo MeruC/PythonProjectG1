@@ -21,9 +21,8 @@ def companyApplicants(request):
     # TODO
     # - User must be the owner of the company to view this page
     return render(request, "company/companyApplications.html")
-
-
 def companyProfileSettings(request):
     # TODO
     # - User must be the owner of the company to view this page
+    # - If user doesn't have a company, redirect to createCompany
     return render(request, "company/companySettings.html")
