@@ -14,10 +14,11 @@ def createCompany(request):
         if not hasCompany:
             if request.method == "POST": 
                 addCompanyData(request)
+                return redirect('companyapp:companyJobList')
             else:
                 return render(request, "company/createCompany.html")
     
-    return redirect("jobsapp:index")
+    return redirect('companyapp:companyJobList')
     
 def companyProfile(request):
     # TODO
@@ -54,6 +55,4 @@ def addCompanyData(request):
         city = request.POST.get('city'),
         country = request.POST.get('country'),
     ).save()
-    
-    return redirect('companyapp:companyProfileSettings')
     
