@@ -1,11 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% comment %} TODO: Insert company name here {% endcomment %}
 {% block title %}Tech Innovations Co.{% endblock title %}
 
 {% block content %}
 <div class="bg-[#F1F8F9] min-h-screen w-full flex flex-col">
-  {% include "navbar.html" %}
   <div class="grow flex flex-row">
     {% comment %} SIDEBAR {% endcomment %}
     <div class="w-[300px] bg-white shadow">
@@ -30,10 +30,77 @@
       </ul>
     </div>
     {% comment %} CONTENT {% endcomment %}
-    <div class="">
+    <div class="grow overflow-auto p-10">
 
+      <h1 class="text-2xl font-bold">Company Information</h1>
+      <hr class="my-5">
+      {% comment %} EDIT COMPANY LOGO {% endcomment %}
+      <div>
+        <div>
+          <label class="block mb-2 text-sm font-medium text-gray-900" for="file_input">Company Logo</label>
+          <div class="w-20 h-20 mb-2 bg-white p-2 rounded-md overflow-hidden">
+            {% comment %} 
+              TODO: Insert cover logo
+              - If there is none , no image will be displayed only the input
+            {% endcomment %}
+            <img src="https://img.logoipsum.com/296.svg" class="w-full h-full object-contain object-center" alt="logo" />
+          </div>
+          <div class="mb-2">
+            <input class="" aria-describedby="file_input_help" id="file_input" type="file">
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 500x500px).</p>
+          </div>
+          <button class="px-3 py-2 font-medium text-sm rounded border border-gray-500 text-gray-500">Upload Logo</button>
+        </div>
+      </div>
+      {% comment %} EDIT COMPANY COVER PHOTO {% endcomment %}
+      <div class="mt-10">
+        <div>
+          <label class="block mb-2 text-sm font-medium text-gray-900" for="file_input">Cover Photo</label>
+          <div class="w-[350px] h-24 mb-2 bg-white border rounded-md overflow-hidden">
+            {% comment %} 
+              TODO: Insert cover photo
+              - If there is none , no image will be displayed only the input
+            {% endcomment %}
+            <img src="https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="cover" class="w-full h-full object-cover object-center" />
+          </div>
+          <div class="mb-2">
+            <input class="" aria-describedby="file_input_help" id="file_input" type="file">
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 500x500px).</p>
+          </div>
+          <button class="px-3 py-2 text-sm font-medium rounded border border-gray-500 text-gray-500">Upload Photo</button>
+        </div>
+      </div>
+      {% comment %} EDIT COMPANY INFO {% endcomment %}
+      <form class="my-10 flex flex-col gap-2">
+        <div class="form-group flex flex-col gap-1">
+          <label for="company_name" class="text-sm font-medium text-gray-900">Company Name</label>
+          {% comment %} TODO: Insert company name {% endcomment %}
+          <input type="text" id="company_name" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Company Name" />
+        </div>
+        <div class="form-group flex flex-col gap-1">
+          <label for="company_description" class="text-sm font-medium text-gray-900">Company Description</label>
+          {% comment %} TODO: Insert company description {% endcomment %}
+          <textarea id="company_description" rows="5" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary resize-none" placeholder="Company Description"></textarea>
+        </div>
+        <div class="form-group grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <div class="form-group flex flex-col gap-1">
+            <label for="company_country" class="text-sm font-medium text-gray-900">Country</label>
+            {% comment %} TODO: Insert company country {% endcomment %}
+            <select id="company_country" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary">
+              <option disabled selected>Select a Country</option>
+            </select>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="company_city" class="text-sm font-medium text-gray-900">City</label>
+            {% comment %} TODO: Insert company city {% endcomment %}
+            <input type="text" id="company_city" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary" placeholder="City" />
+          </div>
+        </div>
+        <button type="submit" class="w-max mt-5 px-4 py-3 bg-secondary text-white rounded font-semibold">Edit Company Information</button>
+      </form>
     </div>
     
   </div>
 </div>
+<script type="text/javascript" src="{% static 'js/countrySelect.js' %}"></script>
 {% endblock content %}
