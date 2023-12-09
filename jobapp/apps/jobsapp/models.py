@@ -29,7 +29,6 @@ class Job(models.Model):
 
     # temporarily set fields to null=True
     skills = models.TextField(null=True)
-
     max_salary = models.IntegerField(null=True)
     min_salary = models.IntegerField(null=True)
     date_posted = models.DateTimeField(default=timezone.now)
