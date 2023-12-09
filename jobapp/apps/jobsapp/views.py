@@ -41,7 +41,6 @@ def jobDetails(request, jobId):
             return redirect("jobsapp:index")
     return render(request, "jobDetails.html", {"hasInfo": hasInfo})
 
-
 # async (views used in ajax call )
 def getJobList(request):
     if request.user.is_authenticated:
