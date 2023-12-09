@@ -41,13 +41,14 @@ class Alerts(models.Model):
     NOTIF_ACTION = [
         ("Applicant", "New Applicant Applied to your post"),
         ("MatchSkill", "Job matches your skill"),
+        ("ApplicationResult","Application Result"),
     ]
     APPLICATION_STATUS = [('accepted','Accepted'),('rejected','Rejected'),]
     NOTIF_STATUS = [('read',"Read"),('unread','Unread'),]
     STATUS_CHOICES = [("active", "Active"), ("deleted", "Deleted")]
     
     # ------------fields ----------------
-    notification = models.CharField(max_length=11,choices=NOTIF_ACTION,default='')
+    notification = models.CharField(max_length=18,choices=NOTIF_ACTION,default='')
     timestamp = models.DateTimeField(default=datetime.today)
     status = models.CharField(max_length=8, choices=STATUS_CHOICES,default='')
     action_user = models.CharField(max_length=220,default='',blank=True) #who trigger the action (fullname) can be person/company
