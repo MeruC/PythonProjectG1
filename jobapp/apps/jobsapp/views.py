@@ -5,7 +5,6 @@ from django.db.models import Q
 from ..accountapp.views import hasUnreadNotif
 from ..profileapp.models import JobApplication
 from .models import Job
-from .forms import JobForm
 from django.contrib.auth import get_user_model
 from apps.jobsapp.models import Job
 
