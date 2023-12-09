@@ -40,6 +40,7 @@ class CustomUserAdmin(UserAdmin):
                     "profile_summary",
                     "profile_img",
                     "skills",
+                    "is_deactivated",
                 )
             },
         ),
