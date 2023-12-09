@@ -1,12 +1,13 @@
 from django.db.models import Q
-from django.shortcuts import redirect, render, reverse
+from django.shortcuts import redirect, render, get_object_or_404
 from ..jobsapp.models import Company
 from django.contrib.auth.decorators import login_required
-from ..jobsapp.models import Job
+from ..jobsapp.models import Job, jobApplicant
 from django.contrib.auth import get_user_model
 from ..accountapp.models import Alerts
 from .forms import JobForm
-from django.http import Http404
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 User = get_user_model()
 
@@ -56,14 +57,48 @@ def companyJobList(request):
     }
     return render(request, template, context)
 
+
+# ------- For viewing applicants of a specific job -------
+@login_required(login_url='/account/login/')
+def jobApplicants(request, job_id):
+    try:
+        # Try to get the company associated with the logged-in user
+        company = Company.objects.get(user=request.user)
+    except Company.DoesNotExist:
+        # If the user doesn't have a company, redirect to the company creation page
+        return redirect("/company/createCompany/")
+    
+    job = get_object_or_404(Job, id=job_id)
+    applicants = job.jobapplicant_set.all()  # Assuming you've set the related name in your Job model
+
+    context = {
+        'job': job,
+        'applicants': applicants,
+    }
+    
+    template = "company/jobApplications.html"
+    
+    return render(request, template, context)
+
 def companyApplicants(request):
     # TODO
     # - User must be the owner of the company to view this page
     return render(request, "company/companyApplications.html")
+
+
+@login_required(login_url='/account/login/')
 def companyProfileSettings(request):
     # TODO
     # - User must be the owner of the company to view this page
     # - If user doesn't have a company, redirect to createCompany
+    
+    try:
+        # Try to get the company associated with the logged-in user
+        company = Company.objects.get(user=request.user)
+    except Company.DoesNotExist:
+        # If the user doesn't have a company, redirect to the company creation page
+        return redirect("/company/createCompany/")
+    
     return render(request, "company/companySettings.html")
 
 
@@ -75,7 +110,7 @@ def createJob(request, job_id=0):
         company = Company.objects.get(user=request.user)
     except Company.DoesNotExist:
         # If the user doesn't have a company, raise a 404 error
-        raise Http404("Company does not exist for the current user.")
+        return redirect("/company/createCompany/")
 
     if request.method == "GET":
         if job_id == 0:
