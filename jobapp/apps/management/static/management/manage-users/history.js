@@ -4,5 +4,7 @@ $(document).ready(function () {
     language: {
       lengthMenu: " ", // Hide the "Show [X] entries" text
     },
+    buttons: ["excel", "pdf"],
+    dom: "Bfrtip",
   });
 });

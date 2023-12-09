@@ -1,24 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
 {% block metaData %}
-    <!-- Datatables StyleSheet-->
-    <link rel="stylesheet"
-          href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    <!-- Searchpane style-->
-    <link rel="stylesheet"
-          href="https://cdn.datatables.net/searchpanes/2.2.0/css/searchPanes.dataTables.min.css">
-    <!-- extenstion select style-->
-    <link rel="stylesheet"
-          href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
-    <!-- extension button StyleSheet-->
-    <link rel="stylesheet"
-          href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+    <!-- Jquery-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    {% block anotherMetaData %}
+    {% endblock anotherMetaData %}
     <!-- END Datatables StyleSheet-->
     <!--Sweetalert styles-->
     <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css "
           rel="stylesheet">
-    <!-- Jquery-->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 {% endblock metaData %}
 {% block content %}
     <nav class="daisy-drawer lg:daisy-drawer-open bg-white ">
@@ -70,13 +60,6 @@
         </div>
     </nav>
     <!-- Plugins and Libraries-->
-    <!-- Jquery UI-->
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-    <!-- Datatables-->
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/searchpanes/2.2.0/js/dataTables.searchPanes.min.js"></script>
-    <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <!--Sweet Alert-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js "></script>
     <!-- User Defined JS-->

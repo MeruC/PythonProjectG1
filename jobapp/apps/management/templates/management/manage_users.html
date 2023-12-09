@@ -3,11 +3,18 @@
 {% block title %}
     Manage Users
 {% endblock title %}
+{% block anotherMetaData %}
+    <link href="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-html5-2.4.2/r-2.5.0/sp-2.2.0/datatables.min.css"
+          rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-html5-2.4.2/r-2.5.0/sp-2.2.0/datatables.min.js"></script>
+{% endblock anotherMetaData %}
 {% block section %}
     <h1 class="py-24 text-4xl font-bold text-secondary pl-8">Manage Users</h1>
     {% include "management/messages.html" %}
     {% comment %} Use datatable  {% endcomment %}
-    <div class="container mx-auto">
+    <div class="container mx-auto px-8">
         <table class="daisy-tabl px-12 w-full" id="user-table">
             <thead class="bg-[#DFFFCB] ">
                 <tr>
