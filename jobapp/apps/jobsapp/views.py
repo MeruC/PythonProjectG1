@@ -6,7 +6,7 @@ from ..accountapp.views import hasUnreadNotif
 from ..profileapp.models import JobApplication
 from .models import Job
 from django.contrib.auth import get_user_model
-from apps.jobsapp.models import Job
+from apps.jobsapp.models import Job, Company
 
 User = get_user_model()
 
