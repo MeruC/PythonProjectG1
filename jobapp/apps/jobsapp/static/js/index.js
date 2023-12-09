@@ -88,6 +88,14 @@ async function getJobDetails() {
         document.getElementById("datePosted").innerHTML = formatDate(
           job.date_posted
         );
+        if(job.company__company_logo) {
+          document.getElementById("companyLogo").src = job.company__company_logo;
+        } else {
+          document.getElementById("companyLogo").src = "/static/assets/default_logo.png";
+
+        }
+        document.getElementById("companyLogo").classList.remove("hidden");  
+        
         document.getElementById(
           "estimatedSalary"
         ).innerHTML = `PHP ${job.min_salary.toLocaleString()} - ${job.max_salary.toLocaleString()}`;
@@ -120,7 +128,7 @@ function renderJobs(job, hasApplied) {
           }" 
           onclick="handleJobClick('${job.id}', '${job.job_title}', '${
     job.company__company_name
-  }', '${job.city}, ${job.country}', '${
+  }', '${job.company__city}, ${job.company__country}', '${
     job.type
   }', ' PHP ${job.min_salary.toLocaleString()} - ${job.max_salary.toLocaleString()}', '${
     job.description
@@ -130,7 +138,7 @@ function renderJobs(job, hasApplied) {
 
         <div class="text-gray-800">${job.company__company_name}</div>
         <div class="text-gray-800 text-sm">
-          ${job.city}, ${job.country}
+          ${job.company__city}, ${job.company__country}
         </div>
         <div class="mt-2 mb-2">
           <span class="text-[#6A994E] font-semibold">

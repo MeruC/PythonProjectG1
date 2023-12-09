@@ -70,16 +70,16 @@ def getJobList(request):
                 "status",
                 "type",
                 "skills",
-                "city",
-                "country",
                 "max_salary",
                 "min_salary",
                 "date_posted",
                 "company_id",
                 "company__company_name",
+                "company__city",
+                "company__country",
             )
         )
-
+        print(jobs)
         return JsonResponse(
             {
                 "success": True,
@@ -122,13 +122,15 @@ def getJobDetails(request, jobId):
                 "status",
                 "type",
                 "skills",
-                "city",
-                "country",
                 "max_salary",
                 "min_salary",
                 "date_posted",
                 "company_id",
                 "company__company_name",
+                "company__city",
+                "company__country",
+                "company__logo",
+                "company__cover_photo",
             )
             .first()
         )
@@ -179,7 +181,7 @@ def searchJob(request):
     if where:
         cleaned_parts = re.split(r"\W+", where)
         for part in cleaned_parts:
-            base_query &= Q(city__icontains=part) | Q(country__icontains=part)
+            base_query &= Q(company__city__icontains=part) | Q(company__country__icontains=part)
 
     if type and type != "all":
         base_query &= Q(type=type)
@@ -193,13 +195,14 @@ def searchJob(request):
             "status",
             "type",
             "skills",
-            "city",
-            "country",
             "max_salary",
             "min_salary",
             "date_posted",
             "company_id",
             "company__company_name",
+            "company__city",
+            "company__country",
+            
         )
     )
 
@@ -212,21 +215,25 @@ def searchJob(request):
     )
 
 
+
 def getWhatSuggestion(request):
     query = request.GET.get("query", "")
     suggestions = set()
 
     if query:
-        base_query = Q(job_title__icontains=query) | Q(skills__icontains=query)
-        jobs = Job.objects.filter(base_query).values("job_title", "skills").distinct()
+  
+        job_title_matches = Job.objects.filter(job_title__icontains=query).values("job_title").distinct()
 
-        for job in jobs:
-            suggestions.add(job["job_title"])
-            skills_list = re.split(r"\W+", job["skills"])
-            suggestions.update(skill for skill in skills_list if skill)
+        skills_matches = Job.objects.filter(skills__icontains=query).values("skills").distinct()
+
+        for job_title_match in job_title_matches:
+            suggestions.add(job_title_match["job_title"])
+
+        for skills_match in skills_matches:
+            skills_list = re.split(r"\W+", skills_match["skills"])
+            suggestions.update(skill for skill in skills_list if  query.lower() in skill.lower() )
 
     return JsonResponse({"success": True, "suggestions": list(suggestions)})
-
 
 def getWhereSuggestion(request):
     query = request.GET.get("query", "")
@@ -236,7 +243,7 @@ def getWhereSuggestion(request):
         city_query = Q(city__icontains=query)
         country_query = Q(country__icontains=query)
         jobs = (
-            Job.objects.filter(city_query | country_query)
+            Company.objects.filter(city_query | country_query)
             .values("city", "country")
             .distinct()
         )
