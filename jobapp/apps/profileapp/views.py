@@ -10,6 +10,7 @@ from apps.accountapp.models import Education, User
 from django.core.exceptions import ValidationError
 from ..accountapp.views import hasUnreadNotif
 from django.contrib.auth import logout
+from fpdf import FPDF
 
 #retrieve current user data
 def get_user_data(request):
@@ -304,3 +305,93 @@ def DeactivateAccount(request):
         return redirect("accountapp:login")
     
     return redirect("profileapp:index")
+
+def gresume(request):
+    return HttpResponse("Hello world!")
+
+# generate pdf
+def resume(request):
+    name = request.user.first_name + " " + request.user.last_name
+    desc = "\t\t\t\t\t\t\t\t\t\t" + request.user.profile_summary
+    
+    pdf = FPDF('P', 'mm', 'A4')
+    
+    #Add Page
+    pdf.add_page()
+    
+    pdf.set_fill_color(56, 102, 65)
+    pdf.rect(0,0,210,40,style="F")
+    pdf.image(request.user.profile_img, 170, 8, 25)
+    pdf.set_font("helvetica", "", 24)
+    pdf.set_text_color(230,230,230)
+    pdf.cell(0, 14, "", border=False, ln=1, align='L')
+    pdf.cell(0, 4, name, border=False, ln=1, align='L')
+    pdf.ln(20)
+    #pdf.set_margins(0,0,0)
+
+    pdf.set_auto_page_break(auto=True, margin = 15)
+    
+    ##About
+    pdf.set_font('helvetica', 'B', 20)
+    pdf.set_text_color(97,178,113)
+    pdf.cell(0, 5, "Summary", ln=True)
+
+    #Line Break
+    pdf.cell(0, 4, "", ln=True)
+    pdf.set_fill_color(0, 0, 0)
+    pdf.cell(190, 0.5, "", ln=True, fill=True)
+    pdf.cell(0, 4, "", ln=True)
+
+    #About Content
+    pdf.set_font('helvetica', '', 12)
+    pdf.set_text_color(0, 0, 0)
+    pdf.multi_cell(0, 5, desc, align="J")
+
+    ##Work Experience
+    pdf.cell(0, 8, "", ln=True)
+    pdf.set_font('helvetica', 'B', 20)
+    pdf.set_text_color(97,178,113)
+    pdf.cell(0, 5, "Work Experience", ln=True)
+
+    #Line Break
+    pdf.cell(0, 4, "", ln=True)
+    pdf.set_fill_color(0, 0, 0)
+    pdf.cell(190, 0.5, "", ln=True, fill=True)
+    pdf.cell(0, 4, "", ln=True)
+
+    work_experiences = get_user_work_experience(request)
+    last_element = work_experiences[len(work_experiences)-1]
+    
+    for work in work_experiences:
+        pdf.set_font('helvetica', '', 18)
+        pdf.set_text_color(0, 0, 0)
+        pdf.cell(0, 8, work.work_title, ln=True)
+        pdf.cell(10, 8, "")
+        pdf.set_font('helvetica', '', 14)
+        pdf.set_text_color(97,178,113)
+        pdf.cell(40, 8, work.company_name, ln=True)
+        pdf.set_font('helvetica', '', 12)
+        pdf.set_text_color(0, 0, 0)
+        date = work.start_date + " to " + work.end_date
+        pdf.cell(10, 8, "")
+        pdf.cell(40, 8, date, ln=True)
+        pdf.set_text_color(50, 50, 50)
+        if (work != last_element):
+            pdf.cell(0, 8, "--------------------------------------------------------------------------------------------------------------------------------------", ln=True, align="C")
+    #pdf.cell(40, 8, exp.position, ln=True)
+    #for works in exp:
+        
+    ##Education
+    pdf.cell(0, 8, "", ln=True)
+    pdf.set_font('helvetica', 'B', 20)
+    pdf.set_text_color(97,178,113)
+    pdf.cell(0, 5, "Education", ln=True)
+
+    #Line Break
+    pdf.cell(0, 4, "", ln=True)
+    pdf.set_fill_color(0, 0, 0)
+    pdf.cell(190, 0.5, "", ln=True, fill=True)
+    pdf.cell(0, 4, "", ln=True)
+
+    return HttpResponse(bytes(pdf.output()), content_type="application/pdf")
+    
