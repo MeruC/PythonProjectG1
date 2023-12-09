@@ -7,7 +7,7 @@ async function getJobList() {
     const noDetailsElement = document.getElementById("noDetails");
     const dividerElement = document.getElementById("divider");
 
-    const response = await fetch(`/job/getJobList`, {
+    const response = await fetch(`/getJobList`, {
       method: "GET",
     });
     if (response.ok) {
@@ -71,7 +71,7 @@ async function getJobDetails() {
   try {
     const jobId = window.location.pathname.match(/\/jobs\/(\d+)\/$/)?.[1];
 
-    const response = await fetch(`/job/getJobDetails/${jobId}/`, {
+    const response = await fetch(`/getJobDetails/${jobId}/`, {
       method: "GET",
     });
 
@@ -159,7 +159,7 @@ async function searchJob(event) {
   const formElement = document.getElementById("searchJobForm");
   const formData = new FormData(formElement);
   const queryString = new URLSearchParams(formData).toString();
-  const url = `/job/searchJob?${queryString}`;
+  const url = `/searchJob?${queryString}`;
   try {
     const response = await fetch(url, {
       method: "GET",
@@ -321,7 +321,7 @@ function createSuggestionElement(text, type) {
 
 async function jobApplication(target, jobId, hasApplied) {
   try {
-    const response = await fetch(`/job/manageApplication/${jobId}/`, {
+    const response = await fetch(`/manageApplication/${jobId}/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
