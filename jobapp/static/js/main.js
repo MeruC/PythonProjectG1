@@ -7,6 +7,7 @@ function getCookie(name) {
 
 /* formats the date to a human readable format */
 function formatDate(dateString) {
+  console.log("formatDate called",dateString);
   if (!dateString) return "Unknown";
 
   var now = new Date();

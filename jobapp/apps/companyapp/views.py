@@ -28,11 +28,23 @@ def createCompany(request):
                 return render(request, "company/createCompany.html")
     
     return redirect("jobsapp:index")
-    
-def companyProfile(request):
-    # TODO
-    # - User must be logged in to view a company
-    return render(request, "company/companyProfile.html")
+
+@login_required(login_url='/account/login/')
+def companyProfile(request,company_id):
+    try:
+        company= Company.objects.get(id=company_id)
+        if (company.is_active == False):
+            return redirect("jobsapp:index")
+        jobs = Job.objects.filter(company_id=company_id)
+        context = {
+            "company":company,
+            "jobs":jobs,
+            
+        }
+    except Company.DoesNotExist:
+        return redirect("jobsapp:index")
+
+    return render(request, "company/companyProfile.html",context)
 
 
 # -------- View all job listings of a company --------

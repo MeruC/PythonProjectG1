@@ -88,13 +88,7 @@ async function getJobDetails() {
         document.getElementById("datePosted").innerHTML = formatDate(
           job.date_posted
         );
-        if(job.company__company_logo) {
-          document.getElementById("companyLogo").src = job.company__company_logo;
-        } else {
-          document.getElementById("companyLogo").src = "/static/assets/default_logo.png";
-
-        }
-        document.getElementById("companyLogo").classList.remove("hidden");  
+      
         
         document.getElementById(
           "estimatedSalary"

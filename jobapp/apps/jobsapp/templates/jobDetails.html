@@ -33,10 +33,12 @@
         <div
           class="flex items-center justify-center gap-5 w-full px-5 md:px-20 lg:px-40 xl:px-64 leading-5"
         >
-          <img src="" class="w-20 h-20 rounded-full hidden" alt="" id="companyLogo"/>
+        <div class="w-20 h-20 rounded-full">
+          <img src="{% if  company.logo %} {{ company.logo.url}} {% else %}{% static '/assets/default_logo.png' %}{% endif %}" alt="" class="w-full h-full object-cover  rounded-full" />
+        </div>
           <div class="flex-1">
             <div class="text-2xl font-semibold" id="jobTitle"></div>
-            <div class="text-gray-800" id="companyName"></div>
+            <a href="{% url 'companyapp:companyProfile' company.id %}" class="text-gray-800" id="companyName"></a>
           </div>
           {% if not user_has_applied %}
           <!-- prettier-ignore -->
