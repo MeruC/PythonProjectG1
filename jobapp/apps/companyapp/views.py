@@ -17,6 +17,12 @@ def companyJobList(request):
     # - User must be the owner of the company to view this page
     return render(request, "company/companyJobList.html")
 
+def companyApplicants(request):
+    # TODO
+    # - User must be the owner of the company to view this page
+    return render(request, "company/companyApplications.html")
+
+
 def companyProfileSettings(request):
     # TODO
     # - User must be the owner of the company to view this page

@@ -9,5 +9,6 @@ urlpatterns = [
     # TODO: change this to dynamic url
     path("companyId/", views.companyProfile, name="companyProfile"),
     path("myCompany/jobListings", views.companyJobList, name="companyJobList"),
+    path("myCompany/applicants", views.companyApplicants, name="companyApplicants"),
     path("myCompany/settings", views.companyProfileSettings, name="companyProfileSettings")
 ]
