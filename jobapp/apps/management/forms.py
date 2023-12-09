@@ -97,11 +97,12 @@ class EditCompanyForm(forms.Form):
 
 
     country = forms.CharField(
-        widget=forms.TextInput(
+        widget=forms.Select(
             attrs={
                 "class": "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary",
                 "autocomplete": "off",
                 "required": "true",
+                "id":"company_country"
             },
         ),
         

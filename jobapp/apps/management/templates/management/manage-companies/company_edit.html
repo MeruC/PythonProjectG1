@@ -81,5 +81,10 @@
     Update Company
   </button>
 </form>
+<script type="text/javascript">
+        const companyCountry = "{{ company.country }}";  
+</script>
+<script type="text/javascript" src="{% static 'js/countrySelect.js' %}"></script>
+
 
 {% endblock company_section %}

@@ -9,7 +9,7 @@ function onLogoutHandler() {
     showCloseButton: false,
   }).then((result) => {
     if (result.isConfirmed) {
-      window.location.href = "account/logout/";
+      window.location.href = "/account/logout/";
     }
   });
 }
