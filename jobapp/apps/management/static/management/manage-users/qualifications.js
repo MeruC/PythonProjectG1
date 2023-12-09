@@ -2,6 +2,74 @@ console.log("loaded manageusers.js!");
 
 window.document.addEventListener("DOMContentLoaded", function () {
   handleEventListeners();
+  $("#education_form").validate({
+    messages: {
+      education_level: {
+        required: "Please enter your education level",
+      },
+      school_name: {
+        required: "Please enter your school name",
+      },
+      course: {
+        required: "Please enter your course",
+      },
+      started_year: {
+        required: "Please enter your started year",
+      },
+      ended_year: {
+        required: "Please enter your ended year",
+      },
+    },
+    highlight: function (element, errorClass) {
+      $(element).addClass("border-red-500"); // Add a class to change the border color
+    },
+    errorClass: "daisy-label-text-alt text-red-500",
+
+    submitHandler: function (form) {
+      handleEducationConfirmation(form);
+    },
+  });
+
+  // Custom validation method for ensuring a select has a value selected
+  $.validator.addMethod(
+    "requiredSelect",
+    function (value, element) {
+      return value !== ""; // Validate that the value is not an empty string (the default empty option)
+    },
+    "Please select an option"
+  );
+  $("#work_form").validate({
+    rules: {
+      work_title: {
+        required: true,
+      },
+      company_name: {
+        required: true,
+      },
+      position: {
+        required: true,
+      },
+    },
+    messages: {
+      work_title: {
+        required: "Please enter your work title",
+      },
+      company_name: {
+        required: "Please enter your company name",
+      },
+      position: {
+        required: "Please enter your position",
+      },
+    },
+    highlight: function (element, errorClass) {
+      $(element).addClass("border-red-500"); // Add a class to change the border color
+    },
+    errorClass: "daisy-label-text-alt text-red-500",
+
+    submitHandler: function (form) {
+      handleWorkConfirmation(form);
+    },
+  });
 });
 
 async function handleEventListeners() {
@@ -23,14 +91,6 @@ async function handleEventListeners() {
     document.querySelector("#workModal").showModal();
   });
 
-  $("#updateEducationbtn").click(function (e) {
-    handleEducationConfirmation();
-  });
-
-  $("#updateWorknbtn").click(function (e) {
-    handleWorkConfirmation();
-  });
-
   $(".educationDeleteModalBtn").click(function (e) {
     e.preventDefault();
     handleEducationDeleteConfirmation();
@@ -42,48 +102,34 @@ async function handleEventListeners() {
   });
 }
 
-async function handleEducationConfirmation() {
+async function handleEducationConfirmation(form) {
   const educationModal = document.querySelector("#educationModal");
   educationModal.close();
+  document.querySelector("#education_confirmation_modal").showModal();
 
-  const res = await Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, edit it!",
+  $("#confirmEducationEditBtn").click(function (e) {
+    e.preventDefault();
+    form.submit();
   });
 
-  if (res.isConfirmed) {
-    // run some post form submission code here
-    $("#education_form").submit();
-  } else {
+  $("#cancelEducationEditBtn").click(function (e) {
     educationModal.showModal();
-  }
+  });
 }
 
-async function handleWorkConfirmation() {
+async function handleWorkConfirmation(form) {
   const workModal = document.querySelector("#workModal");
   workModal.close();
+  document.querySelector("#work_confirmation_modal").showModal();
 
-  const res = await Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, edit work!",
+  $("#confirmWorkEditBtn").click(function (e) {
+    e.preventDefault();
+    form.submit();
   });
 
-  if (res.isConfirmed) {
-    // run some post form submission code here
-    $("#work_form").submit();
-  } else {
+  $("#cancelWorkEditBtn").click(function (e) {
     workModal.showModal();
-  }
+  });
 }
 
 async function handleEducationDeleteConfirmation() {
@@ -152,6 +198,8 @@ function populateWorkModal(resData) {
   const started_year = split_start_date[1];
   const end_month = split_end_date[0];
   const end_year = split_end_date[1];
+  console.log(split_start_date);
+  console.log(split_end_date);
 
   console.log(data);
   $('input[name="work_title"').val(work_title);

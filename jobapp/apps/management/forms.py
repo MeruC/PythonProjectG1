@@ -142,6 +142,7 @@ class EducationForm(forms.ModelForm):
                 )
             }
         ),
+        required=True,
     )
 
     school_name = forms.CharField(
@@ -155,6 +156,7 @@ class EducationForm(forms.ModelForm):
                 "placeholder": "Enter your school",
             }
         ),
+        required=True,
     )
 
     course = forms.CharField(
@@ -168,6 +170,7 @@ class EducationForm(forms.ModelForm):
                 "placeholder": "Enter your course",
             }
         ),
+        required=True,
     )
 
     started_year = forms.ChoiceField(
@@ -180,6 +183,7 @@ class EducationForm(forms.ModelForm):
                 )
             }
         ),
+        required=True,
     )
 
     ended_year = forms.ChoiceField(
@@ -192,6 +196,7 @@ class EducationForm(forms.ModelForm):
                 )
             }
         ),
+        required=True,
     )
 
     id = forms.IntegerField(widget=forms.HiddenInput(), required=False)

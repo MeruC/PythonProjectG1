@@ -159,9 +159,15 @@ def edit_education(request, education):
 
 
 def edit_work(request, work):
+    print(request.POST)
     work_form = WorkHistoryForm(request.POST, instance=work)
     if work_form.is_valid():
-        work_form.save()
+        work.work_title = request.POST.get("work_title")
+        work.company_name = request.POST.get("company_name")
+        work.position = request.POST.get("position")
+        work.start_date = f"{request.POST.get('started_month')}, {request.POST.get('started_year')}"
+        work.end_date = f"{request.POST.get('end_month')}, {request.POST.get('end_year')}"
+        work.save()
         messages.success(request, "work added successfully.")
     else:
         messages.error(

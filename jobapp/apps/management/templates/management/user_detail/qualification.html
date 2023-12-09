@@ -104,8 +104,10 @@
                 <div class="flex justify-end mt-2 gap-3"></div>
             </form>
             <div class="daisy-modal-action">
+                <button form="education_form"
+                        id="updateEducationbtn"
+                        class="daisy-btn-primary daisy-btn">Update</button>
                 <form method="dialog">
-                    <button id="updateEducationbtn" class="daisy-btn-primary daisy-btn">Update</button>
                     <!-- if there is a button, it will close the modal -->
                     <button class="daisy-btn daisy-btn-outline">Close</button>
                 </form>
@@ -160,13 +162,41 @@
                 </div>
             </form>
             <div class="daisy-modal-action">
+                <button form="work_form"
+                        id="updateWorknbtn"
+                        class="daisy-btn-primary daisy-btn">Update</button>
                 <form method="dialog">
-                    <button id="updateWorknbtn" class="daisy-btn-primary daisy-btn">Update</button>
                     <!-- if there is a button, it will close the modal -->
                     <button class="daisy-btn daisy-btn-outline">Close</button>
                 </form>
             </div>
         </div>
     </dialog>
+    <dialog id="education_confirmation_modal" class="daisy-modal">
+        <div class="daisy-modal-box">
+            <h3 class="font-bold text-lg">Confirm Edit Education</h3>
+            <p class="py-4">Do you confirm to edit your education?</p>
+            <div class="daisy-modal-action">
+                <button id="confirmEducationEditBtn" class="daisy-btn-primary daisy-btn">Confirm</button>
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button id="cancelEducationEditBtn" class="daisy-btn">Close</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="work_confirmation_modal" class="daisy-modal">
+        <div class="daisy-modal-box">
+            <h3 class="font-bold text-lg">Confirm Edit Work</h3>
+            <p class="py-4">Do you confirm to edit your work?</p>
+            <div class="daisy-modal-action">
+                <button id="confirmWorkEditBtn" class="daisy-btn-primary daisy-btn">Confirm</button>
+                <form method="dialog">
+                    <button id="cancelWorkEditBtn" class="daisy-btn">Close</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script src="{% static 'management/manage-users/qualifications.js' %}"></script>
 {% endblock user_section %}
