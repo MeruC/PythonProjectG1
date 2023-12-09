@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', ()=>{
             option.text = country.name.common;
             selectDrop.appendChild(option);
         })
+    }).catch(err=>{
+        const option = document.createElement('option');
+        option.value = 'Unable to fetch countries';
+        option.text = 'Unable to fetch countries';
+        option.disabled = true;
+        option.selected = true;
+        selectDrop.appendChild(option);
+        console.log(err);
     })
     
 })
