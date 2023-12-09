@@ -52,6 +52,7 @@ class Alerts(models.Model):
     status = models.CharField(max_length=8, choices=STATUS_CHOICES,default='')
     action_user = models.CharField(max_length=220,default='',blank=True) #who trigger the action (fullname) can be person/company
     user = models.ForeignKey(User, on_delete=models.CASCADE) #the owner who will receive the notification
+    job = models.ForeignKey('jobsapp.Job', on_delete=models.CASCADE, null=True, blank=True, default='')
     application_status = models.CharField(max_length=10,choices=APPLICATION_STATUS,blank=True,default='',null=True)
     is_read = models.CharField(max_length=7,choices=NOTIF_STATUS,default='')
 
