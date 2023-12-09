@@ -9,9 +9,11 @@ from django.contrib import messages
 from .forms import JobForm
 from django.contrib.auth import get_user_model
 from apps.jobsapp.models import Job, Company
+from apps.accountapp.models import Alerts
 from django.utils import timezone as django_timezone
 from django.contrib.auth.decorators import login_required
 
+User = get_user_model()
 
 
 # render
@@ -243,7 +245,7 @@ def getWhereSuggestion(request):
 
     return JsonResponse({"success": True, "suggestions": list(suggestions)})
 
-User = get_user_model()
+
 
 # For adding or editing a job
 @login_required(login_url='/account/login/')
@@ -269,9 +271,35 @@ def postJob(request, job_id=0):
             job = Job.objects.get(pk=job_id)
             form = JobForm(request.POST, instance=job)
         if form.is_valid():
-            form.save()
+            new_job = form.save()
             
-            return redirect("../../job/jobListings")
+            # Identify users whose skills have at least one partial match with the posted job
+            job_skills = [skill.strip() for skill in new_job.skills.split(',')]
+            user_skill_query = Q()
+            for skill in job_skills:
+                user_skill_query |= Q(skills__contains=skill)
+
+            matching_users = User.objects.filter(user_skill_query)
+
+            # Create a notification for each matching user, if it doesn't already exist
+            for user in matching_users:
+                existing_alert = Alerts.objects.filter(
+                    notification="MatchSkill",
+                    action_user=request.user.get_full_name(),
+                    user=user,
+                    is_read='unread',
+                ).exists()
+
+                if not existing_alert:
+                    alert = Alerts(
+                        notification="MatchSkill",
+                        action_user=request.user.get_full_name(),
+                        user=user,
+                        is_read='unread',
+                    )
+                    alert.save()
+            
+            return redirect("../../company/jobListings")
         else:
             print(form.errors)
             template = "job_form.html"
@@ -286,7 +314,7 @@ def postJob(request, job_id=0):
 def deleteJob(request, job_id):
     job = Job.objects.get(pk=job_id)
     job.delete()
-    return redirect("../../job/jobListings")
+    return redirect("../../company/jobListings")
 
 # For displying all jobs listed by the company
 @login_required(login_url='/account/login/')

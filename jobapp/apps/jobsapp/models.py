@@ -4,8 +4,6 @@ import datetime as date
 from django.utils import timezone
 
 
-
-
 # company
 class Company(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # user id in account model
@@ -18,7 +16,7 @@ class Job(models.Model):
     STATUS_CHOICES = [("active", "Active"), ("inactive", "Inactive")]
     TYPE_CHOICES = [("fulltime", "Full-time"), ("parttime", "Part-time")]
     job_title = models.CharField(max_length=100)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True) # attributes null=True and blank=True are temporary
     description = models.TextField()
     # details = models.TextField()
     status = models.CharField(max_length=8, choices=STATUS_CHOICES)
@@ -42,3 +40,10 @@ class WorkExperience(models.Model):
     position = models.CharField(max_length=150)
     start_date = models.CharField(max_length=70)
     end_date = models.CharField(max_length=70)
+
+#
+class jobApplicant(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    date_applied = models.DateTimeField(default=timezone.now)
+    status = models.CharField(max_length=20, default="Pending")
