@@ -2,9 +2,18 @@ import re
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.db.models import Q
-
+from ..accountapp.views import hasUnreadNotif
 from ..profileapp.models import JobApplication
 from .models import Job
+from django.contrib import messages
+from .forms import JobForm
+from django.contrib.auth import get_user_model
+from apps.jobsapp.models import Job, Company
+from apps.accountapp.models import Alerts
+from django.utils import timezone as django_timezone
+from django.contrib.auth.decorators import login_required
+
+User = get_user_model()
 
 
 # render
@@ -17,7 +26,13 @@ def index(request):
             hasInfo = False
     else:
         hasInfo = False
-    return render(request, "index/base.html", {"hasInfo": hasInfo})
+        
+        
+    context = {
+        "hasInfo":hasInfo,
+        "hasUnreadNotif":hasUnreadNotif(request),
+    }
+    return render(request, "index/base.html", context)
 
 
 def jobDetails(request, jobId):
@@ -34,7 +49,6 @@ def jobDetails(request, jobId):
         if not Job.objects.filter(id=jobId).exists():
             return redirect("jobsapp:index")
     return render(request, "jobDetails.html", {"hasInfo": hasInfo})
-
 
 # async (views used in ajax call )
 def getJobList(request):
@@ -229,3 +243,84 @@ def getWhereSuggestion(request):
             suggestions.add(suggestion)
 
     return JsonResponse({"success": True, "suggestions": list(suggestions)})
+
+
+
+# For adding or editing a job
+@login_required(login_url='/account/login/')
+def postJob(request, job_id=0):
+    if request.method == "GET":
+        if job_id == 0:
+            template = "job_form.html"
+            form = JobForm()
+            context = {
+                "form": form
+            }
+        else:
+            template = "job_form.html"
+            job = Job.objects.get(pk=job_id)
+            form = JobForm(instance=job)
+            context = {
+                "form": form
+            }
+    else:
+        if job_id == 0:
+            form = JobForm(request.POST)
+        else:
+            job = Job.objects.get(pk=job_id)
+            form = JobForm(request.POST, instance=job)
+        if form.is_valid():
+            new_job = form.save()
+            
+            # Identify users whose skills have at least one partial match with the posted job
+            job_skills = [skill.strip() for skill in new_job.skills.split(',')]
+            user_skill_query = Q()
+            for skill in job_skills:
+                user_skill_query |= Q(skills__contains=skill)
+
+            matching_users = User.objects.filter(user_skill_query)
+
+            # Create a notification for each matching user, if it doesn't already exist
+            for user in matching_users:
+                existing_alert = Alerts.objects.filter(
+                    notification="MatchSkill",
+                    action_user=request.user.get_full_name(),
+                    user=user,
+                    is_read='unread',
+                ).exists()
+
+                if not existing_alert:
+                    alert = Alerts(
+                        notification="MatchSkill",
+                        action_user=request.user.get_full_name(),
+                        user=user,
+                        is_read='unread',
+                    )
+                    alert.save()
+            
+            return redirect("../../company/jobListings")
+        else:
+            print(form.errors)
+            template = "job_form.html"
+            context = {
+                "form": form
+            }
+        
+    return render(request, template, context)
+
+# For Job Deletion
+@login_required(login_url='/account/login/')
+def deleteJob(request, job_id):
+    job = Job.objects.get(pk=job_id)
+    job.delete()
+    return redirect("../../company/jobListings")
+
+# For displying all jobs listed by the company
+@login_required(login_url='/account/login/')
+def listJob(request):
+    template = "job_listings.html"
+    context = {
+        "job_list": Job.objects.all()
+    }
+    return render(request, template, context)
+

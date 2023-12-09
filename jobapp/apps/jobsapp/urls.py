@@ -25,4 +25,8 @@ urlpatterns = [
         views.getWhereSuggestion,
         name="getWhereSuggestion",
     ),
+    path("postJob/", views.postJob, name="postJob"),                       # get and post req. for job posting operation
+    path("editJob/<int:job_id>/", views.postJob, name="editJob"),          # get and post req. for job editing operation
+    path("deleteJob/<int:job_id>/", views.deleteJob, name="deleteJob"),    # get and post req. for job deleting operation
+    path("jobListings/", views.listJob, name="jobListings"),                   # for company (viewing of listed jobs - active and inactive)
 ]

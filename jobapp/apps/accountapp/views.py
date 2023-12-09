@@ -1,6 +1,7 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
-
+from .models import Alerts
 from django.contrib.auth import login, logout
 
 from django.contrib import messages
@@ -81,3 +82,24 @@ def Login(request):
 def Logout(request):
     logout(request)
     return redirect("accountapp:login")
+
+
+
+# ----------------- notification -----------
+MAX_LIMIT = 20
+def Notification(request, offset):
+    user_id = request.user.id #current user
+    
+    #offset with max to 20 notif
+    limit = offset + MAX_LIMIT
+    notifications = Alerts.objects.filter(user_id=user_id).order_by("-timestamp")[offset:limit].values()
+    notification_list = list(notifications)
+    return JsonResponse(notification_list, safe=False)
+
+# ------------------ check user notification unread ---------
+def hasUnreadNotif(request):
+    #check for unread notification
+    query = Alerts.objects.filter(user=request.user,is_read="unread").count()
+    
+    hasUnread = query>0 #check if it has unread
+    return hasUnread
