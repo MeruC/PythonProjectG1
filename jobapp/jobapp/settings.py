@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "apps.jobsapp.apps.JobsappConfig",
     "apps.profileapp.apps.ProfileappConfig",
     "apps.management.apps.ManagementConfig",
+    "apps.companyapp.apps.CompanyappConfig",
     # EXTRAS / LIB
     "tailwind",
     "theme",
@@ -78,6 +79,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, "apps/accountapp/templates"),
             os.path.join(BASE_DIR, "apps/jobsapp/templates"),
             os.path.join(BASE_DIR, "apps/profileapp/templates"),
+            os.path.join(BASE_DIR, "apps/companyapp/templates"),
             # JOIN GENERAL TEMPLATES
             os.path.join(BASE_DIR, "templates"),
         ],

@@ -8,6 +8,11 @@ class Company(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # user id in account model
     company_name = models.CharField(max_length=80)
     description = models.TextField()
+    # TODO:
+    # add company_city
+    # add company_country
+    # add logo
+    # add cover_photo
 
 
 # job
@@ -19,7 +24,6 @@ class Job(models.Model):
     description = models.TextField()
     # details = models.TextField()
     status = models.CharField(max_length=8, choices=STATUS_CHOICES)
-    type = models.CharField(max_length=9, choices=TYPE_CHOICES)
     type = models.CharField(max_length=9, choices=TYPE_CHOICES)
 
     # temporarily set fields to null=True

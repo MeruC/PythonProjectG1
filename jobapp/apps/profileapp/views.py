@@ -8,7 +8,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from apps.jobsapp.models import WorkExperience
 from apps.accountapp.models import Education, User
 from django.core.exceptions import ValidationError
-
+from ..accountapp.views import hasUnreadNotif
+from django.contrib.auth import logout
 
 #retrieve current user data
 def get_user_data(request):
@@ -76,6 +77,7 @@ def index(request):
         "education_data":education,
         "password_form":password_form,
         "skill_form":skill_form,
+        "hasUnreadNotif":hasUnreadNotif(request)
         }
     
     return render(request, template, context)
@@ -260,3 +262,45 @@ def delete_education(request,id):
     return redirect('profileapp:index')
 
 
+# ===== Skill Deletion
+def delete_skill(request,skill):
+    current_ID = request.user.id
+    user_skill = User.objects.get(id=current_ID)
+    skills_arr = formatted_skill(user_skill.skills) # format the string into array
+    
+    skills_arr.remove(skill) # remove specific item in the list
+    updated_skill = ",".join(skills_arr)
+    
+    User.objects.filter(id=current_ID).update(skills=updated_skill) #update the skill data
+    return redirect('profileapp:index')
+
+
+#===========Check if the newly added skill is already existing
+def isSkillAvailable(request,skill):
+    if request.method == 'POST':
+        try:
+            user_obj = User.objects.get(id=request.user.id)
+            current_skill = formatted_skill(user_obj.skills) #format into list
+            isAvailable = True if skill in current_skill else False
+                
+            return JsonResponse({'status':200,'isAvailable':isAvailable})
+        except:
+            messages.error(request,'Education update failed')
+            return redirect('profileapp:index')
+        
+    
+    return redirect('profileapp:index')
+
+
+# deactivate account
+def DeactivateAccount(request):
+    if request.method == "POST":
+        current_id = request.user.id
+        User.objects.filter(id=current_id).update(is_deactivated = True)
+        messages.success(request,"Account successfully deactivated")
+        
+        #direct logout
+        logout(request)
+        return redirect("accountapp:login")
+    
+    return redirect("profileapp:index")

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.accountapp.models import User, Education
+from apps.accountapp.models import User, Education,Alerts
 from apps.jobsapp.models import WorkExperience
 from django.contrib.auth.admin import UserAdmin
 
@@ -40,6 +40,7 @@ class CustomUserAdmin(UserAdmin):
                     "profile_summary",
                     "profile_img",
                     "skills",
+                    "is_deactivated",
                 )
             },
         ),
@@ -92,3 +93,11 @@ class EducationAdmin(admin.ModelAdmin):
         "ended_year",
     ]
 admin.site.register(Education, EducationAdmin)
+
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = [
+        'notification','timestamp','status','action_user',
+            'user','application_status','is_read'
+    ]
+    
+admin.site.register(Alerts,NotificationAdmin)

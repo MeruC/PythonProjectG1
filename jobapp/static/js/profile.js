@@ -45,7 +45,7 @@ function deleteWork(id,element) {
     // confirmation dialog
     Swal.fire({
         title: 'Delete!',
-        text: 'This is a SweetAlert dialog.',
+        text: 'Are you sure you want to delete this work?',
         icon: 'error',
         confirmButtonText: 'Delete',
         confirmButtonColor: '#EF5350',
@@ -70,7 +70,7 @@ function deleteEducation(id,element){
     // confirmation dialog
     Swal.fire({
         title: 'Delete!',
-        text: 'This is a SweetAlert dialog.',
+        text: 'Are you sure you want to delete this education?',
         icon: 'error',
         confirmButtonText: 'Delete',
         confirmButtonColor: '#EF5350',
@@ -142,6 +142,27 @@ $(document).ready(function(){
              $('.strong-msg-pass').addClass('hidden')
              $('.weak-msg-pass').removeClass('hidden')
         }
+    })
+
+
+    // check the skill first
+    $('#submit-skill').on('click',function(){
+        const new_skill = $('input[name="skills"]').val().trim()
+        const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value; //make the request POST secured
+        const URL = `/profile/checkskill/${new_skill}/`; //link for views for deletion
+
+        fetch(URL,{
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'X-CSRFToken': csrfToken
+            }
+        }).then(data=>{return data.json()})
+        .then(data=>{
+            // assess the returned checking for newly_added skill
+            if(data.status === 200 && !data.isAvailable) $('#skill-form').submit() //add the new skill
+            else $('.msg-skill-error').removeClass('hidden')
+        })
     })
 })
 
@@ -299,4 +320,19 @@ function updateEducation(id){
             location.reload()
         }
     })
+}
+
+
+function toggleDeactivateModal(){
+    Swal.fire({
+        title: 'Deactivate Account?',
+        text: 'This action prevents you from logging in. Only the administrator will be able to activate this account. Are you sure you want to continue?',
+        icon: 'error',
+        confirmButtonText: 'Delete',
+        confirmButtonColor: '#EF5350',
+        showCancelButton: true,
+        showCloseButton: true
+      }).then(result=>{
+        if(result.isConfirmed)$('#deact-form').submit()
+      })
 }
