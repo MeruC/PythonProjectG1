@@ -45,7 +45,7 @@ function deleteWork(id,element) {
     // confirmation dialog
     Swal.fire({
         title: 'Delete!',
-        text: 'This is a SweetAlert dialog.',
+        text: 'Are you sure you want to delete this work?',
         icon: 'error',
         confirmButtonText: 'Delete',
         confirmButtonColor: '#EF5350',
@@ -70,7 +70,7 @@ function deleteEducation(id,element){
     // confirmation dialog
     Swal.fire({
         title: 'Delete!',
-        text: 'This is a SweetAlert dialog.',
+        text: 'Are you sure you want to delete this education?',
         icon: 'error',
         confirmButtonText: 'Delete',
         confirmButtonColor: '#EF5350',
@@ -320,4 +320,19 @@ function updateEducation(id){
             location.reload()
         }
     })
+}
+
+
+function toggleDeactivateModal(){
+    Swal.fire({
+        title: 'Deactivate Account?',
+        text: 'This action prevents you from logging in. Only the administrator will be able to activate this account. Are you sure you want to continue?',
+        icon: 'error',
+        confirmButtonText: 'Delete',
+        confirmButtonColor: '#EF5350',
+        showCancelButton: true,
+        showCloseButton: true
+      }).then(result=>{
+        if(result.isConfirmed)$('#deact-form').submit()
+      })
 }

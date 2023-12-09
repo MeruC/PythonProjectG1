@@ -204,6 +204,18 @@
 
             </form>
 
+            <div>
+              <h2 class="text-lg font-bold">Account Settings</h2>
+              <label for="" class="text-red-400 text-lg font-bold">Deactivate Account</label>
+              <form id="deact-form" method="POST" action="{% url 'profileapp:deactAccount' %}">
+                {% csrf_token %}
+                <p>This action will make your account <span class="text-red-400 font-semibold">temporarily disabled.</span></p>
+                <button type="button" class="px-3 py-2 rounded-md border-2 border-red-500 mt-5 text-red-500 hover:bg-red-500 hover:text-white" onclick="toggleDeactivateModal()">Deactivate Account</button>
+
+                <button type="submit" class="hidden"></button>
+              </form>
+            </div>
+
           </div>
         </div>
       </main>

@@ -9,7 +9,7 @@ from apps.jobsapp.models import WorkExperience
 from apps.accountapp.models import Education, User
 from django.core.exceptions import ValidationError
 from ..accountapp.views import hasUnreadNotif
-
+from django.contrib.auth import logout
 
 #retrieve current user data
 def get_user_data(request):
@@ -290,3 +290,17 @@ def isSkillAvailable(request,skill):
         
     
     return redirect('profileapp:index')
+
+
+# deactivate account
+def DeactivateAccount(request):
+    if request.method == "POST":
+        current_id = request.user.id
+        User.objects.filter(id=current_id).update(is_deactivated = True)
+        messages.success(request,"Account successfully deactivated")
+        
+        #direct logout
+        logout(request)
+        return redirect("accountapp:login")
+    
+    return redirect("profileapp:index")
