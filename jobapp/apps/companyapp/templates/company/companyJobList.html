@@ -1,0 +1,35 @@
+{% extends "base.html" %} 
+{% load static %}
+{% block title %}Job Lists{% endblock title %}
+{% block content %}
+{% include "navbar.html" %}
+<div class="bg-[#F1F8F9] min-h-screen w-full flex flex-col">
+  <div class="grow flex flex-row">
+    {% comment %} SIDEBAR {% endcomment %}
+    <div class="w-[300px] bg-white shadow">
+      {% comment %} COMPANY INFO {% endcomment %}
+      <div class="w-max mx-auto my-5 flex flex-row items-center gap-2 ">
+        <div class="w-12 h-12 p-1 rounded-full border-2">
+          {% comment %} TODO: Insert company logo {% endcomment %}
+          <img src="https://img.logoipsum.com/296.svg" class="w-full h-full object-contain object-center" alt="logo" />
+        </div>
+        <div class="grow">
+          <h4 class="font-semibold">Tech Innovations Co.</h4>
+          <p class="text-sm text-gray-500">owner@techinnovate.com</p>
+        </div>
+      </div>
+      {% comment %} END COMPANY INFO {% endcomment %}
+      <hr>
+      {% comment %} NAVIGATION {% endcomment %}
+      <ul class="mt-5 flex flex-col gap-1 font-semibold">
+        <li class="pl-10 py-2 border-l-2 border-secondary text-secondary "><i class="fa-solid fa-briefcase mr-3"></i><a href="{% url 'companyapp:companyJobList' %}">Job Listings</a></li>
+        <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100"><i class="fa-solid fa-user-tie mr-3"></i><a href="#">Applicants</a></li>
+        <li class="pl-10 py-2  text-gray-500 hover:text-black transition-all duration-100"><i class="fa-solid fa-gear mr-3"></i><a href="{% url "companyapp:companyProfileSettings" %}">Company Settings</a></li>
+      </ul>
+    </div>
+    {% comment %} CONTENT {% endcomment %}
+    <div class="grow overflow-auto p-10">
+    </div>
+  </div>
+</div>
+{% endblock content %}
