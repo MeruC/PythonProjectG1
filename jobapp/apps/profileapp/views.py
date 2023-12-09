@@ -316,6 +316,8 @@ def resume(request):
     
     pdf = FPDF('P', 'mm', 'A4')
     
+    #Auto Page Break
+    pdf.set_auto_page_break(auto=True, margin= 15)
     #Add Page
     pdf.add_page()
     
@@ -348,6 +350,7 @@ def resume(request):
     pdf.multi_cell(0, 5, desc, align="J")
 
     ##Work Experience
+    pdf.cell(1,48,"")
     pdf.cell(0, 8, "", ln=True)
     pdf.set_font('helvetica', 'B', 20)
     pdf.set_text_color(97,178,113)
@@ -360,9 +363,10 @@ def resume(request):
     pdf.cell(0, 4, "", ln=True)
 
     work_experiences = get_user_work_experience(request)
-    last_element = work_experiences[len(work_experiences)-1]
+    last_work = work_experiences[len(work_experiences)-1]
     
     for work in work_experiences:
+        pdf.cell(1,48,"")
         pdf.set_font('helvetica', '', 18)
         pdf.set_text_color(0, 0, 0)
         pdf.cell(0, 8, work.work_title, ln=True)
@@ -376,12 +380,11 @@ def resume(request):
         pdf.cell(10, 8, "")
         pdf.cell(40, 8, date, ln=True)
         pdf.set_text_color(50, 50, 50)
-        if (work != last_element):
+        if (work != last_work):
             pdf.cell(0, 8, "--------------------------------------------------------------------------------------------------------------------------------------", ln=True, align="C")
-    #pdf.cell(40, 8, exp.position, ln=True)
-    #for works in exp:
         
     ##Education
+    pdf.cell(1,48,"")
     pdf.cell(0, 8, "", ln=True)
     pdf.set_font('helvetica', 'B', 20)
     pdf.set_text_color(97,178,113)
@@ -392,6 +395,65 @@ def resume(request):
     pdf.set_fill_color(0, 0, 0)
     pdf.cell(190, 0.5, "", ln=True, fill=True)
     pdf.cell(0, 4, "", ln=True)
+    
+    education = get_user_education(request)
+    last_education = education[len(education)-1]
+    
+    for edu in education:
+        pdf.cell(1,48,"")
+        pdf.set_font('helvetica', '', 18)
+        pdf.set_text_color(0, 0, 0)
+        pdf.cell(100, 8, edu.school_name, ln=True)
+        
+        pdf.set_font('helvetica', '', 14)
+        pdf.set_text_color(97,178,113)
+        date = str(edu.started_year) + " to " + str(edu.ended_year)
+        pdf.cell(10, 8, "")
+        pdf.cell(32, 8, date)
+        pdf.set_text_color(0,0,0)
+        pdf.cell(5, 8, "|")
+        pdf.cell(40, 8, edu.get_education_level_display(), ln=True)
+  
+        pdf.set_text_color(0,0,0)
+        pdf.set_font('helvetica', '', 12)
+        #pdf.cell(10, 8, "")
+        
+        pdf.cell(10, 8, "")
+        pdf.cell(40, 8, edu.course, ln=True)
+        pdf.set_text_color(50, 50, 50)
+        if (edu != last_education):
+            pdf.cell(0, 8, "--------------------------------------------------------------------------------------------------------------------------------------", ln=True, align="C")
+
+    ##Skills
+    pdf.cell(1,48,"")
+    pdf.cell(0, 8, "", ln=True)
+    pdf.set_font('helvetica', 'B', 20)
+    pdf.set_text_color(97,178,113)
+    pdf.cell(0, 5, "Skills", ln=True)
+
+    #Line Break
+    pdf.cell(0, 4, "", ln=True)
+    pdf.set_fill_color(0, 0, 0)
+    pdf.cell(190, 0.5, "", ln=True, fill=True)
+    pdf.cell(0, 4, "", ln=True)
+    
+    for work in work_experiences:
+        pdf.cell(1,48,"")
+        pdf.set_font('helvetica', '', 18)
+        pdf.set_text_color(0, 0, 0)
+        pdf.cell(0, 8, work.work_title, ln=True)
+        pdf.cell(10, 8, "")
+        pdf.set_font('helvetica', '', 14)
+        pdf.set_text_color(97,178,113)
+        pdf.cell(40, 8, work.company_name, ln=True)
+        pdf.set_font('helvetica', '', 12)
+        pdf.set_text_color(0, 0, 0)
+        date = work.start_date + " to " + work.end_date
+        pdf.cell(10, 8, "")
+        pdf.cell(40, 8, date, ln=True)
+        pdf.set_text_color(50, 50, 50)
+        if (work != last_work):
+            pdf.cell(0, 8, "--------------------------------------------------------------------------------------------------------------------------------------", ln=True, align="C")
 
     return HttpResponse(bytes(pdf.output()), content_type="application/pdf")
     
