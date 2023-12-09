@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "theme",
     "django_browser_reload",
     "django.contrib.humanize",
+    "ckeditor",
 ]
 
 TAILWIND_APP_NAME = "theme"
@@ -165,3 +166,5 @@ MESSAGE_TAGS = {
 }
 
 AUTH_USER_MODEL = "accountapp.User"
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
