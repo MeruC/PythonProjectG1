@@ -26,3 +26,8 @@ def companyProfileSettings(request):
     # - User must be the owner of the company to view this page
     # - If user doesn't have a company, redirect to createCompany
     return render(request, "company/companySettings.html")
+def createJob(request):
+    # TODO
+    # - User must be the owner of the company to view this page
+    # - If user doesn't have a company, redirect to createCompany
+    return render(request, "company/createJob.html")
