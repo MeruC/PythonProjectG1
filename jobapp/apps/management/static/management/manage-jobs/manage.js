@@ -3,15 +3,16 @@ console.log("loaded managejobs.js!");
 $(document).ready(function() {
     const jobsTable = $('#jobsTable').DataTable({
         dom: 'Bfrtip',
-        // "columnDefs": [
-        //     { "width": "30%", "targets": 0 },
-        //     { "width": "30%", "targets": 1 },
-        //     { "width": "20%", "targets": 2 },
-        //     { "width": "15%", "targets": 3 },
-        //     { "width": "10%", "targets": 4 },
-        //     { "width": "5%", "targets": 5 },
+        "autoWidth": false,
+        "columnDefs": [
+            { "width": "30%", "targets": 0 },
+            { "width": "30%", "targets": 1 },
+            { "width": "20%", "targets": 2 },
+            { "width": "15%", "targets": 3 },
+            { "width": "10%", "targets": 4 },
+            { "width": "5%", "targets": 5 },
           
-        //   ],
+          ],
         buttons: [
           {
               extend: 'pdf',
@@ -19,7 +20,7 @@ $(document).ready(function() {
                 columns: [ 0, 1,2,3,4 ]
               },
           
-              title: 'Job Listing Report',
+              title: 'List of Jobs',
               customize: function (doc) {
                 // change table header background color
                 doc.content[1].table.headerRows = 1;

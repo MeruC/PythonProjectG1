@@ -3,15 +3,16 @@ console.log("loaded managecompanies.js!");
 $(document).ready(function() {
     const companiesTable = $('#companiesTable').DataTable({
         dom: 'Bfrtip',
-        // "columnDefs": [
-        //   { "width": "5%", "targets": 0 },
-        //   { "width": "25%", "targets": 1 },
-        //   { "width": "25%", "targets": 2 },
-        //   { "width": "15%", "targets": 3 },
-        //   { "width": "15%", "targets": 4 },
-        //   { "width": "10%", "targets": 5 },
-        //   { "width": "5%", "targets": 6 }
-        // ],
+        "autoWidth": false,
+        "columnDefs": [
+          { "width": "5%", "targets": 0 },
+          { "width": "25%", "targets": 1 },
+          { "width": "25%", "targets": 2 },
+          { "width": "15%", "targets": 3 },
+          { "width": "15%", "targets": 4 },
+          { "width": "10%", "targets": 5 },
+          { "width": "5%", "targets": 6 }
+        ],
         buttons: [
           {
               extend: 'pdf',
@@ -20,7 +21,7 @@ $(document).ready(function() {
                 columns: [  1,2,3,4,5 ],
               },
              
-              title: 'Companies Report',
+              title: 'List of Company',
               customize: function (doc) {
                 // change table header background color
                 doc.content[1].table.headerRows = 1;
