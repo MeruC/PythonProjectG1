@@ -12,6 +12,7 @@ urlpatterns = [
     path("myCompany/jobListings/createJob", views.createJob, name="createJob"),
     path("myCompany/jobListings/editJob/<int:job_id>/", views.createJob, name="editJob"),
     path("myCompany/jobListings/deleteJob/<int:job_id>/", views.deleteJob, name="deleteJob"),
+    path("myCompany/jobListings/jobApplicants/<int:job_id>/", views.jobApplicants, name="jobApplicants"),
     path("myCompany/applicants", views.companyApplicants, name="companyApplicants"),
     path("myCompany/", views.companyProfileSettings, name="companyProfileSettings")
 ]
