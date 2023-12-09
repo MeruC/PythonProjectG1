@@ -2,7 +2,7 @@ import re
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.db.models import Q
-
+from ..accountapp.views import hasUnreadNotif
 from ..profileapp.models import JobApplication
 from .models import Job
 
@@ -17,7 +17,13 @@ def index(request):
             hasInfo = False
     else:
         hasInfo = False
-    return render(request, "index/base.html", {"hasInfo": hasInfo})
+        
+        
+    context = {
+        "hasInfo":hasInfo,
+        "hasUnreadNotif":hasUnreadNotif(request),
+    }
+    return render(request, "index/base.html", context)
 
 
 def jobDetails(request, jobId):
