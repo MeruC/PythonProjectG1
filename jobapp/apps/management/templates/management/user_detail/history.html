@@ -3,7 +3,7 @@
 {% block user_section %}
     {% include "management/messages.html" %}
     <h1>Recent Applications</h1>
-    <table class="daisy-table daisy-table-zebra ">
+    <table class="daisy-table daisy-table-zebra " id="history-table">
         <thead class="bg-primary">
             <tr>
                 <th>Job Title</th>
@@ -32,5 +32,5 @@
         </tbody>
         <h2 class="text-2xl font-bold text-accent bg-yellow-300">TODO No data yet</h2>
     </table>
-    <script src="{% static 'management/manage-users/manage.js' %}"></script>
+    <script src="{% static 'management/manage-users/history.js' %}"></script>
 {% endblock user_section %}

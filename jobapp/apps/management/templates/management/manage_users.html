@@ -8,15 +8,7 @@
     {% include "management/messages.html" %}
     {% comment %} Use datatable  {% endcomment %}
     <div class="container mx-auto">
-        <div class="flex justify-end">
-            <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-4"></i>
-                <input type="search"
-                       placeholder="Type here"
-                       class="daisy-input w-full max-w-xs pl-12" />
-            </div>
-        </div>
-        <table class="daisy-tabl px-12 w-full">
+        <table class="daisy-tabl px-12 w-full" id="user-table">
             <thead class="bg-[#DFFFCB] ">
                 <tr>
                     <th class="font-bold text-center py-2">Name</th>
@@ -29,23 +21,22 @@
                 {% for user in users %}
                     <tr>
                         <td>
-                                <div class="flex flex-row gap-2">
-                                    <div class="daisy-avatar ">
-                                        <div class="w-10 h-10 rounded-full bg-slate-600 ">
-                                            {% if user.profile_img %}
-                                                <img width="40px"
-                                                     height="40px"
-                                                     src="{{ user.profile_img.url }}"
-                                                     alt="profile image of the user">
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <p>{{ user.first_name|title }}  {{ user.last_name|title }}</p>
-                                        <p>{{ user.email }}</p>
+                            <div class="flex flex-row gap-2">
+                                <div class="daisy-avatar ">
+                                    <div class="w-10 h-10 rounded-full bg-slate-600 ">
+                                        {% if user.profile_img %}
+                                            <img width="40px"
+                                                 height="40px"
+                                                 src="{{ user.profile_img.url }}"
+                                                 alt="profile image of the user">
+                                        {% endif %}
                                     </div>
                                 </div>
-                            
+                                <div>
+                                    <p>{{ user.first_name|title }}  {{ user.last_name|title }}</p>
+                                    <p>{{ user.email }}</p>
+                                </div>
+                            </div>
                         </td>
                         <td>{{ user.contact_number|default:"No Contact" }}</td>
                         <td>
@@ -65,8 +56,8 @@
                         </td>
                         <td>
                             <div class="flex flex-wrap gap-4">
-                                <a href="{% url 'managementapp:user_detail' user.id %}" class="hover:bg-primary">
-
+                                <a href="{% url 'managementapp:user_detail' user.id %}"
+                                   class="hover:bg-primary">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </a>
                                 <a href=""><i class="fa-solid fa-trash-can"></i></a>
