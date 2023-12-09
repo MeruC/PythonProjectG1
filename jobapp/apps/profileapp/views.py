@@ -21,7 +21,7 @@ def get_user_data(request):
         "last_name": request.user.last_name,
         "profile_summary": request.user.profile_summary,
         "profile_img": request.user.profile_img,
-        "skills":formatted_skill(request.user.skills)
+        "skills":formatted_skill(request.user.skills) if request.user.skills else []
     }
    
 # retrieve all the work experience of user
