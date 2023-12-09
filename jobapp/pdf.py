@@ -67,7 +67,7 @@ pdf.cell(190, 0.5, "", ln=True, fill=True)
 pdf.cell(0, 4, "", ln=True)
 
 #Works
-for i in range(3):
+for i in range(2):
     pdf.set_font('helvetica', '', 18)
     pdf.set_text_color(0, 0, 0)
     pdf.cell(0, 8, exp.title, ln=True)
@@ -81,9 +81,21 @@ for i in range(3):
     pdf.cell(10, 8, "")
     pdf.cell(40, 8, date, ln=True)
     pdf.set_text_color(50, 50, 50)
-    pdf.cell(0, 8, "--------------------------------------------------------------------------------------------------------------------------------------", ln=True, align="J")
+    if(i != 1):
+        pdf.cell(0, 8, "--------------------------------------------------------------------------------------------------------------------------------------", ln=True, align="J")
 #pdf.cell(40, 8, exp.position, ln=True)
 #for works in exp:
     
+##Education
+pdf.cell(0, 8, "", ln=True)
+pdf.set_font('helvetica', 'B', 20)
+pdf.set_text_color(97,178,113)
+pdf.cell(0, 5, "Education", ln=True)
+
+#Line Break
+pdf.cell(0, 4, "", ln=True)
+pdf.set_fill_color(0, 0, 0)
+pdf.cell(190, 0.5, "", ln=True, fill=True)
+pdf.cell(0, 4, "", ln=True)
 
 pdf.output("pdf_1.pdf")
