@@ -24,14 +24,17 @@ def index(request):
             hasInfo = True
         else:
             hasInfo = False
-    else:
-        hasInfo = False
-        
-        
-    context = {
+        context = {
         "hasInfo":hasInfo,
         "hasUnreadNotif":hasUnreadNotif(request),
     }
+    else:
+        hasInfo = False
+        context = {
+        "hasInfo":hasInfo,
+    }
+        
+    
     return render(request, "index/base.html", context)
 
 
