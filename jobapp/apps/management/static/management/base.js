@@ -3,7 +3,7 @@
  */
 $(document).ready(function () {
   // handles the logout functionality
-  $("#logoutBtn").on("click", logout);
+ // $("#logoutBtn").on("click", logout);
 });
 
 function logout() {

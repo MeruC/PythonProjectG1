@@ -1,0 +1,59 @@
+{% extends "management/manage-jobs/job_sidebar.html" %} {% block job_section %}
+
+<form
+  method="post"
+  action="{% url 'managementapp:edit_job' job_id=job.id %}"
+  class="flex flex-col gap-3 w-full  pl-3 py-32 text-sm min-w-[600px]"
+>
+  {% csrf_token %}
+
+  <div>
+    <div>
+      Posted by:
+      <span class="font-bold underline">{{ job.company.company_name }}</span>
+    </div>
+    <div>Created in: {{ job.date_posted|date:"F d, Y" }}</div>
+  </div>
+  <div class="text-lg font-bold text-secondary mt-5" class="text-sm font-medium text-gray-900">Job Details</div>
+
+  <div class="form-group flex flex-col gap-1">
+    <label for="{{ form.job_title.id_for_label }}" class="text-sm font-medium text-gray-900">Job Title</label>
+    {{ form.job_title }} {% if form.errors.job_title %}
+    <div class="text-[13px] text-red-500">{{ form.errors.job_title}}</div>
+    {% endif %}
+  </div>
+
+  <div class="form-group flex flex-col gap-1">
+    <label for="{{ form.description.id_for_label }}" class="text-sm font-medium text-gray-900">Job Description</label>
+    {{ form.description }} {% if form.errors.description %}
+    <div class="text-[13px] text-red-500">
+      {{ form.errors.description}}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="form-group flex gap-5 w-full">
+    <div class="flex flex-col gap-1 md:w-1/3">
+      <label for="{{ form.type.id_for_label }}">Job Type</label>
+      {{ form.type }} {% if form.errors.type %}
+      <div class="text-[13px] text-red-500">{{ form.errors.type}}</div>
+      {% endif %}
+    </div>
+
+    <div class="flex flex-col gap-1l md:w-3/4">
+      <label for="{{ form.skills.id_for_label }}">Skills</label>
+      {{ form.skills }} {% if form.errors.skills %}
+      <div class="text-[13px] text-red-500">{{ form.errors.skills}}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <button
+    type="submit"
+    class="w-max mt-5 px-4 py-3 bg-secondary text-white rounded font-semibold"
+  >
+    Update Job Details
+  </button>
+</form>
+
+{% endblock job_section %}
