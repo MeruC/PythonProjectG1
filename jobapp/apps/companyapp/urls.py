@@ -7,7 +7,7 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("createCompany/", views.createCompany, name="createCompany"),
     # TODO: change this to dynamic url
-    path("companyId/", views.companyProfile, name="companyProfile"),
+    path("<int:company_id>/", views.companyProfile, name="companyProfile"),
     path("myCompany/jobListings", views.companyJobList, name="companyJobList"),
     path("myCompany/jobListings/createJob", views.createJob, name="createJob"),
     path("myCompany/jobListings/editJob/<int:job_id>/", views.createJob, name="editJob"),

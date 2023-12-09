@@ -46,7 +46,8 @@ def jobDetails(request, jobId):
 
         if not Job.objects.filter(id=jobId).exists():
             return redirect("jobsapp:index")
-    return render(request, "jobDetails.html", {"hasInfo": hasInfo})
+        company = Company.objects.get(id=Job.objects.get(id=jobId).company_id)
+    return render(request, "jobDetails.html", {"hasInfo": hasInfo, "company": company})
 
 # async (views used in ajax call )
 def getJobList(request):
