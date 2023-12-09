@@ -8,6 +8,11 @@ class Company(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # user id in account model
     company_name = models.CharField(max_length=80)
     description = models.TextField()
+    # TODO:
+    # add company_city
+    # add company_country
+    # add logo
+    # add cover_photo
 
 
 # job
