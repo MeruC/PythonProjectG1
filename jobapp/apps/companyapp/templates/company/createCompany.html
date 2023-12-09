@@ -17,7 +17,8 @@
         Make your company stand out in the competitive job market. Craft a compelling Company Profile to connect with top talent and build a team that shares your vision.
       </p>
     </div>
-    <form class="p-[50px] max-w-[1120px] w-full flex flex-col gap-5 bg-white rounded-md shadow">
+    <form method="post" action="{% url 'companyapp:createCompany' %}" class="p-[50px] max-w-[1120px] w-full flex flex-col gap-5 bg-white rounded-md shadow">
+      {% csrf_token %}
       <div>
         <i class="fa-solid fa-building text-2xl text-secondary"></i>        
         <h3 class="text-xl font-bold text-secondary">Company Details</h3>
@@ -36,13 +37,13 @@
       <div class="form-group grid grid-cols-1 gap-2 sm:grid-cols-2">
           <div class="form-group flex flex-col gap-1">
             <label for="company_country" class="text-sm font-medium text-gray-900">Country</label>
-            <select id="company_country" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary">
+            <select id="company_country" name="country" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary">
               <option disabled selected>Select a Country</option>
             </select>
           </div>
           <div class="flex flex-col gap-1">
-            <label for="company_city" class="text-sm font-medium text-gray-900">City</label>
-            <input type="text" id="company_city" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary" placeholder="City" />
+            <label for="city" class="text-sm font-medium text-gray-900">City</label>
+            <input type="text" name="city" id="city" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary" placeholder="City" />
           </div>
         </div>
       <div class="action">

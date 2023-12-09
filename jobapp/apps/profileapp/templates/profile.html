@@ -81,8 +81,8 @@
             <!-- display all the education of the current user -->
             <div class="flex justify-between items-start education_wrapper">
               <div>
-                <p class="text-lg font-medium">{{education.course}}</p>
-                <p class="font-medium">{{education.school_name}}</p>
+                <p class="text-lg">{{education.course}}</p>
+                <p>{{education.school_name}}</p>
                 <p class="text-sm text-gray-500">{{education.started_year}} - {{education.ended_year}}</p>
               </div>
 
@@ -108,8 +108,8 @@
             {% for experience in work_experiences %}
             <div class="flex justify-between items-start work_wrapper">
               <div class="py-2 border-b border-gray-300">
-                <p class="text-lg font-medium">{{experience.work_title}}</p>
-                <p class="font-medium">{{experience.company_name}}</p>
+                <p class="text-lg">{{experience.work_title}}</p>
+                <p>{{experience.company_name}}</p>
                 <p class="text-sm text-gray-500">{{experience.start_date}} - {{experience.end_date}}</p>
               </div>
 
@@ -196,11 +196,6 @@
                 {{form.contact_number}}
               </div>
               
-              <div class="flex justify-between items-center text-gray-400 mb-2">
-                <label for="">Password</label>
-                <span class="fa fa-edit hover:text-gray-500 cursor-pointer" onclick="togglePassModal()"></span>  
-              </div>
-              
               <div class="flex justify-end gap-2">
                 <button
                   class="bg-[#386641] py-2 px-3 transition duration-200 hover:bg-[#6a994e] rounded-sm text-white font-bold"
@@ -211,7 +206,11 @@
             </form>
 
             <div>
-              <h2 class="text-lg font-bold">Account Settings</h2>
+              <h2 class="text-lg font-bold py-2 border-b border-gray-300">Account Settings</h2>
+              <div class="flex justify-between items-center text-gray-400 mb-2 py-2">
+                <label for="">Change Password</label>
+                <span class="fa fa-edit hover:text-gray-500 cursor-pointer" onclick="togglePassModal()"></span>  
+              </div>
               <label for="" class="text-red-400 text-lg font-bold">Deactivate Account</label>
               <form id="deact-form" method="POST" action="{% url 'profileapp:deactAccount' %}">
                 {% csrf_token %}
