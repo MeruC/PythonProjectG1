@@ -22,7 +22,7 @@
 {% endblock metaData %}
 
 {% block content %}
-    <nav class="daisy-drawer lg:daisy-drawer-open bg-white " >
+    <nav class="daisy-drawer daisy-drawer-open bg-white overflow-auto min-w-screen min-h-screen" >
         
         <input id="my-drawer-2" type="checkbox" class="daisy-drawer-toggle" />
         <div class="daisy-drawer-content flex flex-col bg-[#F1F8F9]">
@@ -47,19 +47,19 @@
                         <span class="ml-2">Dashboard</span>
                     </a>
                 </li>
-                <li class="px-5 py-2 hover:text-secondary transition {% if request.resolver_match.view_name == 'managementapp:manage_users' %} text-secondary {% endif %}" style="border-left: 4px solid transparent; {% if request.resolver_match.view_name == 'managementapp:manage_users' %}border-color: #386641{% endif %}">
+                <li class="px-5 py-2 hover:text-secondary transition {% if  '/users/' in request.path %} text-secondary {% endif %}" style="border-left: 4px solid transparent; {% if  '/users/' in request.path %}border-color: #386641{% endif %}">
                     <a class="font-semibold" href="{% url 'managementapp:manage_users' %}">
                         <i class="fa-solid fa-user-group fa-md"></i>
                         <span class="ml-2">Users</span>
                     </a>
                 </li>
-                <li class="px-5 py-2 hover:text-secondary transition {% if request.resolver_match.view_name == 'managementapp:manage_companies' %} text-secondary {% endif %}" style=" border-left: 4px solid transparent; {% if request.resolver_match.view_name == 'managementapp:manage_companies' %}border-color: #386641{% endif %}">
+                <li class="px-5 py-2 hover:text-secondary transition {% if  '/companies/' in request.path %} text-secondary {% endif %}" style=" border-left: 4px solid transparent; {% if  '/companies/' in request.path %}border-color: #386641{% endif %}">
                     <a class="font-semibold" href="{% url 'managementapp:manage_companies' %}">
                         <i class="fa-regular fa-building fa-md"></i>
                         <span class="ml-2">Companies</span>
                     </a>
                 </li>
-                <li class="px-5 py-2 hover:text-secondary transition {% if request.resolver_match.view_name == 'managementapp:manage_jobs' %} text-secondary {% endif %}" style="border-left: 4px solid transparent; {% if request.resolver_match.view_name == 'managementapp:manage_jobs' %}border-color: #386641{% endif %}">
+                <li class="px-5 py-2 hover:text-secondary transition {% if  '/jobs/' in request.path %} text-secondary {% endif %}" style="border-left: 4px solid transparent; {% if  '/jobs/' in request.path %}border-color: #386641{% endif %}">
                     <a class="font-semibold" href="{% url 'managementapp:manage_jobs' %}">
                         <i class="fa-solid fa-briefcase fa-md"></i>
                         <span class="ml-2">Jobs</span>
