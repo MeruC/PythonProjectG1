@@ -75,8 +75,8 @@
             <!-- display all the education of the current user -->
             <div class="flex justify-between items-start education_wrapper">
               <div>
-                <p class="text-lg font-medium">{{education.course}}</p>
-                <p class="font-medium">{{education.school_name}}</p>
+                <p class="text-lg">{{education.course}}</p>
+                <p>{{education.school_name}}</p>
                 <p class="text-sm text-gray-500">{{education.started_year}} - {{education.ended_year}}</p>
               </div>
 
@@ -102,8 +102,8 @@
             {% for experience in work_experiences %}
             <div class="flex justify-between items-start work_wrapper">
               <div class="py-2 border-b border-gray-300">
-                <p class="text-lg font-medium">{{experience.work_title}}</p>
-                <p class="font-medium">{{experience.company_name}}</p>
+                <p class="text-lg">{{experience.work_title}}</p>
+                <p>{{experience.company_name}}</p>
                 <p class="text-sm text-gray-500">{{experience.start_date}} - {{experience.end_date}}</p>
               </div>
 
