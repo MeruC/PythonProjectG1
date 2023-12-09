@@ -20,7 +20,6 @@ class Job(models.Model):
     # details = models.TextField()
     status = models.CharField(max_length=8, choices=STATUS_CHOICES)
     type = models.CharField(max_length=9, choices=TYPE_CHOICES)
-    type = models.CharField(max_length=9, choices=TYPE_CHOICES)
 
     # temporarily set fields to null=True
     skills = models.TextField(null=True)
