@@ -9,7 +9,7 @@ class EditJobForm(forms.Form):
         max_length=100,
         widget=forms.TextInput(
             attrs={
-                "class": "w-full bg-[#F1F8F9] border-2 border-[#BABABA] px-2 py-1.5 mt-1 mb-1 rounded-md focus:outline-none focus:border-secondary",
+                "class": "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary",
                 "placeholder": "",
                 "autocomplete": "off",
                 "required": "true",
@@ -21,7 +21,7 @@ class EditJobForm(forms.Form):
     description = forms.CharField(
         widget=forms.Textarea(
             attrs={
-                "class": "w-full bg-[#F1F8F9] border-2 border-[#BABABA] px-2 py-1.5 mt-1 mb-1 rounded-md focus:outline-none focus:border-secondary",
+                "class": "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary",
                 "rows": 5,
                 "autocomplete": "off",
                 "required": "true",
@@ -35,7 +35,7 @@ class EditJobForm(forms.Form):
         choices=type_choices,
         widget=forms.Select(
             attrs={
-                "class": "w-full bg-[#F1F8F9] border-2 border-[#BABABA] px-2 py-1.5 mt-1 mb-1 rounded-md focus:outline-none focus:border-secondary",
+                "class": "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary",
             },
         ),
        
@@ -44,7 +44,7 @@ class EditJobForm(forms.Form):
     skills = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "class": "w-full bg-[#F1F8F9] border-2 border-[#BABABA] px-2 py-1.5 mt-1 mb-1 rounded-md focus:outline-none focus:border-secondary",
+                "class": "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary",
                 "autocomplete": "off",
                 "required": "true",
             },
@@ -63,7 +63,7 @@ class EditCompanyForm(forms.Form):
         max_length=100,
         widget=forms.TextInput(
             attrs={
-                "class": " w-full bg-[#F1F8F9] border-2 border-[#BABABA] px-2 py-1.5 mt-1 mb-1 rounded-md focus:outline-none focus:border-secondary",
+                "class": "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary",
                 "placeholder": "",
                 "autocomplete": "off",
                 "required": "true",
@@ -75,7 +75,7 @@ class EditCompanyForm(forms.Form):
     description = forms.CharField(
         widget=forms.Textarea(
             attrs={
-                "class": "w-full bg-[#F1F8F9] border-2 border-[#BABABA] px-2 py-1.5 mt-1 mb-1 rounded-md focus:outline-none focus:border-secondary",
+                "class": "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary",
                 "rows": 5,
                 "autocomplete": "off",
                 "required": "true",
@@ -84,29 +84,40 @@ class EditCompanyForm(forms.Form):
         
     )
 
-    company_img = forms.ImageField(required=False,
+    logo = forms.ImageField(required=False,
         widget=forms.FileInput(
             
             attrs={
                 "class": "hidden",
-                'id': 'company_img',
+                'id': 'logo',
              
             }
         ),
     )
 
 
-    location = forms.CharField(
+    country = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "class": "w-full bg-[#F1F8F9] border-2 border-[#BABABA] px-2 py-1.5 mt-1 mb-1 rounded-md focus:outline-none focus:border-secondary",
+                "class": "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary",
                 "autocomplete": "off",
                 "required": "true",
             },
         ),
         
     )
+    
+    city = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary",
+                "autocomplete": "off",
+                "required": "true",
+            },
+        ),
+    )
 
+    
     def clean(self):
         cleaned_data = super().clean()
        
@@ -116,11 +127,11 @@ class EditCompanyForm(forms.Form):
     
 class EditCompanyImageForm(forms.Form):
    
-    company_img = forms.ImageField(
+    logo = forms.ImageField(
         widget=forms.ClearableFileInput(
             attrs={
                 "class": "",
-                'id': 'company_img',
+                'id': 'logo',
                 "required": "false",
             }
         ),

@@ -3,6 +3,15 @@ console.log("loaded managecompanies.js!");
 $(document).ready(function() {
     const companiesTable = $('#companiesTable').DataTable({
         dom: 'Bfrtip',
+        // "columnDefs": [
+        //   { "width": "5%", "targets": 0 },
+        //   { "width": "25%", "targets": 1 },
+        //   { "width": "25%", "targets": 2 },
+        //   { "width": "15%", "targets": 3 },
+        //   { "width": "15%", "targets": 4 },
+        //   { "width": "10%", "targets": 5 },
+        //   { "width": "5%", "targets": 6 }
+        // ],
         buttons: [
           {
               extend: 'pdf',
@@ -74,7 +83,20 @@ $(document).ready(function() {
         companiesTable.search($(this).val()).draw();
     });
 
-    
+    document.getElementById('logo').addEventListener('change', function () {
+      console.log('changed');
+      var selectedFile = this.files[0];
+  
+      if (selectedFile) {
+          var reader = new FileReader();
+  
+          reader.onload = function (e) {
+              document.getElementById('img_settings').src = e.target.result;
+          };
+  
+          reader.readAsDataURL(selectedFile);
+      }
+  });
 });
 function companiesReport() {
 

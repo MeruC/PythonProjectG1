@@ -143,9 +143,10 @@ def edit_company(request, company_id):
             try:
                 company.company_name = form.cleaned_data['company_name']
                 company.description = form.cleaned_data['description']
-                company.location = form.cleaned_data['location']
-                if form.cleaned_data['company_img']:
-                    company.company_img = form.cleaned_data['company_img']
+                company.country = form.cleaned_data['country']
+                company.city = form.cleaned_data['city']
+                if form.cleaned_data['logo']:
+                    company.logo = form.cleaned_data['logo']
 
                 company.save()
                 messages.success(
@@ -159,8 +160,9 @@ def edit_company(request, company_id):
         form = EditCompanyForm(initial={
             'company_name': company.company_name,
             'description': company.description,
-            'location': company.location,
-            'company_img': company.company_img,
+            'country': company.country,
+            'city': company.city,
+            'logo': company.logo,
             
         })
         
@@ -180,7 +182,7 @@ def edit_company_image(request, company_id):
         form = EditCompanyImageForm(request.POST, request.FILES)
         if form.is_valid():
             try:
-                company.company_img = form.cleaned_data['company_img']
+                company.logo = form.cleaned_data['logo']
                 company.save()
             except Exception as e:
                 print(e)

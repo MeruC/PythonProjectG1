@@ -3,14 +3,12 @@
 {% load static %}
 <form
   method="post"
-  
-
-  class="flex flex-col gap-3 w-full  pl-3 py-32 text-[14px]"
+  class="flex flex-col gap-3 w-full  pl-3 py-32 min-w-[600px]"
   enctype="multipart/form-data"
 >
   {% csrf_token %}
 
-  <div>
+  <div class="text-sm">
     <div>
       Posted by:
       <span class="font-bold underline">{{ company.company_name }}</span>
@@ -21,20 +19,20 @@
 
 
   <div>
-  <div class="text-lg font-bold text-secondary mt-5" >Company Logo</div>
+  <div class="text-lg font-bold text-secondary mt-5 " >Company Logo</div>
   <div class="flex items-center gap-8 mt-8">
     <div class="w-44 h-44 rounded-full">
      
       <img class="w-full h-full object-cover rounded-full"
       id="img_settings"
-      src="{% if company.company_img %}{{ company.company_img.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
+      src="{% if company.logo %}{{ company.logo.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
       alt="">
   </div>
    
     <div>
   
-      <label for="{{ form.company_img.id_for_label }}" class="bg-[#E0E0E0] text-[#4E4E4E] p-2.5 px-5 rounded-lg cursor-pointer">Change Picture</label>
-      {{ form.company_img }}
+      <label for="{{ form.logo.id_for_label }}" class="bg-[#E0E0E0] text-[#4E4E4E] py-3 px-5 rounded cursor-pointer">Change Picture</label>
+      {{ form.logo }}
     
     </div>
   </div>
@@ -42,52 +40,46 @@
 <hr class="my-7 border-[#BABABA]">
 <div class="text-lg font-bold text-secondary">Company Details</div>
   
-<div class="">
-  <label for="{{ form.company_name.id_for_label }}">Company Name</label>
+<div class="form-group flex flex-col gap-1">
+  <label for="{{ form.company_name.id_for_label }}" class="text-sm font-medium text-gray-900">Company Name</label>
   {{ form.company_name }} {% if form.errors.company_name %}
   <div class="text-[13px] text-red-500 ">{{ form.errors.company_name}}</div>
   {% endif %}
 </div>
 
-<div>
-  <label for="{{ form.description.id_for_label }}">Company Description</label>
+<div  class="form-group flex flex-col gap-1">
+  <label for="{{ form.description.id_for_label }}" class="text-sm font-medium text-gray-900">Company Description</label>
   {{ form.description }} {% if form.errors.description %}
   <div class="text-[13px] text-red-500 ">
     {{ form.errors.description}}
   </div>
   {% endif %}
 </div>
-<div>
-  <label for="{{ form.location.id_for_label }}">Location</label>
-  {{ form.location }} {% if form.errors.location %}
-  <div class="text-[13px] text-red-500 ">
-    {{ form.errors.location}}
+<div class="form-group grid grid-cols-1 gap-2 sm:grid-cols-2">
+  <div class="form-group flex flex-col gap-1">
+    <label for="{{ form.country.id_for_label }}" class="text-sm font-medium text-gray-900">Country</label>
+    {{ form.country }} {% if form.errors.country %}
+    <div class="text-[13px] text-red-500 ">
+      {{ form.errors.country}}
+    </div>
+    {% endif %}
   </div>
-  {% endif %}
+  <div class="form-group flex flex-col gap-1">
+    <label for="{{ form.city.id_for_label }}" class="text-sm font-medium text-gray-900">City</label>
+    {{ form.city }} {% if form.errors.city %}
+    <div class="text-[13px] text-red-500 ">
+      {{ form.errors.city}}
+    </div>
+    {% endif %}
+  </div>
 </div>
 
   <button
     type="submit"
-    class="w-44 bg-secondary text-white p-2.5 font-semibold rounded-md mt-5"
+    class="w-max mt-5 px-4 py-3 bg-secondary text-white rounded font-semibold"
   >
     Update Company
   </button>
 </form>
-<script>
-  document.getElementById('company_img').addEventListener('change', function () {
-    console.log('changed');
-    var selectedFile = this.files[0];
 
-    if (selectedFile) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            document.getElementById('img_settings').src = e.target.result;
-        };
-
-        reader.readAsDataURL(selectedFile);
-    }
-});
-
-</script>
 {% endblock company_section %}

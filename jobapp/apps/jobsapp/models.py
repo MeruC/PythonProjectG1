@@ -8,8 +8,10 @@ class Company(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # user id in account model
     company_name = models.CharField(max_length=80)
     description = models.TextField()
-    company_img = models.ImageField(null=True, blank=True,upload_to="images/")
-    location = models.CharField(max_length=100,default='')
+    city = models.CharField(max_length=95,default='')
+    country = models.CharField(max_length=95,default='')
+    logo = models.ImageField(null=True, blank=True,upload_to="images/")
+    cover_photo = models.ImageField(null=True, blank=True,upload_to="images/")
     is_active = models.BooleanField(default=True)
 
 

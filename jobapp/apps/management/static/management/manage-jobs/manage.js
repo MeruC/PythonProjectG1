@@ -3,6 +3,15 @@ console.log("loaded managejobs.js!");
 $(document).ready(function() {
     const jobsTable = $('#jobsTable').DataTable({
         dom: 'Bfrtip',
+        // "columnDefs": [
+        //     { "width": "30%", "targets": 0 },
+        //     { "width": "30%", "targets": 1 },
+        //     { "width": "20%", "targets": 2 },
+        //     { "width": "15%", "targets": 3 },
+        //     { "width": "10%", "targets": 4 },
+        //     { "width": "5%", "targets": 5 },
+          
+        //   ],
         buttons: [
           {
               extend: 'pdf',

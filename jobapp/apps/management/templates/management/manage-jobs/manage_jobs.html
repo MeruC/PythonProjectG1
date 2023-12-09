@@ -24,22 +24,31 @@
 
 
 <link rel="stylesheet" href="{% static 'css/table.css' %}">
-<div class="min-h-screen overflow-y-auto mx-10">
-    <h1 class="py-24 text-2xl font-bold text-secondary">Manage Job Listings</h1>
- 
-    <div>
-        <div class="py-3 flex justify-end items-center gap-3">
-            <div class="relative w-80">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-400" ></i>
-                <input type="search"
-                       placeholder="Search"
-                       class="w-full rounded-md pl-12 border-none" id="jobsSearchField" 
-                       />
-                       
-            </div>
-            <button onClick="jobsReport()" class="py-2 px-5 bg-secondary text-white rounded-lg">Generate Report</button>
+
+<link rel="stylesheet" href="{% static 'css/table.css' %}" />
+<div class="bg-[#F1F8F9] min-h-screen w-full flex flex-col ">
+  <div class="grow flex flex-row">
+    <div class="grow overflow-auto p-10">
+      <h1 class="text-2xl font-bold text-secondary">Manage Job Listings</h1>
+      <hr class="mt-5" />
+      <section class="mt-10">
+
+        <div class="flex flex-row gap-3 justify-between mb-3">
+          <div class="relative w-80">
+            <i
+              class="fa-solid fa-search absolute left-4 top-3 text-gray-500"
+            ></i>
+            <input
+              type="search"
+              placeholder="Search"
+              class="w-full rounded pl-12 border-none focus:border-none focus:outline-none focus:ring-primary focus:border-primary resize-none"
+              id="jobsSearchField"
+              style=""
+            />
+          </div>
+          <button onClick="jobsReport()" class="py-2 px-5 bg-[#BC4749] text-white font-medium rounded">Generate Report</button>
         </div>
-     
+
         <table   id="jobsTable" class="row-border">
             <thead>
                 <tr >
@@ -70,13 +79,13 @@
                         <td>
                             <div class="daisy-badge gap-2   {% if job.status == 'active' %} daisy-badge-success bg-[#BCF09D]{% else %} daisy-badge-error bg-[#FF8F92] {% endif %}">
                             <div class="w-2 h-2 rounded-full {% if job.status == 'active' %} bg-[#386641] {% else %} bg-[#BC4749] {% endif %}"></div>
-                               <p class=" font-semibold  {% if job.status == 'active' %} text-[#386641] {% else %} text-[#BC4749]{% endif %}"> {% if job.status == 'active' %} Activate {% else %} Inactive {% endif %}</p>
+                               <p class=" font-semibold  {% if job.status == 'active' %} text-[#386641] {% else %} text-[#BC4749] {% endif %}"> {% if job.status == 'active' %} Active {% else %} Inactive {% endif %}</p>
                             </div>
                         </td>
                         <td>
                             <div class="flex flex-wrap gap-4 text-md">
-                                <i class="fa-regular fa-pen-to-square   text-gray-400 cursor-pointer hover:text-secondary" onclick="onEditJobHandler({{ job.id }})"></i>
-                                <i class="fa-solid fa-trash-can  text-gray-400 cursor-pointer hover:text-red-500" onclick="onDeleteJobHandler({{ job.id }}, '{{job.job_title}}')"></i>
+                                <i class="fa-regular fa-pen-to-square   text-gray-400 cursor-pointer transition hover:text-secondary" onclick="onEditJobHandler({{ job.id }})"></i>
+                                <i class="fa-solid fa-trash-can  text-gray-400 cursor-pointer transition hover:text-secondary" onclick="onDeleteJobHandler({{ job.id }}, '{{job.job_title}}')"></i>
                             </div>
                         </td>
                     </tr>
@@ -84,8 +93,9 @@
             </tbody>
             
         </table>
+      </section>
     </div>
+  </div>
 </div>
-
 
   {% endblock section %}

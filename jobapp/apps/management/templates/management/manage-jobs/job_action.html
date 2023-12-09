@@ -3,7 +3,7 @@
 <form
   method="post"
   action="{% url 'managementapp:action_job' job_id=job.id %}"
-  class="flex flex-col gap-2 w-full pl-3 py-32 text-[14px]"
+  class="flex flex-col gap-2 w-full pl-3 py-32 text-sm min-w-[300px]"
   id="job_action_form"
 >
   {% csrf_token %}
@@ -21,7 +21,7 @@
 
   <button
     type="button"
-    class="w-44 bg-transparent border-[#C5221F] text-[#C5221F] p-2 font-semibold rounded-md mt-3"
+    class="w-44 bg-transparent border-[#C5221F] text-[#C5221F] px-3 py-2 font-medium  rounded mt-3"
     style="border: 2px solid"
    onClick="onActionJobHandler(' {% if job.status == 'active' %} Delete {% else %} Activate {% endif %}', '{{ company.company_name|safe }}');"
 
