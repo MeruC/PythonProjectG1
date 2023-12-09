@@ -29,8 +29,6 @@ class Job(models.Model):
 
     # temporarily set fields to null=True
     skills = models.TextField(null=True)
-    city = models.CharField(max_length=100, null=True)
-    country = models.CharField(max_length=100, null=True)
 
     max_salary = models.IntegerField(null=True)
     min_salary = models.IntegerField(null=True)
