@@ -30,7 +30,7 @@ def index(request):
         
     context = {
         "hasInfo":hasInfo,
-       
+        "hasUnreadNotif":hasUnreadNotif(request),
     }
     return render(request, "index/base.html", context)
 
