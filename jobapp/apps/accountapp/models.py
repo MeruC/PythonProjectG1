@@ -49,6 +49,7 @@ class Alerts(models.Model):
     
     # ------------fields ----------------
     notification = models.CharField(max_length=18,choices=NOTIF_ACTION,default='')
+    message = models.CharField(max_length=220, default='')
     timestamp = models.DateTimeField(default=datetime.today)
     status = models.CharField(max_length=8, choices=STATUS_CHOICES,default='')
     action_user = models.CharField(max_length=220,default='',blank=True) #who trigger the action (fullname) can be person/company

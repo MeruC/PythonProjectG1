@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "django_browser_reload",
     "django.contrib.humanize",
     "ckeditor",
+    "django_countries",
 ]
 
 TAILWIND_APP_NAME = "theme"

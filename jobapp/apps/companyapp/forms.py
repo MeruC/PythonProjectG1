@@ -4,7 +4,7 @@ from ..jobsapp.models import Job
 from datetime import datetime
 from ckeditor.widgets import CKEditorWidget
 from ..jobsapp.models import Company
-
+from django_countries import countries
 
 class CompanyLogoForm(forms.ModelForm):
     class Meta:
@@ -52,7 +52,8 @@ class CompanyDataForm(forms.ModelForm):
         })
     )
     
-    country = forms.CharField(
+    country = forms.ChoiceField(
+        choices=countries,
         widget=forms.Select(attrs={
             'class':'form-control rounded focus:ring-1 focus:ring-primary focus:border-primary',
             'id':'company_country',

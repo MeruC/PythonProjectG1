@@ -112,9 +112,12 @@ def companyProfileSettings(request):
     if hasCompany:
         company_instance = Company.objects.get(user=current_user)
         data = getCompanyData(request)
+        
+        initial_country_value = company_instance.country
         company_logo_form = CompanyLogoForm()
         company_cover_form = CompanyCoverForm()
-        company_data_form = CompanyDataForm(instance=company_instance)
+        company_data_form = CompanyDataForm(instance=company_instance, initial={'country': initial_country_value})
+        
         context = {
             'data':data,
             'company_logo_form': company_logo_form,
