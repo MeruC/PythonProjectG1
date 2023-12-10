@@ -1,6 +1,6 @@
 # forms.py
 from django import forms
-from .utils import check_identifier, is_valid_email, is_valid_password
+from .utils import check_identifier, is_valid_password
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import check_password
 
@@ -139,14 +139,11 @@ class RegisterForm(forms.Form):
 
         if password and confirm_password and password != confirm_password:
             self.add_error("confirm_password", "Password did not match.")
-            
+
         if User.objects.filter(username=username).exists():
             self.add_error("username", "Username is already taken.")
 
-        if is_valid_email(email) == False:
-            self.add_error("email", "Invalid email address.")
-        else:
-            if User.objects.filter(email=email).exists():
-                self.add_error("email", "Email is already taken.")
+        if User.objects.filter(email=email).exists():
+            self.add_error("email", "Email is already taken.")
 
         return cleaned_data
