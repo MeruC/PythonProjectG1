@@ -9,11 +9,12 @@ class Company(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # user id in account model
     company_name = models.CharField(max_length=80)
     description = models.TextField()
-    # TODO:
-    # add company_city
-    # add company_country
-    # add logo
-    # add cover_photo
+    city = models.CharField(max_length=95,default='')
+    country = models.CharField(max_length=95,default='')
+    logo = models.ImageField(null=True, blank=True,upload_to="images/company/")
+    cover_photo= models.ImageField(null=True, blank=True,upload_to="images/company/")
+    is_active = models.BooleanField(default=True)
+
 
 
 # job
@@ -29,9 +30,6 @@ class Job(models.Model):
 
     # temporarily set fields to null=True
     skills = models.TextField(null=True)
-    city = models.CharField(max_length=100, null=True)
-    country = models.CharField(max_length=100, null=True)
-
     max_salary = models.IntegerField(null=True)
     min_salary = models.IntegerField(null=True)
     date_posted = models.DateTimeField(default=timezone.now)

@@ -1,0 +1,104 @@
+{% extends "base.html" %} 
+{% load static %}
+{% block title %}Applicants{% endblock title %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript" src="{% static '/js/applicantSearch.js' %}"></script>
+
+{% include "navbar.html" %}
+<div class="bg-[#F1F8F9] min-h-screen w-full flex flex-col">
+  <div class="grow flex flex-row">
+    {% comment %} SIDEBAR {% endcomment %}
+    <div class="w-[300px] bg-white shadow">
+      {% comment %} COMPANY INFO {% endcomment %}
+      <div class="w-max mx-auto my-5 flex flex-row items-center gap-2 ">
+        <div class="w-12 h-12 p-1 rounded-full border-2">
+          {% comment %} TODO: Insert company logo {% endcomment %}
+          <img src="https://img.logoipsum.com/296.svg" class="w-full h-full object-contain object-center" alt="logo" />
+        </div>
+        <div class="grow">
+          <h4 class="font-semibold">Tech Innovations Co.</h4>
+          <p class="text-sm text-gray-500">owner@techinnovate.com</p>
+        </div>
+      </div>
+      {% comment %} END COMPANY INFO {% endcomment %}
+      <hr>
+      {% comment %} NAVIGATION {% endcomment %}
+      <ul class="mt-5 flex flex-col gap-1 font-semibold">
+        <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100"><i class="fa-solid fa-briefcase mr-3"></i><a href="{% url 'companyapp:companyJobList' %}">Job Listings</a></li>
+        <li class="pl-10 py-2 border-l-2 border-secondary text-secondary"><i class="fa-solid fa-user-tie mr-3"></i><a href="{% url "companyapp:companyApplicants" %}">Applicants</a></li>
+        <li class="pl-10 py-2  text-gray-500 hover:text-black transition-all duration-100"><i class="fa-solid fa-gear mr-3"></i><a href="{% url "companyapp:companyProfileSettings" %}">Company Settings</a></li>
+      </ul>
+    </div>
+    {% comment %} CONTENT {% endcomment %}
+    <div class="grow overflow-auto p-10">
+      <h1 class="text-2xl font-bold">Applicants</h1>
+      <hr class="mt-5">
+      <section class="mt-10">
+        <div class="text-3xl font-bold mb-6"> {{job.job_title}} </div>
+          <div class="flex flex-row gap-2">
+            <div class="flex flex-row gap-2 items-center">
+              <label for="search" class="text-gray-500"><i class="fa-solid fa-search"></i></label>
+              <input type="text" id="search" placeholder="Search Applicant Name" class="rounded" />
+            </div>
+          </div>
+        {% comment %} TODO ADD TABLE HERE {% endcomment %}
+
+        <div class="relative rounded-xl my-5 mt-0 pt-16 p-10 w-[1100px] mx-auto">
+          {% comment %} <div class="text-xl font-semibold mb-4 text-[#386641]">Applicants</div> {% endcomment %}
+          
+          
+
+            {% comment %} <div class="flex justify-between items-center">
+                <div class="relative inline block">
+                    <input type="text"
+                        class="border rounded-md w-64 py-2 px-4 placeholder-gray-500 focus:outline-none focus:ring focus:border-blue-300"
+                        placeholder="Search Applicants">
+                </div>
+            </div> {% endcomment %}
+
+            <div class="p-5 h-screen">
+                <div class="overflow-auto rounded-lg shadow hidden md:block">
+                  <div class="mt-5">
+                    <table class="w-full">
+                      <thead class="bg-[#DFFFCB]">
+                        <tr>
+                          <th class="w-2/5 px-4 py-2 text-[#386641]">Applicant's Name</th>
+                          <th class="w-1/5 px-4 py-2 text-[#386641]">Email</th>
+                          <th class="w-1/5 px-4 py-2 text-[#386641]">Applied Date</th>
+                          <th class="w-1/5 px-4 py-2 text-[#386641]">Status</th>
+                          <th class="w-1/5 px-4 py-2 text-[#386641]">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-gray-100 bg-white" id="applicant-table-body">
+                
+                        {% for applicant in applicants %}
+                          <tr>
+                            <td class="border px-4 py-2 text-center">{{ applicant.user.get_full_name }}</td>
+                            <td class="border px-4 py-2 text-center">{{ applicant.user.email }}</td>
+                            <td class="border px-4 py-2 text-center">{{ applicant.date_applied|date:"M j, Y" }}</td>
+                            <td class="border px-4 py-2 text-center"><div class="{% if applicant.status == 'approved' %}bg-[#BCF09D] text-[#386641]{% elif applicant.status == 'active' %}bg-[#B8DEF9] text-[#236EA3]{% elif applicant.status == 'pending' %}bg-[#f2e8cf] text-[#605c52]{% else %}bg-[#FF8F92] text-[#BC4749]{% endif %} rounded-full">&bull; {{ applicant.status|title }}</div></td>
+                            <td class="border px-4 py-2 text-center">
+                              <div class="flex items-center space-x-2">
+                                <button><i class="fa-regular fa-square-check"></i></button>
+                                <button><i class="fa-regular fa-rectangle-xmark"></i></button>
+                                <button><i class="fa-regular fa-eye"></i></button>
+                              </div>
+                            </td>
+                          </tr>
+                        {% endfor %}
+                
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
+                </div>
+            </div>
+          </div>
+
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock content %}

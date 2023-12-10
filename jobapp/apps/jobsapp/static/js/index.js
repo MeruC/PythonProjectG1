@@ -7,7 +7,7 @@ async function getJobList() {
     const noDetailsElement = document.getElementById("noDetails");
     const dividerElement = document.getElementById("divider");
 
-    const response = await fetch(`/job/getJobList`, {
+    const response = await fetch(`/getJobList`, {
       method: "GET",
     });
     if (response.ok) {
@@ -71,7 +71,7 @@ async function getJobDetails() {
   try {
     const jobId = window.location.pathname.match(/\/jobs\/(\d+)\/$/)?.[1];
 
-    const response = await fetch(`/job/getJobDetails/${jobId}/`, {
+    const response = await fetch(`/getJobDetails/${jobId}/`, {
       method: "GET",
     });
 
@@ -88,6 +88,8 @@ async function getJobDetails() {
         document.getElementById("datePosted").innerHTML = formatDate(
           job.date_posted
         );
+      
+        
         document.getElementById(
           "estimatedSalary"
         ).innerHTML = `PHP ${job.min_salary.toLocaleString()} - ${job.max_salary.toLocaleString()}`;
@@ -120,7 +122,7 @@ function renderJobs(job, hasApplied) {
           }" 
           onclick="handleJobClick('${job.id}', '${job.job_title}', '${
     job.company__company_name
-  }', '${job.city}, ${job.country}', '${
+  }', '${job.company__city}, ${job.company__country}', '${
     job.type
   }', ' PHP ${job.min_salary.toLocaleString()} - ${job.max_salary.toLocaleString()}', '${
     job.description
@@ -130,7 +132,7 @@ function renderJobs(job, hasApplied) {
 
         <div class="text-gray-800">${job.company__company_name}</div>
         <div class="text-gray-800 text-sm">
-          ${job.city}, ${job.country}
+          ${job.company__city}, ${job.company__country}
         </div>
         <div class="mt-2 mb-2">
           <span class="text-[#6A994E] font-semibold">
@@ -159,7 +161,7 @@ async function searchJob(event) {
   const formElement = document.getElementById("searchJobForm");
   const formData = new FormData(formElement);
   const queryString = new URLSearchParams(formData).toString();
-  const url = `/job/searchJob?${queryString}`;
+  const url = `/searchJob?${queryString}`;
   try {
     const response = await fetch(url, {
       method: "GET",
@@ -321,7 +323,7 @@ function createSuggestionElement(text, type) {
 
 async function jobApplication(target, jobId, hasApplied) {
   try {
-    const response = await fetch(`/job/manageApplication/${jobId}/`, {
+    const response = await fetch(`/manageApplication/${jobId}/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

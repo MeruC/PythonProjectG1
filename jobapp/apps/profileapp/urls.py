@@ -15,7 +15,8 @@ urlpatterns = [
     path('updateEducation/<int:id>/',views.updateEducation,name="updateEducation"),
     path('deleteskill/<str:skill>/',views.delete_skill,name="deleteSkill"),
     path('checkskill/<str:skill>/',views.isSkillAvailable,name="checkSkill"),
-    path('deactivate/',views.DeactivateAccount, name="deactAccount")
+    path('deactivate/',views.DeactivateAccount, name="deactAccount"),
+    path('resume/',views.resume, name="resume")
     # todo update this later since there's no view for logout yet
     # path("logout/", views.index, name="logout"),
 ]

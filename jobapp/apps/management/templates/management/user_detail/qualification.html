@@ -1,0 +1,201 @@
+{% extends "management/user_detail.html" %}
+{% load static %}
+{% block user_section %}
+    <h1 class="text-xl font-bold  ">Education</h1>
+    {% if education_list|length > 0 %}
+        <div class="flex flex-col gap-4 py-4">
+            {% for education in education_list %}
+                <div class="flex flex-col">
+                    <div class="flex flex-row justify-between bg-white p-4 w-6/12">
+                        <div class="flex flex-col">
+                            <h3 class="text-lg font-bold">{{ education.course }}</h3>
+                            <p class="text-sm">{{ education.school_name }}</p>
+                            <p class="text-sm">{{ education.started_year }} -  {{ education.ended_year }}</p>
+                        </div>
+                        <!-- Edit Buttons-->
+                        <div class="flex flex-wrap gap-4">
+                            <button data-education-id="{{ education.id }}"
+                                    class="educationEditModalBtn hover:text-primary ">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <form name="delete-education-form" id="deleteEducationForm" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="form_name" value="education">
+                                <input type="hidden" name="education_id" value="{{ education.id }}">
+                            </form>
+                            <button class="educationDeleteModalBtn hover:text-primary">
+                                <i class="fa-solid fa-trash-can "></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-lg text-accent font-bold my-8">No education added yet</p>
+    {% endif %}
+    <h1 class="text-xl font-bold  ">Work History</h1>
+    {% if work_list|length > 0 %}
+        <div class="flex flex-col gap-4 py-4">
+            {% for work in work_list %}
+                <div class="flex flex-col">
+                    <div class="flex flex-row justify-between bg-white p-4 w-6/12">
+                        <div class="flex flex-col">
+                            <h3 class="text-lg font-bold">{{ work.work_title }}</h3>
+                            <p class="text-sm">{{ work.company_name }}</p>
+                            <p class="text-sm">{{ work.start_date }} -  {{ work.end_date }}</p>
+                        </div>
+                        <!-- Edit Buttons-->
+                        <div class="flex flex-wrap gap-4">
+                            <button data-work-id="{{ work.id }}"
+                                    class="workEditModalBtn hover:text-primary ">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <form name="delete-work-form" id="deleteWorkForm" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="form_name" value="work">
+                                <input type="hidden" name="work_id" value="{{ work.id }}">
+                            </form>
+                            <button class="workDeleteModalBtn hover:text-primary">
+                                <i class="fa-solid fa-trash-can "></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-lg text-accent font-bold my-8">No work added yet</p>
+    {% endif %}
+    {% comment %} Edit education Modal {% endcomment %}
+    <dialog id="educationModal" class="daisy-modal">
+        <div class="daisy-modal-box w-11/12 max-w-5xl">
+            <h3 class="font-bold text-lg  text-[#386641]  pb-5">Update Education</h3>
+            <form name="edit_education_form" id="education_form"  method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="form_name" value="education">
+                <input type="hidden" name="education_id" id="education_id" value="">
+                <div>
+                    <label for="{{ education_form.id_for_label }}">Institution / School / University:</label>
+                    {{ education_form.school_name }}
+                </div>
+                <div class="mt-5">
+                    <label for="{{ education_form.id_for_label }}">Education Level:</label>
+                    {{ education_form.education_level }}
+                </div>
+                <div>
+                    <label for="{{ education_form.id_for_label }}">Field of Study:</label>
+                    {{ education_form.course }}
+                </div>
+                <div class="flex gap-2">
+                    <div>
+                        <label for="{{ education_form.id_for_label }}">Start year:</label>
+                        {{ education_form.started_year }}
+                    </div>
+                    <div>
+                        <label for="{{ education_form.id_for_label }}">Ended year:</label>
+                        {{ education_form.ended_year }}
+                    </div>
+                </div>
+                <div class="flex justify-end mt-2 gap-3"></div>
+            </form>
+            <div class="daisy-modal-action">
+                <button form="education_form"
+                        id="updateEducationbtn"
+                        class="daisy-btn-primary daisy-btn">Update</button>
+                <form method="dialog">
+                    <!-- if there is a button, it will close the modal -->
+                    <button class="daisy-btn daisy-btn-outline">Close</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    {% comment %} Edit work Modal {% endcomment %}
+    <dialog id="workModal" class="daisy-modal">
+        <div class="daisy-modal-box w-11/12 max-w-5xl">
+            <h3 class="font-bold text-lg  text-[#386641]  pb-5">Update Work History</h3>
+            <form method="post" id="work_form">
+                {% csrf_token %}
+                <input type="hidden" name="form_name" value="work">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="work_id" id="work_id" value="">
+                <!-- job title -->
+                <div class="flex flex-col  mt-5 gap-1">
+                    <label for="{{ work_form.id_for_label }}">Job Title</label>
+                    {{ work_form.work_title }}
+                </div>
+                <!-- company name -->
+                <div class="flex flex-col mt-3 gap-1">
+                    <label for="{{ work_form.id_for_label }}">Company Name</label>
+                    {{ work_form.company_name }}
+                </div>
+                <!-- job position -->
+                <div class="flex flex-col mt-3 gap-1">
+                    <label for="{{ work_form.id_for_label }}">Position</label>
+                    {{ work_form.position }}
+                </div>
+                <!-- started -->
+                <div class="flex flex-col gap-2 mt-3">
+                    <label for="{{ work_form.started_month.id_for_label }}">Started</label>
+                    <div class="flex gap-2">
+                        {{ work_form.started_month }}
+                        {{ work_form.started_year }}
+                    </div>
+                </div>
+                <!-- end -->
+                <div class="flex flex-col gap-2 mt-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <label for="{{ work_form.id_for_label }}">End</label>
+                        <div class="text-gray-600">
+                            <span>Present</span>
+                            <input name="present" onclick="toggleEndWork()" type="checkbox">
+                        </div>
+                    </div>
+                    <div class="flex gap-2 end-work-data">
+                        {{ work_form.end_month }}
+                        {{ work_form.end_year }}
+                    </div>
+                </div>
+            </form>
+            <div class="daisy-modal-action">
+                <button form="work_form"
+                        id="updateWorknbtn"
+                        class="daisy-btn-primary daisy-btn">Update</button>
+                <form method="dialog">
+                    <!-- if there is a button, it will close the modal -->
+                    <button class="daisy-btn daisy-btn-outline">Close</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="education_confirmation_modal" class="daisy-modal">
+        <div class="daisy-modal-box">
+            <h3 class="font-bold text-lg">Confirm Edit Education</h3>
+            <p class="py-4">Do you confirm to edit your education?</p>
+            <div class="daisy-modal-action">
+                <button id="confirmEducationEditBtn" class="daisy-btn-primary daisy-btn">Confirm</button>
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button id="cancelEducationEditBtn" class="daisy-btn">Close</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="work_confirmation_modal" class="daisy-modal">
+        <div class="daisy-modal-box">
+            <h3 class="font-bold text-lg">Confirm Edit Work</h3>
+            <p class="py-4">Do you confirm to edit your work?</p>
+            <div class="daisy-modal-action">
+                <button id="confirmWorkEditBtn" class="daisy-btn-primary daisy-btn">Confirm</button>
+                <form method="dialog">
+                    <button id="cancelWorkEditBtn" class="daisy-btn">Close</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="{% static 'management/manage-users/qualifications.js' %}"></script>
+{% endblock user_section %}

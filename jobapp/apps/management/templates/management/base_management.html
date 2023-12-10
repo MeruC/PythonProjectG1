@@ -1,84 +1,127 @@
 {% extends "base.html" %}
 {% load static %}
 {% block metaData %}
-    <!-- Datatables StyleSheet-->
-    <link rel="stylesheet"
-          href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    <!-- Searchpane style-->
-    <link rel="stylesheet"
-          href="https://cdn.datatables.net/searchpanes/2.2.0/css/searchPanes.dataTables.min.css">
-    <!-- extenstion select style-->
-    <link rel="stylesheet"
-          href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
-    <!-- extension button StyleSheet-->
-    <link rel="stylesheet"
-          href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-    <!-- END Datatables StyleSheet-->
+    <!-- Jquery-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    {% block anotherMetaData %}
+    {% endblock anotherMetaData %}
     <!--Sweetalert styles-->
-    <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css " rel="stylesheet">
-    
+    <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css "
+          rel="stylesheet">
+    <!-- Datatables -->
+    <link href="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-html5-2.4.2/r-2.5.0/sp-2.2.0/datatables.min.css"
+          rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-html5-2.4.2/r-2.5.0/sp-2.2.0/datatables.min.js"></script>
+    <!-- END Datatables -->
+    <!--Sweetalert styles-->
+    <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css "
+          rel="stylesheet">
+    <!--Toastr styles-->
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 {% endblock metaData %}
 {% block content %}
-    <nav class="daisy-drawer lg:daisy-drawer-open bg-white ">
+    <nav class="daisy-drawer daisy-drawer-open bg-white min-w-screen">
         <input id="my-drawer-2" type="checkbox" class="daisy-drawer-toggle" />
         <div class="daisy-drawer-content flex flex-col bg-[#F1F8F9]">
             {% block section %}
                 {% comment %} Insert the right Page content here {% endcomment %}
             {% endblock section %}
-            <label for="my-drawer-2"
-                   class="daisy-btn daisy-btn-secondary daisy-drawer-button lg:hidden">Menu</label>
         </div>
-        <div class="daisy-drawer-side flex items-center flex-col ">
-            <h1 class="py-8 text-4xl text-secondary font-bold text-center">
-                Work<span class="text-gray-800">It</span>
-            </h1>
+        <div class="daisy-drawer-side flex items-center flex-col shadow-md">
             <label for="my-drawer-2"
                    aria-label="close sidebar"
                    class="daisy-drawer-overlay"></label>
-            <ul class="daisy-menu bg-white p-4 w-80 min-h-full lg:min-h-[80%] text-base-content flex flex-col flex-nowrap gap-4 [&>*>a]:py-4">
-                <!-- Sidebar content here -->
-                <li>
-                    <a class="font-bold" href="{% url 'managementapp:index' %}">
-                        <i class="fa-solid fa-chart-line fa-xl"></i>
-                        <span class="ml-2">Dashboard</span>
-                    </a>
+            {% comment %} <label for="my-drawer-2" class="daisy-btn daisy-btn-secondary daisy-drawer-button lg:hidden">Menu</label> {% endcomment %}
+            <!-- Sidebar content here -->
+            <ul class="w-[300px] text-[16px] bg-white min-h-screen  text-base-content flex flex-col flex-nowrap gap-2  py-5  font-semibold">
+                <h1 class="py-8 text-3xl text-secondary font-bold text-center">
+                    Work<span class="text-gray-800">It</span>
+                </h1>
+                <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
+                           {% if request.resolver_match.view_name == 'managementapp:index' %}
+                               border-l-2 border-secondary text-secondary
+                           {% endif %}">
+                    <i class="fa-solid fa-chart-line fa-md mr-3"></i><a href="{% url 'managementapp:index' %}">Dashboard</a>
                 </li>
-                <li>
-                    <a class="font-bold" href="{% url 'managementapp:manage_users' %}">
-                        <i class="fa-solid fa-user-group fa-xl"></i>
-                        <span class="ml-2">Users</span>
-                    </a>
+                <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
+                           {% if '/users/' in request.path %}border-l-2 border-secondary text-secondary{% endif %}">
+                    <i class="fa-solid fa-user-group mr-3"></i><a href="{% url 'managementapp:manage_users' %}">Users</a>
                 </li>
-                <li>
-                    <a class="font-bold">
-                        <i class="fa-regular fa-building fa-xl"></i>
-                        <span class="ml-2">Companies</span>
-                    </a>
+                <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
+                           {% if '/companies/' in request.path %}border-l-2 border-secondary text-secondary{% endif %}">
+                    <i class="fa-regular fa-building mr-3"></i><a href="{% url 'managementapp:manage_companies' %}">Companies</a>
                 </li>
-                <li>
-                    <a class="font-bold">
-                        <i class="fa-solid fa-briefcase fa-xl"></i>
-                        <span class="ml-2">Users</span>
-                    </a>
+                <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
+                           {% if '/jobs/' in request.path %}border-l-2 border-secondary text-secondary{% endif %}">
+                    <i class="fa-solid fa-briefcase mr-3"></i><a href="{% url 'managementapp:manage_jobs' %}">Jobs</a>
                 </li>
+                {% comment %} <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
+                           {% if request.resolver_match.view_name == 'managementapp:index' %}
+                               border-l-2 border-secondary text-secondary
+                           {% endif %}">
+                    <i class="fa-solid fa-clipboard-list mr-3"></i><a href="{% url 'managementapp:index' %}">Activity
+                    Log</a>
+                </li> {% endcomment %}
+                <li class="flex-1"></li>
+                <hr class="mx-4">
+                <div class="flex items-center mx-6   leading-5 gap-2 text-xs">
+                    <div class="w-10 h-10 rounded-md">
+                        <img class="w-full h-full object-cover rounded-md"
+                             width="40"
+                             height="40"
+                             id="img_settings"
+                             src="{% if user.company_img %}{{ user.company_img.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
+                             alt="">
+                    </div>
+                    {% comment %} <a href="{% url 'profileapp:index' %}" class="flex-1"> {% endcomment %}
+                    <div class="flex-1">
+                        <h4 class="font-semibold">{{ user.first_name }} {{ user.last_name }}</h4>
+                        <p class="text-xs text-gray-500">{{ user.email }}</p>
+                    </div>
+                    <button class="text-gray-500 p-1.5 rounded hover:text-gray-600 hover:bg-gray-200  transition-all duration-100"
+                            id="logoutBtn"
+                            onclick="onLogoutHandler()">
+                        <i class="fa-solid fa-arrow-right-from-bracket text-lg"></i>
+                    </button>
+                </div>
             </ul>
-            <div class="flex justify-center">
-                <button class="daisy-btn w-10/12 " id="logoutBtn">Logout</button>
-            </div>
         </div>
     </nav>
+    <script>const generatedBy = '{{ user.first_name }} {{ user.last_name }}';</script>
     <!-- Plugins and Libraries-->
-    <!-- Jquery-->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Jquery UI-->
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <!-- Datatables-->
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/searchpanes/2.2.0/js/dataTables.searchPanes.min.js"></script>
-    <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <!--Sweet Alert-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js "></script>
     <!-- User Defined JS-->
+    <script type="text/javascript" src="{% static '/js/main.js' %}"></script>
     <script type="module" src="{% static 'management/base.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/logout.js' %}"></script>
+ 
+    <!--Toastr-->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+    toastr.options = {
+        positionClass: 'toast-top-right',
+        preventDuplicates: true,
+        progressBar: true,
+      };
+        {% comment %} display success and error messages {% endcomment %}
+        {% if messages %} {% for message in messages %}
+        {% if 'success' in message.tags  %}
+    
+          toastr.success("{{ message }}");
+        {% elif 'error' in  message.tags %}
+          toastr.error("{{ message }}");
+       
+        {% endif %}
+        {% endfor %} {% endif %}
+   
+    </script>
 {% endblock content %}

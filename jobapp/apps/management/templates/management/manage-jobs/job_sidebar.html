@@ -1,0 +1,36 @@
+{% extends "management/base_management.html" %} 
+{% block title%} Edit Job 
+{% endblock title %} {% block section %} 
+
+  <div class=" flex flex-row px-10 ">
+    <div class="bg-[#F1F8F9] ">
+      <ul class="pt-14 flex flex-col gap-2 font-semibold text-sm pr-3 min-h-screen sticky top-0  w-[300px] ">
+        <div class="flex gap-4 text-sm items-center">
+          <span class="text-xs text-gray-400 bg-gray-200 transition hover:text-gray-500 hover:bg-gray-300 my-auto px-3 py-1 rounded-md">
+            <a class="" href="{% url 'managementapp:manage_jobs' %}"
+              ><i class=" fa-solid fa-arrow-left-long text"></i> Back</a
+            >
+          </span>
+          <p class="font-bold text-secondary text-2xl">Job Post</p>
+        </div>
+  
+        <li class="mt-10">
+          <a href="{% url 'managementapp:edit_job'  job_id=job.id%}"
+          class="block py-2 px-5 rounded-lg hover:bg-gray-200 {% if request.resolver_match.view_name == 'managementapp:edit_job' %} border-b-[2px] bg-gray-200 {% endif %}"
+          >
+            Job Details
+          </a>
+        </li>
+        <li class="">
+          <a href="{% url 'managementapp:action_job'  job_id=job.id%}"
+          class="block py-2 px-5 rounded-lg hover:bg-gray-200 {% if request.resolver_match.view_name == 'managementapp:action_job' %}border-b-[2px] bg-gray-200{% endif %}"
+          >
+            Job Post Actions
+          </a>
+        </li>
+      </ul>
+    </div>
+    {% block job_section %} 
+    {% endblock job_section %}
+  </div>
+{% endblock section %}

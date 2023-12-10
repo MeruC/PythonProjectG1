@@ -5,13 +5,8 @@ from django.db.models import Q
 from ..accountapp.views import hasUnreadNotif
 from ..profileapp.models import JobApplication
 from .models import Job
-from django.contrib import messages
-from .forms import JobForm
 from django.contrib.auth import get_user_model
 from apps.jobsapp.models import Job, Company
-from apps.accountapp.models import Alerts
-from django.utils import timezone as django_timezone
-from django.contrib.auth.decorators import login_required
 
 User = get_user_model()
 
@@ -24,14 +19,17 @@ def index(request):
             hasInfo = True
         else:
             hasInfo = False
-    else:
-        hasInfo = False
-        
-        
-    context = {
+        context = {
         "hasInfo":hasInfo,
         "hasUnreadNotif":hasUnreadNotif(request),
     }
+    else:
+        hasInfo = False
+        context = {
+        "hasInfo":hasInfo,
+    }
+        
+    
     return render(request, "index/base.html", context)
 
 
@@ -48,7 +46,8 @@ def jobDetails(request, jobId):
 
         if not Job.objects.filter(id=jobId).exists():
             return redirect("jobsapp:index")
-    return render(request, "jobDetails.html", {"hasInfo": hasInfo})
+        company = Company.objects.get(id=Job.objects.get(id=jobId).company_id)
+    return render(request, "jobDetails.html", {"hasInfo": hasInfo, "company": company})
 
 # async (views used in ajax call )
 def getJobList(request):
@@ -67,16 +66,16 @@ def getJobList(request):
                 "status",
                 "type",
                 "skills",
-                "city",
-                "country",
                 "max_salary",
                 "min_salary",
                 "date_posted",
                 "company_id",
                 "company__company_name",
+                "company__city",
+                "company__country",
             )
         )
-
+        print(jobs)
         return JsonResponse(
             {
                 "success": True,
@@ -119,13 +118,15 @@ def getJobDetails(request, jobId):
                 "status",
                 "type",
                 "skills",
-                "city",
-                "country",
                 "max_salary",
                 "min_salary",
                 "date_posted",
                 "company_id",
                 "company__company_name",
+                "company__city",
+                "company__country",
+                "company__logo",
+                "company__cover_photo",
             )
             .first()
         )
@@ -176,7 +177,7 @@ def searchJob(request):
     if where:
         cleaned_parts = re.split(r"\W+", where)
         for part in cleaned_parts:
-            base_query &= Q(city__icontains=part) | Q(country__icontains=part)
+            base_query &= Q(company__city__icontains=part) | Q(company__country__icontains=part)
 
     if type and type != "all":
         base_query &= Q(type=type)
@@ -190,13 +191,14 @@ def searchJob(request):
             "status",
             "type",
             "skills",
-            "city",
-            "country",
             "max_salary",
             "min_salary",
             "date_posted",
             "company_id",
             "company__company_name",
+            "company__city",
+            "company__country",
+            
         )
     )
 
@@ -209,21 +211,25 @@ def searchJob(request):
     )
 
 
+
 def getWhatSuggestion(request):
     query = request.GET.get("query", "")
     suggestions = set()
 
     if query:
-        base_query = Q(job_title__icontains=query) | Q(skills__icontains=query)
-        jobs = Job.objects.filter(base_query).values("job_title", "skills").distinct()
+  
+        job_title_matches = Job.objects.filter(job_title__icontains=query).values("job_title").distinct()
 
-        for job in jobs:
-            suggestions.add(job["job_title"])
-            skills_list = re.split(r"\W+", job["skills"])
-            suggestions.update(skill for skill in skills_list if skill)
+        skills_matches = Job.objects.filter(skills__icontains=query).values("skills").distinct()
+
+        for job_title_match in job_title_matches:
+            suggestions.add(job_title_match["job_title"])
+
+        for skills_match in skills_matches:
+            skills_list = re.split(r"\W+", skills_match["skills"])
+            suggestions.update(skill for skill in skills_list if  query.lower() in skill.lower() )
 
     return JsonResponse({"success": True, "suggestions": list(suggestions)})
-
 
 def getWhereSuggestion(request):
     query = request.GET.get("query", "")
@@ -233,7 +239,7 @@ def getWhereSuggestion(request):
         city_query = Q(city__icontains=query)
         country_query = Q(country__icontains=query)
         jobs = (
-            Job.objects.filter(city_query | country_query)
+            Company.objects.filter(city_query | country_query)
             .values("city", "country")
             .distinct()
         )
@@ -243,84 +249,3 @@ def getWhereSuggestion(request):
             suggestions.add(suggestion)
 
     return JsonResponse({"success": True, "suggestions": list(suggestions)})
-
-
-
-# For adding or editing a job
-@login_required(login_url='/account/login/')
-def postJob(request, job_id=0):
-    if request.method == "GET":
-        if job_id == 0:
-            template = "job_form.html"
-            form = JobForm()
-            context = {
-                "form": form
-            }
-        else:
-            template = "job_form.html"
-            job = Job.objects.get(pk=job_id)
-            form = JobForm(instance=job)
-            context = {
-                "form": form
-            }
-    else:
-        if job_id == 0:
-            form = JobForm(request.POST)
-        else:
-            job = Job.objects.get(pk=job_id)
-            form = JobForm(request.POST, instance=job)
-        if form.is_valid():
-            new_job = form.save()
-            
-            # Identify users whose skills have at least one partial match with the posted job
-            job_skills = [skill.strip() for skill in new_job.skills.split(',')]
-            user_skill_query = Q()
-            for skill in job_skills:
-                user_skill_query |= Q(skills__contains=skill)
-
-            matching_users = User.objects.filter(user_skill_query)
-
-            # Create a notification for each matching user, if it doesn't already exist
-            for user in matching_users:
-                existing_alert = Alerts.objects.filter(
-                    notification="MatchSkill",
-                    action_user=request.user.get_full_name(),
-                    user=user,
-                    is_read='unread',
-                ).exists()
-
-                if not existing_alert:
-                    alert = Alerts(
-                        notification="MatchSkill",
-                        action_user=request.user.get_full_name(),
-                        user=user,
-                        is_read='unread',
-                    )
-                    alert.save()
-            
-            return redirect("../../company/jobListings")
-        else:
-            print(form.errors)
-            template = "job_form.html"
-            context = {
-                "form": form
-            }
-        
-    return render(request, template, context)
-
-# For Job Deletion
-@login_required(login_url='/account/login/')
-def deleteJob(request, job_id):
-    job = Job.objects.get(pk=job_id)
-    job.delete()
-    return redirect("../../company/jobListings")
-
-# For displying all jobs listed by the company
-@login_required(login_url='/account/login/')
-def listJob(request):
-    template = "job_listings.html"
-    context = {
-        "job_list": Job.objects.all()
-    }
-    return render(request, template, context)
-

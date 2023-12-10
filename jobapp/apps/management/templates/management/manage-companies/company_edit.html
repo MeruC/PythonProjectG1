@@ -1,0 +1,91 @@
+{% extends "management/manage-companies/company_sidebar.html" %} {% block company_section %}
+{% comment %} action="{% url 'managementapp:edit_company' company_id=company.id %}" {% endcomment %}
+{% load static %}
+<form
+  method="post"
+  class="flex flex-col gap-3 w-full  pl-3 py-32 min-w-[600px]"
+  enctype="multipart/form-data"
+>
+  {% csrf_token %}
+
+  <div class="text-sm">
+    <div>
+      Posted by:
+      <span class="font-bold underline">{{ company.company_name }}</span>
+    </div>
+    <div>Created in: {{ company.user.date_joined|date:"F d, Y" }}</div>
+  </div>
+
+
+
+  <div>
+  <div class="text-lg font-bold text-secondary mt-5 " >Company Logo</div>
+  <div class="flex items-center gap-8 mt-8">
+    <div class="w-44 h-44 rounded-full">
+     
+      <img class="w-full h-full object-cover rounded-full"
+      id="img_settings"
+      src="{% if company.logo %}{{ company.logo.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
+      alt="">
+  </div>
+   
+    <div>
+  
+      <label for="{{ form.logo.id_for_label }}" class="bg-[#E0E0E0] text-[#4E4E4E] py-3 px-5 rounded cursor-pointer">Change Picture</label>
+      {{ form.logo }}
+    
+    </div>
+  </div>
+</div>
+<hr class="my-7 border-[#BABABA]">
+<div class="text-lg font-bold text-secondary">Company Details</div>
+  
+<div class="form-group flex flex-col gap-1">
+  <label for="{{ form.company_name.id_for_label }}" class="text-sm font-medium text-gray-900">Company Name</label>
+  {{ form.company_name }} {% if form.errors.company_name %}
+  <div class="text-[13px] text-red-500 ">{{ form.errors.company_name}}</div>
+  {% endif %}
+</div>
+
+<div  class="form-group flex flex-col gap-1">
+  <label for="{{ form.description.id_for_label }}" class="text-sm font-medium text-gray-900">Company Description</label>
+  {{ form.description }} {% if form.errors.description %}
+  <div class="text-[13px] text-red-500 ">
+    {{ form.errors.description}}
+  </div>
+  {% endif %}
+</div>
+<div class="form-group grid grid-cols-1 gap-2 sm:grid-cols-2">
+  <div class="form-group flex flex-col gap-1">
+    <label for="{{ form.country.id_for_label }}" class="text-sm font-medium text-gray-900">Country</label>
+    {{ form.country }} {% if form.errors.country %}
+    <div class="text-[13px] text-red-500 ">
+      {{ form.errors.country}}
+    </div>
+    {% endif %}
+  </div>
+  <div class="form-group flex flex-col gap-1">
+    <label for="{{ form.city.id_for_label }}" class="text-sm font-medium text-gray-900">City</label>
+    {{ form.city }} {% if form.errors.city %}
+    <div class="text-[13px] text-red-500 ">
+      {{ form.errors.city}}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+  <button
+    type="submit"
+    class="w-max mt-5 px-4 py-3 bg-secondary text-white rounded font-semibold"
+  >
+    Update Company
+  </button>
+</form>
+<script type="text/javascript" src="{% static 'management/manage-companies/edit.js' %}"></script>
+<script type="text/javascript">
+        const companyCountry = "{{ company.country }}";  
+</script>
+<script type="text/javascript" src="{% static 'js/countrySelect.js' %}"></script>
+
+
+{% endblock company_section %}

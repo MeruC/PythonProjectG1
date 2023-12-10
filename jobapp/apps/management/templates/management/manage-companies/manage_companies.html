@@ -1,0 +1,102 @@
+{% extends "management/base_management.html" %} {% load static %} 
+{% block title%} Manage Companies {% endblock title %} {% block section %}
+
+<link rel="stylesheet" href="{% static 'css/table.css' %}" />
+<div class="bg-[#F1F8F9] min-h-screen w-full flex flex-col">
+  <div class="grow flex flex-row">
+    <div class="grow overflow-auto p-10">
+      <h1 class="text-2xl font-bold text-secondary">Manage Companies</h1>
+      <hr class="mt-5" />
+      <section class="mt-10">
+
+        <div class="flex flex-row gap-3 justify-between mb-3">
+          <div class="relative w-80">
+            <i
+              class="fa-solid fa-search absolute left-4 top-3 text-gray-500"
+            ></i>
+            <input
+              type="search"
+              placeholder="Search"
+              class="w-full rounded pl-12 border-none focus:border-none focus:outline-none focus:ring-primary focus:border-primary resize-none"
+              id="companiesSearchField"
+              style=""
+            />
+        
+          </div>
+          <button onClick="companiesReport()" class="py-2 px-5 bg-[#BC4749] text-white font-medium rounded">Generate Report</button>
+        </div>
+
+
+        <table id="companiesTable" class="row-border">
+          <thead>
+            <tr>
+              <th></th>
+
+              <th>Company Name</th>
+              <th>Manage By</th>
+              <th>Location</th>
+              <th>Contact</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody class="">
+            {% for company in companies %}
+            <tr data-company-id="{{ company.id }}">
+              <td>
+                <div class="w-8 h-8 rounded-full">
+                  <img
+                    class="w-full h-full object-cover rounded-full"
+                    id="img_settings"
+                    src="{% if user.company_img %}{{ user.company_img.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
+                    alt=""
+                  />
+                </div>
+              </td>
+              <td>{{ company.company_name }}</td>
+              <td>
+                {{ company.user.first_name }} {{ company.user.last_name }}
+                <br />{{company.user.email }}
+              </td>
+              <td>
+                {{ company.city}}, {{ company.country }}
+              </td>
+              <td>{{ company.user.contact_number }}</td>
+              <td>
+                <div
+                  class="daisy-badge gap-2 {% if company.is_active == 1 %} daisy-badge-success bg-[#BCF09D]{% else %} daisy-badge-error bg-[#FF8F92] {% endif %}"
+                >
+                  <div
+                    class="w-2 h-2 rounded-full {% if company.is_active == 1 %} bg-[#386641] {% else %} bg-[#BC4749] {% endif %}"
+                  ></div>
+                  <p
+                    class="font-semibold {% if company.is_active == 1 %} text-[#386641] {% else %} text-[#BC4749]{% endif %}"
+                  >
+                    {% if company.is_active == 1 %} Active {% else %} Inactive
+                    {% endif %}
+                  </p>
+                </div>
+              </td>
+              <td>
+                <div class="flex flex-wrap gap-4 text-md">
+                  <i
+                    class="fa-regular fa-pen-to-square text-gray-400 cursor-pointer transition hover:text-secondary"
+                    onclick="onEditCompanyHandler({{ company.id }})"
+                  ></i>
+                  <i
+                    class="fa-solid fa-trash-can text-gray-400 cursor-pointer transition hover:text-secondary"
+                    onclick="onDeleteCompanyHandler({{ company.id }}, '{{company.company_name}}')"
+                  ></i>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</div>
+<script src="{% static 'management/manage-companies/manage.js' %}"></script>
+{% endblock section %}

@@ -64,7 +64,7 @@ def Login(request):
         if form.is_valid():
             identifier = form.cleaned_data["identifier"]
             user = User.objects.get(**{check_identifier(identifier): identifier})
-            if user.is_active:
+            if not user.is_deactivated:
                 login(request, user)
                 if user.is_superuser:  # user is an admin
                     return redirect("managementapp:index")

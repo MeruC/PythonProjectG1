@@ -1,0 +1,27 @@
+<div class="flex flex-row flex-wrap gap-4">
+    <div class="daisy-avatar">
+        <div class="w-24 lg:w-36 rounded-full">
+            <img src="{{ widget.value.url }}"
+                 alt="Profile Picture"
+                 height="120px"
+                 width="120px"
+                 class=""
+                 id="profilePicElem">
+        </div>
+    </div>
+    {% if not widget.required %}
+        <input type="checkbox"
+               name="{{ widget.checkbox_name }}"
+               id="{{ widget.checkbox_id }}"
+               {% if widget.attrs.disabled %}disabled{% endif %}>
+        <label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
+    {% endif %}
+    <div>
+        {{ widget.input_text }}:
+        <input type="{{ widget.type }}"
+               name="{{ widget.name }}"
+               {% include "django/forms/widgets/attrs.html" %}>
+    </div>
+</div>
+<hr>
+<h2 class="text-xl font-bold mb-8">Personal Information</h2>

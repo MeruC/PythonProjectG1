@@ -3,6 +3,9 @@
 {% block title %}Job Lists{% endblock title %}
 {% block content %}
 {% include "navbar.html" %}
+
+<script type="text/javascript" src="{% static '/js/jobDeletion.js' %}"></script>
+
 <div class="bg-[#F1F8F9] min-h-screen w-full flex flex-col">
   <div class="grow flex flex-row">
     {% comment %} SIDEBAR {% endcomment %}
@@ -42,6 +45,56 @@
           <a href="{% url "companyapp:createJob" %}" class="bg-secondary text-white px-5 py-2 rounded-md transition-all duration-100">Create Job</a>
         </div>
         {% comment %} TODO ADD TABLE HERE {% endcomment %}
+
+        <div class="p-5 h-screen">
+          <div class="overflow-auto rounded-lg shadow hidden md:block">
+              <table class="w-full">
+                <thead class="bg-[#DFFFCB]">
+                      <tr>
+                          <th class="w-2/5 px-4 py-2 text-[#386641]">Job Title</th>
+                          <th class="w-1/5 px-4 py-2 text-[#386641]">No. of Applicants</th>
+                          <th class="w-1/10 px-4 py-2 text-[#386641]">Status</th>
+                          <th class="w-1/5 px-4 py-2 text-[#386641]">Date Posted</th>
+                          <th class="w-1/10 px-4 py-2 text-[#386641]">Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-100 bg-white">
+                      {% for job in job_list %}
+                      <tr>
+                          <!--values -->
+                          <td class="border px-4 py-2">{{job.job_title}}</td>
+                          <td class="border px-4 py-2 text-center"><a href="{% url 'companyapp:jobApplicants' job.id %}"> {{ job.jobapplicant_set.count }} Applicants </a></td>
+                          <td class="border px-4 py-2 text-center">
+                            <div class="{% if job.status == 'active' %}bg-[#BCF09D] text-[#386641]{% else %}bg-[#FF8F92] text-[#BC4749]{% endif %} rounded-full">
+                              &bull; {{ job.status|title }}
+                          </div>
+                          
+                        </td>
+                        
+                        
+                        
+                          <td class="border px-4 py-2 text-center">{{job.date_posted|date:"M j, Y"}}</td>
+                          <td class="border px-4 py-2 text-center">
+                              <div class="justify-items-auto">
+                                  <a href="{% url 'companyapp:editJob' job.id %}">
+                                      <i class="fa-regular fa-pen-to-square mr-2"></i>
+                                  </a>
+                                  <form id="deleteJobForm-{{ job.id }}" action="{% url "companyapp:deleteJob" job.id %}" method="post" class="inline">
+                                    {% csrf_token %}
+                                    <button onclick="onDeleteJobHandler(event, '{{ job.id }}')">
+                                        <i class="fa-regular fa-trash-can ml-2"></i>
+                                    </button>
+                                </form>
+                              </div>
+                          </td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
+          </div>
+      </div>
       </section>
     </div>
   </div>

@@ -25,6 +25,7 @@ module.exports = {
      * Adjust the following line to match your project structure.
      */
     "../../**/templates/**/*.html",
+    "../../**/static/**/*.js",
 
     /**
      * JS: If you use Tailwind CSS in JavaScript, uncomment the following lines and make sure
