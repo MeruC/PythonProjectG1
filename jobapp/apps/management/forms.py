@@ -210,6 +210,7 @@ class WorkHistoryForm(forms.ModelForm):
             "work_title",
             "company_name",
             "started_month",
+            "job_summary",
             "started_year",
             "end_month",
             "end_year",
@@ -260,8 +261,8 @@ class WorkHistoryForm(forms.ModelForm):
         ),
     )
 
-    position = forms.CharField(
-        label="Position",
+    job_summary = forms.CharField(
+        label="Job Summary",
         max_length=90,
         widget=forms.TextInput(
             attrs={
