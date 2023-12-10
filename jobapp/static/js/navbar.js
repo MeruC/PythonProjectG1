@@ -94,15 +94,15 @@ document.querySelector("#notifIcon").addEventListener("click", fetchNotification
 function createBadge(type){
   let badge = '';
   if(type === "MatchSkill"){
-   return `<div class="w-10 h-8 flex items-center justify-center bg-blue-200 rounded">
+   return `<div class="w-8 h-8 flex items-center justify-center bg-blue-200 rounded">
             <i class="fa-solid fa-magnifying-glass text-blue-500"></i>
           </div>` 
   } else if (type === "Applicant"){
-    return `<div class="w-10 h-8 flex items-center justify-center bg-green-200 rounded">
+    return `<div class="w-8 h-8 flex items-center justify-center bg-green-200 rounded">
                 <i class="fa-solid fa-file-invoice text-green-500"></i>
             </div>`
   } else if (type === "Application") {
-    return `<div class="w-10 h-8 flex items-center justify-center bg-purple-200 rounded">
+    return `<div class="w-8 h-8 flex items-center justify-center bg-purple-200 rounded">
                 <i class="fa-solid fa-briefcase text-purple-500"></i>
             </div>`
   } else {
