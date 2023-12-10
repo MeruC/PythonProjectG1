@@ -111,7 +111,7 @@ def addWorkExp(request):
                 end_month = request.POST.get('end_month')
                 end_year = request.POST.get('end_year')
                 end_date = f"{end_month}, {end_year}"
-                position = request.POST.get('position')
+                job_summary = request.POST.get('job_summary')
                 company_name = request.POST.get('company_name')
                 
                 #add new data to the database
@@ -119,7 +119,7 @@ def addWorkExp(request):
                 #check if the present is clicked
                 work_experience.end_date = "Present" if is_present else end_date
                 work_experience.start_date = start_date
-                work_experience.position = position
+                work_experience.job_summary = job_summary
                 work_experience.user = request.user
                 work_experience.company_name = company_name
                 work_experience.save() #add the new work experience
