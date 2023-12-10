@@ -309,9 +309,16 @@ def DeactivateAccount(request):
 def gresume(request):
     return HttpResponse("Hello world!")
 
+CELL_WIDTH = 0
+
 # generate pdf
 def resume(request):  
     pdf = FPDF('P', 'mm', 'A4')
+    
+    userN = "_".join(request.user.last_name.split(" ")) + "_" + "_".join(request.user.first_name.split(" ")) + "_Resume"
+    
+    pdf.set_title(request.user.last_name + ", " + request.user.first_name + " Resume")
+    pdf.set_author("WorkIt Job Portal")
     
     #Auto Page Break
     pdf.set_auto_page_break(auto=True, margin= 15)
@@ -427,7 +434,10 @@ def resume(request):
             pdf.cell(0, 8, "--------------------------------------------------------------------------------------------------------------------------------------", ln=True, align="C")
 
     ##Skills
-    #pdf.cell(1,48,"")
+    line_width = pdf.get_string_width("\t\t\t\t\t\t\t\t\t\t" + ', '.join(i for i in request.user.skills.split(',')))
+    n = line_width / 155
+    if (n > 3):
+        pdf.add_page()
     pdf.cell(0, 8, "", ln=True)
     pdf.set_font('helvetica', 'B', 20)
     pdf.set_text_color(97,178,113)
@@ -461,5 +471,7 @@ def resume(request):
     #     if (work != last_work):
     #         pdf.cell(0, 8, "--------------------------------------------------------------------------------------------------------------------------------------", ln=True, align="C")
 
-    return HttpResponse(bytes(pdf.output()), content_type="application/pdf")
+    response = HttpResponse(bytes(pdf.output()), content_type="application/pdf", headers={"Content-Disposition": "inline; filename="+userN+".pdf"})
+    return response
     
+
