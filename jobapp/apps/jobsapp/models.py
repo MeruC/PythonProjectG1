@@ -11,9 +11,10 @@ class Company(models.Model):
     description = models.TextField()
     city = models.CharField(max_length=95,default='')
     country = models.CharField(max_length=95,default='')
-    logo = models.ImageField(null=True, blank=True,upload_to="images/")
-    cover_photo = models.ImageField(null=True, blank=True,upload_to="images/")
+    logo = models.ImageField(null=True, blank=True,upload_to="images/company/")
+    cover_photo= models.ImageField(null=True, blank=True,upload_to="images/company/")
     is_active = models.BooleanField(default=True)
+
 
 
 # job
