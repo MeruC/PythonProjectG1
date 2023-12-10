@@ -49,4 +49,4 @@ class jobApplicant(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     date_applied = models.DateTimeField(default=timezone.now)
-    status = models.CharField(max_length=20, default="Pending")
+    status = models.CharField(max_length=20, default="pending")

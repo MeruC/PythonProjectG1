@@ -37,15 +37,18 @@ function onDeleteJobHandler(event, jobId) {
 
 // -------- Approval and Rejection Confirmation Dialog --------
 
-function confirmStatusChange(applicantId, action) {
-    let title = '';
+function confirmApprove(applicationId) {
+    const title = 'Approve Application?';
+    confirmStatusChange(applicationId, title, 'check');
+}
 
-    // Set the title based on the action
-    if (action === 'check') {
-        title = 'Approve Application?';
-    } else if (action === 'xmark') {
-        title = 'Reject Application?';
-    }
+function confirmReject(applicationId) {
+    const title = 'Reject Application?';
+    confirmStatusChange(applicationId, title, 'xmark');
+}
+
+function confirmStatusChange(applicationId, title, action) {
+    event.preventDefault(); // Prevent the default form submission
 
     Swal.fire({
         title: title,
@@ -57,20 +60,20 @@ function confirmStatusChange(applicantId, action) {
         },
         showCancelButton: true,
         confirmButtonText: "Confirm",
-        confirmButtonClass: "swal-confirm-button", // Add a custom class for styling
+        confirmButtonClass: "swal-confirm-button",
         showLoaderOnConfirm: true,
         preConfirm: (inputValue) => {
             if (inputValue === "CONFIRM") {
-                // If the user typed CONFIRM, manually submit the form or trigger the status change
-                const form = document.getElementById(`changeStatusForm-${applicantId}`);
+                // Manually submit the form
+                const form = document.getElementById(`changeStatusForm-${applicationId}-${action}`);
                 form.submit();
             } else {
                 Swal.showValidationMessage("Typed text is not CONFIRM.");
+                return false; // Return false to prevent closing the dialog
             }
         },
     });
 
-    // Add a style tag to customize the confirm button color
     const styleTag = document.createElement("style");
     styleTag.innerHTML = `
         .swal-confirm-button {
@@ -80,8 +83,11 @@ function confirmStatusChange(applicantId, action) {
     document.head.appendChild(styleTag);
 }
 
+function getConfirmationTitle(action) {
+    return action === 'check' ? 'Approve Application?' : (action === 'xmark' ? 'Reject Application?' : '');
+}
+
 function getConfirmButtonColor(action) {
-    // Return the color based on the action
     return action === 'check' ? '#4CAF50' : (action === 'xmark' ? '#EF5350' : '');
 }
 
