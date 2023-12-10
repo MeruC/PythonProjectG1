@@ -17,9 +17,11 @@ User = get_user_model()
 # Create your views here.
 def index(request):
     return render(request, "index.html")
+
+@login_required(login_url='/account/login/')
 def createCompany(request):
     #check if logged in
-    if request.user.is_authenticated and not request.user.is_superuser:
+    if not request.user.is_superuser:
         #check if already has company
         current_user = request.user
         hasCompany = Company.objects.filter(user=current_user).count()>0
