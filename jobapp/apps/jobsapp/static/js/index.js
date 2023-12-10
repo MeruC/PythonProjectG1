@@ -88,8 +88,8 @@ async function getJobDetails() {
         document.getElementById("datePosted").innerHTML = formatDate(
           job.date_posted
         );
-      
-        
+        document.getElementById("companyDetails").innerHTML = job.company__description
+        document.getElementById("companyAbout").innerHTML = `About ${job.company__company_name}`
         document.getElementById(
           "estimatedSalary"
         ).innerHTML = `PHP ${job.min_salary.toLocaleString()} - ${job.max_salary.toLocaleString()}`;
@@ -106,7 +106,7 @@ async function getJobDetails() {
         document
           .querySelector("#applyButton")
           .addEventListener("click", async function () {
-            jobApplication("jobDetails", jobId, jsonResponse.hasApplied);
+            onApplyHandler("jobDetails", jobId, jsonResponse.hasApplied);
           });
       }
     }
@@ -116,6 +116,7 @@ async function getJobDetails() {
 }
 
 function renderJobs(job, hasApplied) {
+  const sanitizedDescription = encodeURIComponent(job.description);
   return `
           <div class="job rounded-xl p-5 border-2 bg-white leading-5 shadow-sm" id="job-${
             job.id
@@ -125,7 +126,7 @@ function renderJobs(job, hasApplied) {
   }', '${job.company__city}, ${job.company__country}', '${
     job.type
   }', ' PHP ${job.min_salary.toLocaleString()} - ${job.max_salary.toLocaleString()}', '${
-    job.description
+    sanitizedDescription
   }', '${formatDate(job.date_posted)}', ${hasApplied})"
           >
         <div class="text-lg font-semibold">${job.job_title}</div>
@@ -144,14 +145,21 @@ function renderJobs(job, hasApplied) {
           ${job.type == "fulltime" ? "Full Time" : "Part-time"}
         </div>
 
-        <div class="text-gray-700 py-5">${job.description}</div>
+        <div class="text-gray-700 py-5">${job.description.split('<p>&nbsp;</p>')[0].trim()}</div>
+
         <div class="text-sm text-gray-700">
           Posted ${formatDate(job.date_posted)} 
         </div>
       </div>
           `;
 }
-
+// style="
+// overflow: hidden;
+// text-overflow: ellipsis;
+// display: -webkit-box;
+// -webkit-box-orient: vertical;
+// -webkit-line-clamp: 5;
+// "
 async function searchJob(event) {
   event.preventDefault();
   const jobContentElement = document.getElementById("jobContent");
@@ -323,6 +331,7 @@ function createSuggestionElement(text, type) {
 
 async function jobApplication(target, jobId, hasApplied) {
   try {
+    
     const response = await fetch(`/manageApplication/${jobId}/`, {
       method: "POST",
       headers: {
@@ -369,6 +378,7 @@ function showJobDetails(
   posted,
   hasApplied
 ) {
+  const decodedDescription = decodeURIComponent(description);
   console.log(hasApplied);
   selectedJobId = id;
   document.querySelectorAll(".job").forEach((job) => {
@@ -393,7 +403,7 @@ function showJobDetails(
                 </div>
                 <div class="mt-3 mb-4">
                 <button id="applyButton-${id}" class=" inline text-sm py-2 px-4  rounded-md font-semibold bg-[#BC4749] text-white disabled:cursor-not-allowed"
-  onclick="jobApplication('jobList','${id}', ${hasApplied})" ${
+  onclick="onApplyHandler('jobList','${id}', ${hasApplied})" ${
     hasInfo == "True" ? "" : (disabled = "disabled")
   }>
   ${hasApplied == true ? "Withraw Application" : "Apply Now"}
@@ -411,6 +421,30 @@ function showJobDetails(
                 <div class="text-sm text-gray-700">Posted ${posted}</div>
                 <hr class="my-5 bg-gray-300" />
                 <h1 class="font-semibold">Job Details</h1>
-                <div class="mt-2">${description}</div>
+                <div class="mt-2">${decodedDescription}</div>
         `;
+}
+
+
+
+function onApplyHandler(target ,id, hasApplied) {
+  let isApplying 
+  if(target == "jobDetails"){
+    isApplying = document.getElementById(`applyButton`).innerHTML.trim() == "Apply Now" ? true : false;
+  }else{
+   isApplying = document.getElementById(`applyButton-${id}`).innerHTML.trim() == "Apply Now" ? true : false;
+  }
+  Swal.fire({
+    title: `${isApplying ? "Apply" : "Withdraw Application"}?`,
+    text: `Are you sure you want to ${isApplying ? "apply" : "withdraw your application"} for this job?`,
+    icon: "info",
+    confirmButtonText: "Continue",
+    confirmButtonColor:  isApplying ? "#386641" : "#BC4749",
+    showCancelButton: true,
+    showCloseButton: false,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      jobApplication(target ,id, hasApplied)
+    }
+  });
 }

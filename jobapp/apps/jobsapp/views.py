@@ -44,7 +44,7 @@ def jobDetails(request, jobId):
         else:
             hasInfo = False
 
-        if not Job.objects.filter(id=jobId).exists():
+        if not Job.objects.filter(id=jobId, status="active").exists():
             return redirect("jobsapp:index")
         company = Company.objects.get(id=Job.objects.get(id=jobId).company_id)
     return render(request, "jobDetails.html", {"hasInfo": hasInfo, "company": company})
@@ -123,6 +123,7 @@ def getJobDetails(request, jobId):
                 "date_posted",
                 "company_id",
                 "company__company_name",
+                "company__description",
                 "company__city",
                 "company__country",
                 "company__logo",
@@ -149,8 +150,8 @@ def manageApplication(request, jobId):
 
         if existing_application:
             if existing_application.status == "deleted":
-                existing_application.status = "active"
-            elif existing_application.status == "active":
+                existing_application.status = "pending"
+            elif existing_application.status == "active" or existing_application.status == "pending":
                 existing_application.status = "deleted"
             else:
                 pass

@@ -42,7 +42,7 @@ def companyProfile(request,company_id):
         company= Company.objects.get(id=company_id)
         if (company.is_active == False):
             return redirect("jobsapp:index")
-        jobs = Job.objects.filter(company_id=company_id)
+        jobs = Job.objects.filter(company_id=company_id, status="active")
         context = {
             "company":company,
             "jobs":jobs,
