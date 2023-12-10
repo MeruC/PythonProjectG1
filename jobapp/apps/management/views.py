@@ -235,13 +235,13 @@ def change_user_password(user, new_password):
 
 def activate_user_account(user):
     # activate the user
-    user.is_active = True
+    user.is_deactivated = False
     user.save()
 
 
 def deactivate_user_account(user):
     # deactivate the user
-    user.is_active = False
+    user.is_deactivated = True
     user.save()
 
 

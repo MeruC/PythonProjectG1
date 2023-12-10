@@ -32,7 +32,7 @@
         </div>
     </form>
     <div class="space-y-4">
-        {% if user_record.is_active %}
+        {% if not user_record.is_deactivated %}
             <h2 class="text-accent font-bold text-2xl">Deactivate Account</h2>
             <p>
                 This action will make the account <span class="text-accent">temporarily disabled and the user will not be able to login.</span>
