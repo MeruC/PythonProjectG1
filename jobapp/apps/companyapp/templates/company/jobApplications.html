@@ -44,30 +44,17 @@
           </div>
         {% comment %} TODO ADD TABLE HERE {% endcomment %}
 
-        <div class="relative rounded-xl my-5 mt-0 pt-16 p-10 w-[1100px] mx-auto">
-          {% comment %} <div class="text-xl font-semibold mb-4 text-[#386641]">Applicants</div> {% endcomment %}
-          
-          
-
-            {% comment %} <div class="flex justify-between items-center">
-                <div class="relative inline block">
-                    <input type="text"
-                        class="border rounded-md w-64 py-2 px-4 placeholder-gray-500 focus:outline-none focus:ring focus:border-blue-300"
-                        placeholder="Search Applicants">
-                </div>
-            </div> {% endcomment %}
 
             <div class="p-5 h-screen">
-                <div class="overflow-auto rounded-lg shadow hidden md:block">
-                  <div class="mt-5">
-                    <table class="w-full">
+              <div class="overflow-auto rounded-lg shadow hidden md:block">
+                  <table class="w-full">
                       <thead class="bg-[#DFFFCB]">
                         <tr>
-                          <th class="w-2/5 px-4 py-2 text-[#386641]">Applicant's Name</th>
-                          <th class="w-1/5 px-4 py-2 text-[#386641]">Email</th>
-                          <th class="w-1/5 px-4 py-2 text-[#386641]">Applied Date</th>
-                          <th class="w-1/5 px-4 py-2 text-[#386641]">Status</th>
-                          <th class="w-1/5 px-4 py-2 text-[#386641]">Actions</th>
+                          <th class="px-4 py-2 text-[#386641]">Applicant's Name</th>
+                          <th class="px-4 py-2 text-[#386641]">Email</th>
+                          <th class=" px-4 py-2 text-[#386641]">Applied Date</th>
+                          <th class=" px-4 py-2 text-[#386641]">Status</th>
+                          <th class=" px-4 py-2 text-[#386641]">Actions</th>
                         </tr>
                       </thead>
                       <tbody class="divide-y divide-gray-100 bg-white" id="applicant-table-body">
@@ -77,7 +64,7 @@
                             <td class="border px-4 py-2 text-center">{{ applicant.user.get_full_name }}</td>
                             <td class="border px-4 py-2 text-center">{{ applicant.user.email }}</td>
                             <td class="border px-4 py-2 text-center">{{ applicant.date_applied|date:"M j, Y" }}</td>
-                            <td class="border px-4 py-2 text-center"><div class="{% if applicant.status == 'approved' %}bg-[#BCF09D] text-[#386641]{% elif applicant.status == 'active' %}bg-[#B8DEF9] text-[#236EA3]{% elif applicant.status == 'pending' %}bg-[#f2e8cf] text-[#605c52]{% else %}bg-[#FF8F92] text-[#BC4749]{% endif %} rounded-full">&bull; {{ applicant.status|title }}</div></td>
+                            <td class="border px-4 py-2 text-center"><div class="{% if applicant.status == 'approved' %}bg-[#BCF09D] text-[#396641]{% elif applicant.status == 'pending' %}bg-[#B9DEF9] text-[#236FA3]{% else %}bg-[#FF8F93] text-[#BB4748]{% endif %} rounded-full">&bull; {{ applicant.status|title }}</div></td>
                             <td class="border px-4 py-2 text-center">
                               <div class="flex items-center space-x-2">
                                 <button><i class="fa-regular fa-square-check"></i></button>
@@ -95,7 +82,6 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
                 </div>
             </div>
-          </div>
 
       </section>
     </div>

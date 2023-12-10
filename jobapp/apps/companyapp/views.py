@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from ..jobsapp.models import Job, jobApplicant,Company
 from django.contrib.auth import get_user_model
 from ..accountapp.models import Alerts
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.template.loader import render_to_string
 
 User = get_user_model()
@@ -101,10 +101,55 @@ def jobApplicants(request, job_id):
     
     return render(request, template, context)
 
+# ------- For viewing applicants of a company -------
+@login_required(login_url='/account/login/')
 def companyApplicants(request):
-    # TODO
-    # - User must be the owner of the company to view this page
-    return render(request, "company/companyApplications.html")
+    try:
+        # Try to get the company associated with the logged-in user
+        company = Company.objects.get(user=request.user)
+    except Company.DoesNotExist:
+        # If the user doesn't have a company, redirect to the company creation page
+        return redirect("/company/createCompany/")
+    
+    # Retrieve all jobs associated with the company
+    jobs = Job.objects.filter(company=company)
+
+    # Retrieve all applicants for each job
+    all_applicants = []
+    for job in jobs:
+        applicants = job.jobapplicant_set.all()  # Assuming you've set the related name in your Job model
+        all_applicants.extend(applicants)
+
+    context = {
+        'company': company,
+        'applicants': all_applicants,
+    }
+    
+    template = "company/companyApplications.html"
+    
+    return render(request, template, context)
+
+# ------ To update the application status ------
+def updateStatus(request, applicant_id, action):
+    # Get the job applicant
+    applicant = get_object_or_404(jobApplicant, id=applicant_id)
+
+    # Define valid actions (check or xmark)
+    valid_actions = ['check', 'xmark']
+
+    if action not in valid_actions:
+        return HttpResponse("Invalid action")
+
+    # Update the status based on the action
+    if action == 'check':
+        applicant.status = 'approved'
+    elif action == 'xmark':
+        applicant.status = 'rejected'
+
+    # Save the updated status
+    applicant.save()
+
+    return redirect("companyapp:companyApplicants")
 
 
 @login_required(login_url='/account/login/')
