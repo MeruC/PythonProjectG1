@@ -2,7 +2,127 @@
 {% load static %}
 {% block title %}Create Job{% endblock title %}
 {% block content %}
-<h1>Create Job</h1>
-{% comment %} PUT CREATE JOB FORMS HERE {% endcomment %}
+<!-- main content -->
+<div class="w-full min-h-screen bg-[#F1F8F9]">
+<div class="flex-grow p-6">
+    <div class="min-h-screen flex flex-col justify-center items-center mt-5 gap-5">
+        <div class="bg-[#A7C957] rounded shadow-lg w-[700px] h-[100px]">
+            <label for="postJob" class="block text-lg font-medium font-bold text-black-1000 font-noto-sans p-3">Post a
+                Job</label>
+            <label for="" class="text-black-600 font-noto-sans p-3 mb-10">Reach a vast pool of qualified candidates
+                by posting your job openings</label>
+        </div>
 
+        <div class="flex flex-col justify-center bg-white w-full md:w-[700px] p-10 rounded-xl shadow-md">
+            <label for="jobDetails"
+                class="block text-lg font-medium font-bold text-black-600 font-noto-sans">Job Details</label><br>
+            <form action="" method="post" class="flex flex-col gap-3 w-full" autocomplete="off"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Job Title -->
+                <div class="mb-4">
+                    <label for="{{ form.job_title.id_for_label }}"
+                        class="block text-sm font-medium font-bold text-black-600 font-noto-sans">Job Title</label>
+                    {{ form.job_title }}
+                    {{ form.job_title.errors }}
+                </div>
+
+                <!-- Job Description -->
+                <div class="mb-4">
+                    <label for="{{ form.description.id_for_label }}"
+                        class="block text-sm font-medium font-bold text-black-600 font-noto-sans">Job
+                        Description</label>
+                    {{ form.media }}
+                    {{ form.description }}
+                    {{ form.description.errors }}
+                </div>
+
+                <!-- Location -->
+                {% comment %} <div>
+                    <span class="block text-base font-semibold">Location</span>
+                    <div class="flex flex-wrap -mx-3 mb-2">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <label for="{{ form.minimum_salary.id_for_label }}"
+                                class="text-sm font-semibold">City</label>
+                            {{ form.city }}
+                            {{ form.city.errors }}
+                        </div>
+
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <label for="{{ form.maximum_salary.id_for_label }}"
+                                class="text-sm font-semibold">Country</label>
+                            {{ form.country }}
+                            {{ form.country.errors }}
+                        </div>
+                    </div>
+                </div> {% endcomment %}
+
+                <!-- Skills -->
+                <div class="mb-4">
+                    <label for="{{ form.skills.id_for_label }}"
+                        class="block text-sm font-medium font-bold text-black-600 font-noto-sans">Skills</label>
+                    {{ form.skills }}
+                    {{ form.skills.errors }}
+                </div>
+
+
+                <!-- Salary -->
+                <div>
+                    <span class="block text-base font-semibold">Salary</span>
+                    <div class="flex flex-wrap -mx-3 mb-2">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <label for="{{ form.minimum_salary.id_for_label }}"
+                                class="text-sm font-semibold">Minimum</label>
+                            {{ form.min_salary }}
+                            {{ form.min_salary.errors }}
+                        </div>
+
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <label for="{{ form.maximum_salary.id_for_label }}"
+                                class="text-sm font-semibold">Maximum</label>
+                            {{ form.max_salary }}
+                            {{ form.max_salary.errors }}
+                        </div>
+                    </div>
+                </div>
+
+
+                     <!-- Job Type and Status -->
+                     <div class="flex flex-wrap -mx-3 mb-2">
+                      <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                          <label for="{{ form.type.id_for_label }}"
+                              class="text-sm font-semibold">Job Type</label>
+                          {{ form.type }}
+                          {{ form.type.errors }}
+                      </div>
+  
+                      <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                          <label for="{{ form.status.id_for_label }}"
+                              class="text-sm font-semibold">Job Status</label>
+                          {{ form.status }}
+                          {{ form.status.errors }}
+                      </div>
+                  </div>
+
+                <div class="hidden">{{form.date_posted}}</div>
+                <br />
+
+                <!-- Back Link and Post a Job Button -->
+<div class="flex justify-between items-center mt-8">
+    <a class="inline-block align-baseline font-bold text-[#386641] hover:text-[#386641] px-4"
+        href="{% url "companyapp:companyJobList" %}">Back</a>
+
+    <button type="submit" class="bg-[#386641] text-white font-bold py-2 px-4 border rounded">Post a Job</button>
+</div>
+
+
+
+
+
+            </form>
+        </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}
