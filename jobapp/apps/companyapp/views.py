@@ -40,8 +40,12 @@ def createCompany(request):
 def companyProfile(request,company_id):
     try:
         company= Company.objects.get(id=company_id)
-        if (company.is_active == False):
-            return redirect("jobsapp:index")
+        
+        if (company.user != request.user):
+            if (company.is_active == False):
+                return redirect("jobsapp:index")
+        
+        
         jobs = Job.objects.filter(company_id=company_id, status="active")
         context = {
             "company":company,

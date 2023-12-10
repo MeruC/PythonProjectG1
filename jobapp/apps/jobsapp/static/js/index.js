@@ -50,7 +50,7 @@ async function getJobList() {
                   hasApplied = true;
                 }
               }
-              return renderJobs(job, hasApplied);
+              return renderJobs(jsonResponse.userId,job, hasApplied);
             })
             .join("")}
         `;
@@ -108,6 +108,12 @@ async function getJobDetails() {
           .addEventListener("click", async function () {
             onApplyHandler("jobDetails", jobId, jsonResponse.hasApplied);
           });
+          console.log(job.company__user_id);
+          console.log(jsonResponse.userId);
+
+          if(job.company__user_id != jsonResponse.userId) {
+            document.getElementById("applyButton").classList.remove("hidden");
+          }
       }
     }
   } catch (error) {
@@ -115,13 +121,14 @@ async function getJobDetails() {
   }
 }
 
-function renderJobs(job, hasApplied) {
+function renderJobs(userId, job, hasApplied) {
+
   const sanitizedDescription = encodeURIComponent(job.description);
   return `
           <div class="job rounded-xl p-5 border-2 bg-white leading-5 shadow-sm" id="job-${
             job.id
           }" 
-          onclick="handleJobClick('${job.id}', '${job.job_title}', '${
+          onclick="handleJobClick(${userId == job.company__user_id},'${job.id}', '${job.job_title}', '${
     job.company__company_name
   }', '${job.company__city}, ${job.company__country}', '${
     job.type
@@ -217,7 +224,7 @@ async function searchJob(event) {
                     hasApplied = true;
                   }
                 }
-                return renderJobs(job, hasApplied);
+                return renderJobs(jsonResponse.userId,job, hasApplied);
               })
               .join("")}
         `;
@@ -231,6 +238,7 @@ async function searchJob(event) {
 
 /* redirects the user to jobs if the window width is less than or equal to 768px (mobile)*/
 function handleJobClick(
+  isOwned,
   id,
   title,
   companyName,
@@ -245,6 +253,7 @@ function handleJobClick(
     window.location.href = `/jobs/${id}`;
   } else {
     showJobDetails(
+      isOwned,
       id,
       title,
       companyName,
@@ -368,6 +377,7 @@ async function jobApplication(target, jobId, hasApplied) {
 
 /* base.html */
 function showJobDetails(
+  isOwned,
   id,
   title,
   companyName,
@@ -402,7 +412,7 @@ function showJobDetails(
                     <span class="text-[#6A994E] font-semibold">${salary}</span> per month
                 </div>
                 <div class="mt-3 mb-4">
-                <button id="applyButton-${id}" class=" inline text-sm py-2 px-4  rounded-md font-semibold bg-[#BC4749] text-white disabled:cursor-not-allowed"
+                <button id="applyButton-${id}" class="${isOwned ? 'hidden' : 'inline'} text-sm py-2 px-4  rounded-md font-semibold bg-[#BC4749] text-white disabled:cursor-not-allowed "
   onclick="onApplyHandler('jobList','${id}', ${hasApplied})" ${
     hasInfo == "True" ? "" : (disabled = "disabled")
   }>

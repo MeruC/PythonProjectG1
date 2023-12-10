@@ -2,9 +2,11 @@ import re
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.db.models import Q
+
+from ..accountapp.models import Education
 from ..accountapp.views import hasUnreadNotif
-from ..profileapp.models import JobApplication
-from .models import Job
+# from ..profileapp.models import JobApplication
+from .models import Job, WorkExperience, jobApplicant
 from django.contrib.auth import get_user_model
 from apps.jobsapp.models import Job, Company
 
@@ -19,6 +21,12 @@ def index(request):
             hasInfo = True
         else:
             hasInfo = False
+            
+        if not WorkExperience.objects.filter(user_id=request.user).exists() or not Education.objects.filter(user_id=request.user).exists():
+            hasInfo = False
+        
+        
+            
         context = {
         "hasInfo":hasInfo,
         "hasUnreadNotif":hasUnreadNotif(request),
@@ -43,21 +51,25 @@ def jobDetails(request, jobId):
             hasInfo = True
         else:
             hasInfo = False
+            
+        if not WorkExperience.objects.filter(user_id=request.user).exists() or not Education.objects.filter(user_id=request.user).exists():
+            hasInfo = False
 
-        if not Job.objects.filter(id=jobId, status="active").exists():
+        if not Job.objects.filter(id=jobId, status="active",company__is_active=True).select_related("company").values("company__is_active").exists():
             return redirect("jobsapp:index")
         company = Company.objects.get(id=Job.objects.get(id=jobId).company_id)
     return render(request, "jobDetails.html", {"hasInfo": hasInfo, "company": company})
 
+
 # async (views used in ajax call )
 def getJobList(request):
     if request.user.is_authenticated:
-        appliedJobs = JobApplication.objects.filter(
-            user=request.user.id, status="active"
+        appliedJobs = jobApplicant.objects.filter(
+            user=request.user.id, status__in=["pending", "active"]
         )
         appliedJobsId = appliedJobs.values_list("job_id", flat=True)
         jobs = (
-            Job.objects.filter(status="active")
+            Job.objects.filter(status="active", company__is_active=True)
             .select_related("company")
             .values(
                 "id",
@@ -73,6 +85,8 @@ def getJobList(request):
                 "company__company_name",
                 "company__city",
                 "company__country",
+                "company__is_active",
+                "company__user_id"
             )
         )
         print(jobs)
@@ -81,6 +95,7 @@ def getJobList(request):
                 "success": True,
                 "jobs": list(jobs),
                 "appliedJobsId": list(appliedJobsId),
+                "userId": request.user.id,
             }
         )
     else:
@@ -98,17 +113,20 @@ def getJobDetails(request, jobId):
         hasInfo = True
     else:
         hasInfo = False
+    
+    if not WorkExperience.objects.filter(user_id=request.user).exists() or not Education.objects.filter(user_id=request.user).exists():
+            hasInfo = False
 
     if not request.user.is_authenticated:
         return redirect("jobsapp:index")
 
-    hasApplied = JobApplication.objects.filter(
-        job_id=jobId, user_id=request.user.id, status="active"
+    hasApplied = jobApplicant.objects.filter(
+        job_id=jobId, user_id=request.user.id, status__in=["pending", "active"]
     ).exists()
 
     try:
         job = (
-            Job.objects.filter(id=jobId, status="active")
+            Job.objects.filter(id=jobId, status="active", company__is_active=True)
             .select_related("company")
             .values()
             .values(
@@ -128,14 +146,18 @@ def getJobDetails(request, jobId):
                 "company__country",
                 "company__logo",
                 "company__cover_photo",
+                "company__is_active",
+                "company__user_id"
             )
             .first()
         )
-
+        if job is None:
+            print(job)
+            return redirect("jobsapp:index")
     except Job.DoesNotExist:
         return redirect("jobsapp:index")
     return JsonResponse(
-        {"success": True, "job": job, "hasApplied": hasApplied, "hasInfo": hasInfo}
+        {"success": True, "job": job, "hasApplied": hasApplied, "hasInfo": hasInfo,  "userId": request.user.id}
     )
 
 
@@ -144,7 +166,7 @@ def manageApplication(request, jobId):
         job = Job.objects.get(id=jobId)
 
         # job_seeker = JobSeeker.objects.get(user=request.user)
-        existing_application = JobApplication.objects.filter(
+        existing_application = jobApplicant.objects.filter(
             job=job, user=request.user.id
         ).first()
 
@@ -157,8 +179,8 @@ def manageApplication(request, jobId):
                 pass
             existing_application.save()
         else:
-            JobApplication.objects.create(
-                job_id=job.id, user_id=request.user.id, status="active"
+            jobApplicant.objects.create(
+                job_id=job.id, user_id=request.user.id, status="pending"
             )
         return JsonResponse({"success": True})
 
@@ -168,7 +190,7 @@ def searchJob(request):
     where = request.GET.get("where", "")
     type = request.GET.get("type", "all")
     base_query = Q(status="active")
-    appliedJobs = JobApplication.objects.filter(user=request.user.id, status="active")
+    appliedJobs = jobApplicant.objects.filter(user=request.user.id, status__in=["pending", "active"])
     appliedJobsId = appliedJobs.values_list("job_id", flat=True)
     if what:
         skills_list = re.split(r"\W+", what)
@@ -183,7 +205,7 @@ def searchJob(request):
     if type and type != "all":
         base_query &= Q(type=type)
     jobs = (
-        Job.objects.filter(base_query)
+        Job.objects.filter(base_query & Q(company__is_active=True))
         .select_related("company")
         .values(
             "id",
@@ -199,6 +221,9 @@ def searchJob(request):
             "company__company_name",
             "company__city",
             "company__country",
+            "company__is_active",
+            "company__user_id"
+            
             
         )
     )
@@ -208,6 +233,7 @@ def searchJob(request):
             "success": True,
             "jobs": list(jobs),
             "appliedJobsId": list(appliedJobsId),
+            "userId": request.user.id
         }
     )
 
@@ -219,9 +245,9 @@ def getWhatSuggestion(request):
 
     if query:
   
-        job_title_matches = Job.objects.filter(job_title__icontains=query).values("job_title").distinct()
+        job_title_matches = Job.objects.filter(job_title__icontains=query, status="active",company__is_active=True).values("job_title",  "company__is_active").distinct()
 
-        skills_matches = Job.objects.filter(skills__icontains=query).values("skills").distinct()
+        skills_matches = Job.objects.filter(skills__icontains=query, status="active",company__is_active=True).values("skills",  "company__is_active").distinct()
 
         for job_title_match in job_title_matches:
             suggestions.add(job_title_match["job_title"])
@@ -237,16 +263,20 @@ def getWhereSuggestion(request):
     suggestions = set()
 
     if query:
-        city_query = Q(city__icontains=query)
-        country_query = Q(country__icontains=query)
+        city_query = Q(company__city__icontains=query)
+        country_query = Q(company__country__icontains=query)
+        active_query = Q(status="active")
+        company_active_query = Q(company__is_active=True)
         jobs = (
-            Company.objects.filter(city_query | country_query)
-            .values("city", "country")
+            Job.objects.filter(city_query | country_query & active_query & company_active_query)
+            .values("company__city", "company__country","status","company__is_active")
             .distinct()
         )
 
         for job in jobs:
-            suggestion = f"{job['city']}, {job['country']}"
+            suggestion = f"{job['company__city']}, {job['company__country']}"
             suggestions.add(suggestion)
 
     return JsonResponse({"success": True, "suggestions": list(suggestions)})
+
+
