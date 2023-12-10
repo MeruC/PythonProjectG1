@@ -36,6 +36,8 @@ def companyApplicants(request):
     # TODO
     # - User must be the owner of the company to view this page
     return render(request, "company/companyApplications.html")
+
+
 def companyProfileSettings(request):
     current_user = request.user
     hasCompany = Company.objects.filter(user=current_user).count()>0
@@ -97,7 +99,9 @@ def AddCompanyLogo(request):
         if logo_form.is_valid():
             logo_form.save()
             messages.success(request,'Company Logo Successfully updated!')
-    return redirect('companyapp:companyProfileSettings')
+            return redirect('companyapp:companyProfileSettings')
+        
+    return redirect('companyapp:createCompany')
 
 # Upload company logo
 def AddCompanyCoverPhoto(request):
@@ -110,8 +114,9 @@ def AddCompanyCoverPhoto(request):
         if cover_form.is_valid():
             cover_form.save()
             messages.success(request,'Company Cover Successfully updated!')
-    return redirect('companyapp:companyProfileSettings')
+            return redirect('companyapp:companyProfileSettings')
 
+    return redirect('companyapp:createCompany')
 
 
 # ------- update company data ----------
@@ -124,8 +129,9 @@ def updateCompanyData(request):
             if company_data_form.is_valid():
                 company_data_form.save()
                 messages.success(request,'Company details successfully updated')
+                return redirect('companyapp:companyProfileSettings')
         except Exception as ex:
             print(ex)
             messages.error(request,ex)
             
-    return redirect('companyapp:companyProfileSettings')
+    return redirect('companyapp:createCompany')
