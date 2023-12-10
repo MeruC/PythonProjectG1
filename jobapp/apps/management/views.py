@@ -7,14 +7,8 @@ from apps.jobsapp.models import WorkExperience, Job
 from .forms import EducationForm, ProfileForm, WorkHistoryForm
 from django.contrib import messages
 from django.db.models import F
-
-from django.contrib.auth import authenticate, login
-
 from apps.jobsapp.models import Job, Company
-
-
 from django.contrib import messages
-
 from .forms import EditCompanyForm, EditCompanyImageForm, EditJobForm
 
 
@@ -79,7 +73,7 @@ def user_detail(request, id):
         return render(
             request,
             "management/user_detail/profile.html",
-            {"user": user, "profileForm": profileForm},
+            {"user_record": user, "profileForm": profileForm},
         )
 
 
@@ -132,7 +126,7 @@ def qualifications(request, id):
             "work_list": work_list,
             "work_form": work_experience,
             "education_form": education_form,
-            "user": user,
+            "user_record": user,
         },
     )
 
@@ -140,7 +134,9 @@ def qualifications(request, id):
 def get_logs(request, id):
     User = get_user_model()
     user = get_object_or_404(User, pk=id)
-    return render(request, "management/user_detail/logs.html", {"user": user})
+    return render(
+        request, "management/user_detail/logs.html", {"user_record": user}
+    )
 
 
 def delete_education(request, education):
@@ -226,7 +222,9 @@ def action(request, id):
     User = get_user_model()
     user = get_object_or_404(User, pk=id)
 
-    return render(request, "management/user_detail/action.html", {"user": user})
+    return render(
+        request, "management/user_detail/action.html", {"user_record": user}
+    )
 
 
 def change_user_password(user, new_password):
@@ -264,7 +262,7 @@ def history(request, id):
     return render(
         request,
         "management/user_detail/history.html",
-        {"applications": application_list, "user": user},
+        {"applications": application_list, "user_record": user},
     )
 
 

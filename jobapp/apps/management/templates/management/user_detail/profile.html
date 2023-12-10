@@ -5,7 +5,7 @@
     <form method="post"
           enctype="multipart/form-data"
           id="profile-form"
-          action="{% url 'managementapp:user_detail' user.id %}">
+          action="{% url 'managementapp:user_detail' user_record.id %}">
         {% csrf_token %}
         <h2 class="text-xl font-bold mb-8 ">Profile Picture</h2>
         <div class="space-y-4">
