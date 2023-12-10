@@ -52,25 +52,16 @@ function confirmStatusChange(applicationId, title, action) {
 
     Swal.fire({
         title: title,
-        text: `This action cannot be undone. Please type CONFIRM to proceed.`,
+        text: `This action cannot be undone. Are you sure you want to proceed?`,
         icon: "warning",
-        input: "text",
-        inputAttributes: {
-            autocapitalize: "off",
-        },
         showCancelButton: true,
         confirmButtonText: "Confirm",
         confirmButtonClass: "swal-confirm-button",
         showLoaderOnConfirm: true,
-        preConfirm: (inputValue) => {
-            if (inputValue === "CONFIRM") {
-                // Manually submit the form
-                const form = document.getElementById(`changeStatusForm-${applicationId}-${action}`);
-                form.submit();
-            } else {
-                Swal.showValidationMessage("Typed text is not CONFIRM.");
-                return false; // Return false to prevent closing the dialog
-            }
+        preConfirm: () => {
+            // Manually submit the form
+            const form = document.getElementById(`changeStatusForm-${applicationId}-${action}`);
+            form.submit();
         },
     });
 
