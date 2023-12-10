@@ -1,0 +1,66 @@
+{% extends "management/user_detail.html" %}
+{% load static %}
+{% block user_section %}
+    <h2 class="text-secondary font-bold text-2xl">Change Password</h2>
+    <form method="post" id="change-password-form">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user_record.id }}">
+        <input type="hidden" name="action" value="change_password">
+        <div class="flex flex-col w-8/12 items-start gap-4 my-8">
+            <div class="w-full">
+                <label for="new_password" class="block">New Password</label>
+                <div id="password-container" class="relative flex flex-col w-full">
+                    <input name="new_password"
+                           id="new_password"
+                           type="password"
+                           placeholder="••••••••"
+                           required
+                           minlength="8"
+                           class="form-input rounded">
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center ">
+                        <button type="button"
+                                id="new_password_toggle"
+                                class="text-gray-600 focus:outline-none">
+                            <i class="fa-solid text-gray-500 fa-eye-slash" id="new_password_icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <button type="submit"
+                    id="updatePassBtn"
+                    class="daisy-btn daisy-btn-outline daisy-btn-accent">Update Password</button>
+        </div>
+    </form>
+    <div class="space-y-4">
+        {% if user_record.is_active %}
+            <h2 class="text-accent font-bold text-2xl">Deactivate Account</h2>
+            <p>
+                This action will make the account <span class="text-accent">temporarily disabled and the user will not be able to login.</span>
+            </p>
+            <form method="post" id="deactivate-form">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ user_record.id }}">
+                <input type="hidden" name="action" value="deactivate">
+                <button id="account-deactivation-btn"
+                        class="daisy-btn daisy-btn-outline daisy-btn-accent"
+                        type="button">Deactivate Account</button>
+            </form>
+        {% else %}
+            <h2 class="text-primary font-bold text-2xl">Activate Account</h2>
+            <p>
+                This action will make the account <span class="text-primary">active and the user will be able to login.</span>
+            </p>
+            <form method="post" id="activate-form">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ user_record.id }}">
+                <input type="hidden" name="action" value="activate">
+                <button id="account-activation-btn"
+                        class="daisy-btn daisy-btn-outline daisy-btn-primary"
+                        type="button">Activate Account</button>
+            </form>
+        {% endif %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="{% static 'js/account.js' %}"></script>
+    <script src="{% static 'management/manage-users/action.js' %}"></script>
+{% endblock user_section %}

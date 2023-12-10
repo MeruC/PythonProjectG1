@@ -84,20 +84,7 @@ $(document).ready(function() {
         companiesTable.search($(this).val()).draw();
     });
 
-    document.getElementById('logo').addEventListener('change', function () {
-      console.log('changed');
-      var selectedFile = this.files[0];
-  
-      if (selectedFile) {
-          var reader = new FileReader();
-  
-          reader.onload = function (e) {
-              document.getElementById('img_settings').src = e.target.result;
-          };
-  
-          reader.readAsDataURL(selectedFile);
-      }
-  });
+    
 });
 function companiesReport() {
 
