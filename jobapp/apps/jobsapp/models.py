@@ -13,7 +13,6 @@ class Company(models.Model):
     country = models.CharField(max_length=95,default='')
     logo = models.ImageField(null=True, blank=True,upload_to="images/company/")
     cover_photo= models.ImageField(null=True, blank=True,upload_to="images/company/")
-    is_active = models.BooleanField(default=True)
 
 
 

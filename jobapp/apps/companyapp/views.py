@@ -33,10 +33,6 @@ def createCompany(request):
     
     return redirect('companyapp:companyJobList')
     
-def companyProfile(request):
-    # TODO
-    # - User must be logged in to view a company
-    return redirect("jobsapp:index")
 
 @login_required(login_url='/account/login/')
 def companyProfile(request,company_id):
