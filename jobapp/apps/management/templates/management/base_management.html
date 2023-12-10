@@ -7,15 +7,14 @@
     {% endblock anotherMetaData %}
     <!--Sweetalert styles-->
     <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css "
-    rel="stylesheet">
+          rel="stylesheet">
     <!-- Datatables -->
-        <link href="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-html5-2.4.2/r-2.5.0/sp-2.2.0/datatables.min.css" rel="stylesheet">
-    
+    <link href="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-html5-2.4.2/r-2.5.0/sp-2.2.0/datatables.min.css"
+          rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-html5-2.4.2/r-2.5.0/sp-2.2.0/datatables.min.js"></script>
     <!-- END Datatables -->
- 
     <!--Sweetalert styles-->
     <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css "
           rel="stylesheet">
@@ -72,8 +71,8 @@
                 <div class="flex items-center mx-6   leading-5 gap-2 text-xs">
                     <div class="w-10 h-10 rounded-md">
                         <img class="w-full h-full object-cover rounded-md"
-                            width="40"
-                                height="40"
+                             width="40"
+                             height="40"
                              id="img_settings"
                              src="{% if user.company_img %}{{ user.company_img.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
                              alt="">
@@ -99,15 +98,12 @@
     <!-- Datatables-->
     <!--Sweet Alert-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js "></script>
-
     <!-- User Defined JS-->
     <script type="text/javascript" src="{% static '/js/main.js' %}"></script>
-    {% comment %} <script type="text/javascript" src="{% static '/js/navbar.js' %}"></script> {% endcomment %}
     <script type="module" src="{% static 'management/base.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/navbar.js' %}"></script>
     <script src="{% static 'management/manage-companies/manage.js' %}"></script>
     <script src="{% static 'management/manage-jobs/manage.js' %}"></script>
-
-
     <!--Toastr-->
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -129,5 +125,4 @@
         {% endfor %} {% endif %}
    
     </script>
-
 {% endblock content %}
