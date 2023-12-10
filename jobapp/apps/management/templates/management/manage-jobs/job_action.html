@@ -23,9 +23,9 @@
     style="border: 1px solid"
     method="post"
    
-    onClick="onActionJobHandler(' {% if job.status == 'active' %} Delete {% else %} Activate {% endif %}', '{{ job.job_title }}');"
+    onClick="onActionJobHandler(' {% if job.status == 'active' %} Deactivate {% else %} Activate {% endif %}', '{{ job.job_title }}');"
   >
-    {% if job.status == 'active' %} Delete {% else %} Activate {% endif %} Jop Post
+    {% if job.status == 'active' %} Deactivate {% else %} Activate {% endif %} Job Post
   </button>
 </form>
 
