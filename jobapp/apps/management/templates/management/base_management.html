@@ -59,13 +59,13 @@
                            {% if '/jobs/' in request.path %}border-l-2 border-secondary text-secondary{% endif %}">
                     <i class="fa-solid fa-briefcase mr-3"></i><a href="{% url 'managementapp:manage_jobs' %}">Jobs</a>
                 </li>
-                <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
+                {% comment %} <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
                            {% if request.resolver_match.view_name == 'managementapp:index' %}
                                border-l-2 border-secondary text-secondary
                            {% endif %}">
                     <i class="fa-solid fa-clipboard-list mr-3"></i><a href="{% url 'managementapp:index' %}">Activity
                     Log</a>
-                </li>
+                </li> {% endcomment %}
                 <li class="flex-1"></li>
                 <hr class="mx-4">
                 <div class="flex items-center mx-6   leading-5 gap-2 text-xs">
@@ -101,9 +101,8 @@
     <!-- User Defined JS-->
     <script type="text/javascript" src="{% static '/js/main.js' %}"></script>
     <script type="module" src="{% static 'management/base.js' %}"></script>
-    <script type="text/javascript" src="{% static '/js/navbar.js' %}"></script>
-    <script src="{% static 'management/manage-companies/manage.js' %}"></script>
-    <script src="{% static 'management/manage-jobs/manage.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/logout.js' %}"></script>
+ 
     <!--Toastr-->
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
