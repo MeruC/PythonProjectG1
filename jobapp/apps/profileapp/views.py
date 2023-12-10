@@ -310,10 +310,7 @@ def gresume(request):
     return HttpResponse("Hello world!")
 
 # generate pdf
-def resume(request):
-    name = request.user.first_name + " " + request.user.last_name
-    desc = "\t\t\t\t\t\t\t\t\t\t" + request.user.profile_summary
-    
+def resume(request):  
     pdf = FPDF('P', 'mm', 'A4')
     
     #Auto Page Break
@@ -326,8 +323,13 @@ def resume(request):
     pdf.image(request.user.profile_img, 170, 8, 25)
     pdf.set_font("helvetica", "", 24)
     pdf.set_text_color(230,230,230)
-    pdf.cell(0, 14, "", border=False, ln=1, align='L')
-    pdf.cell(0, 4, name, border=False, ln=1, align='L')
+    pdf.cell(0, 4, "", border=False, ln=1, align='L')
+    pdf.cell(0, 7, request.user.first_name + " " + request.user.last_name, border=False, ln=1, align='L')
+    pdf.set_text_color(180,180,180)
+    pdf.set_font("helvetica", "", 14)
+    pdf.cell(0, 7, request.user.email, ln=1, align='L')
+    pdf.set_font("helvetica", "", 12)
+    pdf.cell(0, 4, "+63" + request.user.contact_number, ln=1, align='L')
     pdf.ln(20)
     #pdf.set_margins(0,0,0)
 
@@ -347,7 +349,7 @@ def resume(request):
     #About Content
     pdf.set_font('helvetica', '', 12)
     pdf.set_text_color(0, 0, 0)
-    pdf.multi_cell(0, 5, desc, align="J")
+    pdf.multi_cell(0, 5, "\t\t\t\t\t\t\t\t\t\t" + request.user.profile_summary, align="J")
 
     ##Work Experience
     pdf.cell(1,48,"")
@@ -425,7 +427,7 @@ def resume(request):
             pdf.cell(0, 8, "--------------------------------------------------------------------------------------------------------------------------------------", ln=True, align="C")
 
     ##Skills
-    pdf.cell(1,48,"")
+    #pdf.cell(1,48,"")
     pdf.cell(0, 8, "", ln=True)
     pdf.set_font('helvetica', 'B', 20)
     pdf.set_text_color(97,178,113)
@@ -437,23 +439,27 @@ def resume(request):
     pdf.cell(190, 0.5, "", ln=True, fill=True)
     pdf.cell(0, 4, "", ln=True)
     
-    for work in work_experiences:
-        pdf.cell(1,48,"")
-        pdf.set_font('helvetica', '', 18)
-        pdf.set_text_color(0, 0, 0)
-        pdf.cell(0, 8, work.work_title, ln=True)
-        pdf.cell(10, 8, "")
-        pdf.set_font('helvetica', '', 14)
-        pdf.set_text_color(97,178,113)
-        pdf.cell(40, 8, work.company_name, ln=True)
-        pdf.set_font('helvetica', '', 12)
-        pdf.set_text_color(0, 0, 0)
-        date = work.start_date + " to " + work.end_date
-        pdf.cell(10, 8, "")
-        pdf.cell(40, 8, date, ln=True)
-        pdf.set_text_color(50, 50, 50)
-        if (work != last_work):
-            pdf.cell(0, 8, "--------------------------------------------------------------------------------------------------------------------------------------", ln=True, align="C")
+    pdf.set_font('helvetica', '', 14)
+    pdf.set_text_color(0, 0, 0)
+    pdf.multi_cell(0, 5, "\t\t\t\t\t\t\t\t\t\t" + ', '.join(i for i in request.user.skills.split(',')), align="J")
+    
+    # for work in work_experiences:
+    #     pdf.cell(1,48,"")
+    #     pdf.set_font('helvetica', '', 18)
+    #     pdf.set_text_color(0, 0, 0)
+    #     pdf.cell(0, 8, work.work_title, ln=True)
+    #     pdf.cell(10, 8, "")
+    #     pdf.set_font('helvetica', '', 14)
+    #     pdf.set_text_color(97,178,113)
+    #     pdf.cell(40, 8, work.company_name, ln=True)
+    #     pdf.set_font('helvetica', '', 12)
+    #     pdf.set_text_color(0, 0, 0)
+    #     date = work.start_date + " to " + work.end_date
+    #     pdf.cell(10, 8, "")
+    #     pdf.cell(40, 8, date, ln=True)
+    #     pdf.set_text_color(50, 50, 50)
+    #     if (work != last_work):
+    #         pdf.cell(0, 8, "--------------------------------------------------------------------------------------------------------------------------------------", ln=True, align="C")
 
     return HttpResponse(bytes(pdf.output()), content_type="application/pdf")
     
