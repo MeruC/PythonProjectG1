@@ -1,4 +1,60 @@
 {% extends "management/user_detail.html" %}
 {% block user_section %}
-    <h1 class="text-xl font-bold text-primary">Activity Logs</h1>
+{% load static%}
+<link rel="stylesheet" href="{% static 'css/table.css' %}" />
+
+    <div class="">
+      {% comment %} <h1 class="text-2xl font-bold text-secondary">Activity Logs</h1> {% endcomment %}
+      <h1 class="text-lg font-bold ">Activity Logs</h1>
+      {% comment %} <hr class="mt-5" /> {% endcomment %}
+      <section class="mt-10">
+
+        <div class="flex flex-row gap-3 justify-between mb-3">
+          <div class="relative w-80">
+            <i
+              class="fa-solid fa-search absolute left-4 top-3 text-gray-500"
+            ></i>
+            <input
+              type="search"
+              placeholder="Search"
+              class="w-full rounded pl-12 border-none focus:border-none focus:outline-none focus:ring-primary focus:border-primary resize-none"
+              id="activityLogsSearchField"
+              style=""
+            />
+        
+          </div>
+          <button onClick="activityLogsReport()" class="py-2 px-5 bg-[#BC4749] text-white font-medium rounded">Generate Report</button>
+        </div>
+
+
+        <table id="activityLogsTable" class="row-border">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Action</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+
+          <tbody class="">
+            {% for activityLog in activityLogs %}
+            <tr>
+              <td>
+                {{ activityLog.user.first_name }} {{ activityLog.user.last_name }}
+                <br />{{activityLog.user.email }}
+              </td>
+              <td>
+                {{activityLog.action.title}} 
+              </td>
+              <td>{{ activityLog.timestamp|date:"M d, Y" }}<br>
+                {{ activityLog.timestamp|time:"g:i a" }}</td>
+              
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+<script defer src="{% static 'management/manage-users/logs.js' %}"></script>
 {% endblock user_section %}

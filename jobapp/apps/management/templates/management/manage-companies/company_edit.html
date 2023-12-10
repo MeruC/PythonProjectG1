@@ -8,7 +8,7 @@
 >
   {% csrf_token %}
 
-  <div class="text-sm">
+  <div class="text-[15px]">
     <div>
       Posted by:
       <span class="font-bold underline">{{ company.company_name }}</span>
@@ -31,13 +31,13 @@
    
     <div>
   
-      <label for="{{ form.logo.id_for_label }}" class="bg-[#E0E0E0] text-[#4E4E4E] py-3 px-5 rounded cursor-pointer">Change Picture</label>
+      <label for="{{ form.logo.id_for_label }}" class="bg-[#E0E0E0] text-[#4E4E4E] py-3 px-5 rounded cursor-pointer ">Change Picture</label>
       {{ form.logo }}
     
     </div>
   </div>
 </div>
-<hr class="my-7 border-[#BABABA]">
+<hr class="my-7 border-[#D8D8D8]">
 <div class="text-lg font-bold text-secondary">Company Details</div>
   
 <div class="form-group flex flex-col gap-1">
