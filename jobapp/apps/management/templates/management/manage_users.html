@@ -59,7 +59,7 @@
                                     <td>{{ user.email }}</td>
                                     <td>{{ user.contact_number|default:"No Contact" }}</td>
                                     <td>
-                                        {% if user.is_active %}
+                                        {% if not user.is_deactivated %}
                                             <div class="daisy-badge daisy-badge-success gap-2">
                                                 <div class="daisy-badge daisy-badge-secondary daisy-badge-sm"></div>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
