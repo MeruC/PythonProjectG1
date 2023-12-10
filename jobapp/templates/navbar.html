@@ -24,36 +24,19 @@
       {% if hasUnreadNotif %}
         <div class="w-[7px] h-[7px] bg-red-500 rounded-full absolute top-1 right-0"></div>
       {% endif %}
-      <i class="text-gray-500  fa-regular fa-bell" id="notifIcon"></i>
-      <ul
+      <i class="text-gray-500  fa-regular fa-bell" id="notifIcon" onclick="fetchNotifications()"></i>
+      <div
         id="notifContent"
-        class=" hidden absolute  bg-white shadow-md mt-2 py-2 space-y-2 z-10 right-0 rounded-md w-80 px-3"
+        class="hidden absolute border bg-white shadow-md mt-2 py-2 space-y-2 z-10 right-0 rounded-md w-96 px-3"
       >
       <div class="font-semibold text-lg">Notifications</div>
       <hr/>
-      <div class="flex flex-col gap-2 py-1 leading-5">
-        <li >
-
-          <div class="bg-gray-200 p-5 rounded-md relative">
-            <div class="text-[12px] text-gray-500 text-right absolute top-2 right-4">January 01, 2024</div>
-            <div class="font-semibold">Notification Title Here</div>
-            <div class="text-sm">Notification Description Here</div>
-          </div>
-        </li>
-        <li id="notifList">
-
-          <div class="bg-gray-200 p-5 rounded-md relative">
-            <div class="text-[12px] text-gray-500 text-right absolute top-2 right-4">January 01, 2024</div>
-            <div class="font-semibold">Notification Title Here</div>
-            <div class="text-sm">Notification Description Here</div>
-          </div>
-        </li>
-
-      </div>
-        </li>
+      <ul id="notificationList" class="flex flex-col gap-2 py-1 leading-5 max-h-[500px] overflow-y-auto">
+        {% comment %} NOTIFICATIONS GOES HERE {% endcomment %}
       </ul>
+      </div>
     </li>
-    <li  >
+    <li>
       <img class="w-8 h-8 rounded-full"
       src="{% if user.profile_img %}{{ user.profile_img.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
       alt="">
