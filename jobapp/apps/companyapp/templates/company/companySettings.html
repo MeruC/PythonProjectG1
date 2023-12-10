@@ -43,7 +43,7 @@
             {% if data.logo %} 
               <img src="{{ data.logo }}" class="w-full h-full object-contain object-center" alt="logo" />
             {% else %}
-              <img src="https://img.logoipsum.com/296.svg" class="w-full h-full object-contain object-center" alt="logo" />
+              <img src="{% static '/assets/default_logo.png' %}" class="w-full h-full object-contain object-center" alt="logo" />
             {% endif %}
             
           </div>
@@ -67,7 +67,7 @@
             {% if data.cover_photo %}
             <img src="{{data.cover_photo}}" alt="cover" class="w-full h-full object-cover object-center" />
             {% else %}
-              <img src="https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="cover" class="w-full h-full object-cover object-center" />
+              <img src="{% static '/assets/default_cover_photo.png' %}" alt="cover" class="w-full h-full object-cover object-center" />
             {% endif %}
             
           </div>
