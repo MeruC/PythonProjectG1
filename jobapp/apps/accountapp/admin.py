@@ -77,7 +77,7 @@ admin.site.register(User, CustomUserAdmin)
 
 
 class WorkHistoryAdmin(admin.ModelAdmin):
-    list_display = ["user", "work_title", "position", "start_date", "end_date"]
+    list_display = ["user", "work_title", "job_summary", "start_date", "end_date"]
 
 
 admin.site.register(WorkExperience, WorkHistoryAdmin)
