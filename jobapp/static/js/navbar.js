@@ -66,7 +66,7 @@ const fetchNotifications = async () => {
     notificationContent = data.map(notification => {
       return `
         <li class="p-3 bg-gray-50 rounded-md">
-          <a href="/company/myCompany">
+          <a href="#">
             <div class="flex flex-row items-start gap-3">
               ${createBadge(notification.notification)}
               <div class="flex flex-col gap-1">
