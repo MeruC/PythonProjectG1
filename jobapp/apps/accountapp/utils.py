@@ -15,5 +15,5 @@ def is_valid_email(email):
 
 
 def is_valid_password(password):
-    password_pattern = r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>_])[A-Za-z0-9!@#$%^&*(),.?":{}|<>_]{8,20}$'
+    password_pattern = r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>_-])[A-Za-z0-9!@#$%^&*(),.?":{}|<>_-]{8,20}$'
     return bool(re.match(password_pattern, password))
