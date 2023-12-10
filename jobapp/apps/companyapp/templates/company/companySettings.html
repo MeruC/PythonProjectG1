@@ -84,7 +84,8 @@
         </div>
       </div>
       {% comment %} EDIT COMPANY INFO {% endcomment %}
-      <form class="my-10 flex flex-col gap-2">
+      <form method="post" action="{% url 'companyapp:UploadCompanyData' %}" class="my-10 flex flex-col gap-2">
+        {% csrf_token %}
         <div class="form-group flex flex-col gap-1">
           <label for="{{company_data_form.company_name.id_for_label}}" class="text-sm font-medium text-gray-900">Company Name</label>
           {{company_data_form.company_name}}
