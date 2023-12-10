@@ -9,8 +9,6 @@
 {% endblock anotherMetaData %}
 {% block section %}
     <h1 class="py-24 text-4xl font-bold text-secondary pl-8">Manage Users</h1>
-    {% include "management/messages.html" %}
-    {% comment %} Use datatable  {% endcomment %}
     <div class="container mx-auto px-8">
         <!-- Table Buttons-->
         <div class="flex flex-row gap-3 justify-between mb-3">
@@ -21,7 +19,10 @@
                        class="w-full rounded pl-12 border-none focus:border-none focus:outline-none focus:ring-primary focus:border-primary resize-none"
                        id="usersSearchField">
             </div>
-            <button id="pdfBtn" class="daisy-btn daisy-btn-primary">Generate Report</button>
+            <button id="pdfBtn"
+                    class="daisy-btn daisy-btn-accent py-2 px-5  text-white font-medium rounded">
+                Generate Report
+            </button>
         </div>
         <!-- Table Buttons End-->
         <table class="daisy-table w-full" id="user-table" width="100%">
@@ -50,12 +51,8 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            {{ user.first_name|title }}  {{ user.last_name|title }}
-                        </td>
-                        <td>
-                            {{ user.email }}
-                        </td>
+                        <td>{{ user.first_name|title }}  {{ user.last_name|title }}</td>
+                        <td>{{ user.email }}</td>
                         <td>{{ user.contact_number|default:"No Contact" }}</td>
                         <td>
                             {% if user.is_active %}
@@ -86,5 +83,5 @@
             </tbody>
         </table>
     </div>
-    <script src="{% static 'management/manage-users/manage.js' %}"></script>
+    {% comment %} <script src="{% static 'management/manage-users/manage.js' %}"></script> {% endcomment %}
 {% endblock section %}

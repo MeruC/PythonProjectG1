@@ -1,7 +1,6 @@
 {% extends "management/user_detail.html" %}
 {% load static %}
 {% block user_section %}
-    {% include "management/messages.html" %}
     <h1 class="text-xl font-bold  ">Education</h1>
     {% if education_list|length > 0 %}
         <div class="flex flex-col gap-4 py-4">

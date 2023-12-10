@@ -98,8 +98,6 @@
     </nav>
     <script>const generatedBy = '{{ user.first_name }} {{ user.last_name }}';</script>
     <!-- Plugins and Libraries-->
-    <!-- Jquery-->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Jquery UI-->
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <!-- Datatables-->
@@ -115,15 +113,9 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
     <!--Sweet Alert-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js "></script>
-    <!--Toastr-->
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <!-- User Defined JS-->
-    <script type="text/javascript" src="{% static '/js/main.js' %}"></script>
-    <script type="text/javascript" src="{% static '/js/navbar.js' %}"></script>
-    <script type="module" src="{% static 'management/base.js' %}"></script>
-    <script src="{% static 'management/manage-companies/manage.js' %}"></script>
-    <script src="{% static 'management/manage-jobs/manage.js' %}"></script>
+    <!--Toastr-->
     <script>
     toastr.options = {
         positionClass: 'toast-top-right',
@@ -142,4 +134,10 @@
         {% endfor %} {% endif %}
    
     </script>
+    <!-- User Defined JS-->
+    <script type="text/javascript" src="{% static '/js/main.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/navbar.js' %}"></script>
+    <script type="module" src="{% static 'management/base.js' %}"></script>
+    <script src="{% static 'management/manage-companies/manage.js' %}"></script>
+    <script src="{% static 'management/manage-jobs/manage.js' %}"></script>
 {% endblock content %}
