@@ -29,21 +29,29 @@ def Register(request):
         form = RegisterForm(request.POST)
         # check if all inputs are valid
         if form.is_valid():
-            new_user = User.objects.create_user(
+            try:
+                # check if username already exists
+                new_user = User.objects.create_user(
                 first_name=form.cleaned_data["first_name"],
                 last_name=form.cleaned_data["last_name"],
                 username=form.cleaned_data["username"],
                 email=form.cleaned_data["email"],
                 password=form.cleaned_data["password"],
-            )
-            new_user.save()
+                )
+                new_user.save()
 
-            # generate a success message when registration is successful
-            messages.success(
-                request,
-                "Registration successful. You can now login to your account.",
-            )
-            return redirect("accountapp:login")
+                # generate a success message when registration is successful
+                messages.success(
+                    request,
+                    "Registration successful. You can now login to your account.",
+                )
+                return redirect("accountapp:login")
+            except Exception as e: 
+                # messages.error(
+                # request,
+                # "Internal Server Error.",)
+                print("Internal Server Error", e)
+                
 
     else:
         form = RegisterForm()
