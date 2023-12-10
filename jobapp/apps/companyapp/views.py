@@ -17,9 +17,11 @@ User = get_user_model()
 # Create your views here.
 def index(request):
     return render(request, "index.html")
+
+@login_required(login_url='/account/login/')
 def createCompany(request):
     #check if logged in
-    if request.user.is_authenticated and not request.user.is_superuser:
+    if not request.user.is_superuser:
         #check if already has company
         current_user = request.user
         hasCompany = Company.objects.filter(user=current_user).count()>0
@@ -33,10 +35,6 @@ def createCompany(request):
     
     return redirect('companyapp:companyJobList')
     
-def companyProfile(request):
-    # TODO
-    # - User must be logged in to view a company
-    return redirect("jobsapp:index")
 
 @login_required(login_url='/account/login/')
 def companyProfile(request,company_id):
@@ -126,11 +124,6 @@ def companyProfileSettings(request):
         return render(request, "company/companySettings.html",context)
     return render(request, "company/createCompany.html")
 
-def createJob(request):
-    # TODO
-    # - User must be the owner of the company to view this page
-    # - If user doesn't have a company, redirect to createCompany
-    return render(request, "company/createJob.html")
 
 
 def getCompanyData(request):
