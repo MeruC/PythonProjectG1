@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import get_user_model
-from apps.accountapp.models import Education
+from apps.accountapp.models import Education, ActivityLog
 from apps.profileapp.models import JobApplication
 from apps.jobsapp.models import WorkExperience, Job
 from .forms import EducationForm, ProfileForm, WorkHistoryForm
@@ -134,8 +134,22 @@ def qualifications(request, id):
 def get_logs(request, id):
     User = get_user_model()
     user = get_object_or_404(User, pk=id)
+    # get all activity logs
+    
+    # all user
+    # activityLogs = ActivityLog.objects.all()
+    # context = {'activityLogs': activityLogs}
+    # return render(request, "management/activity-logs/activity_logs.html",context)
+    
+    # per user
+   
+    try:
+        activityLogs = ActivityLog.objects.filter(user_id=id)
+    except ActivityLog.DoesNotExist:
+        activityLogs = []
+        
     return render(
-        request, "management/user_detail/logs.html", {"user_record": user}
+        request, "management/user_detail/logs.html", {"user_record": user, "activityLogs": activityLogs}
     )
 
 

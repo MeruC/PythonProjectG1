@@ -1,5 +1,5 @@
 {% extends "management/manage-jobs/job_sidebar.html" %} {% block job_section %}
-
+{% load static %} 
 <form
   method="post"
   action="{% url 'managementapp:action_job' job_id=job.id %}"
@@ -8,28 +8,26 @@
 >
   {% csrf_token %}
 
-  <div class="text-lg font-bold text-[#C5221F] mt-5">
-    {% if job.status == 'active' %} Delete {% else %} Activate {% endif %} Jop Post
+  <div class="text-lg font-bold   {% if job.status == 'active' %} text-accent {% else %} text-secondary {% endif %}">
+    {% if job.status == 'active' %} Deactivate {% else %} Activate {% endif %} Job Post
   </div>
 
   <div>
-    {% if job.status == 'active' %}  This action will <span class="font-semibold text-[#C5221F]"> prevent potential applicants from applying to this job post. </span>
-   {% else %}
-   This action will <span class="font-semibold text-[#C5221F]"> enable potential applicants to apply to this job post. </span>
-   {% endif %}
+    {% if job.status == 'active' %} This action will <span class="font-semibold text-accent"> prevent potential applicants from applying to this job post.</span>{% else %}
+    This action will <span class="font-semibold text-secondary"> enable potential applicants to apply to this job post.</span>{% endif %}
   </div>
 
   <button
     type="button"
-    class="w-44 bg-transparent border-[#C5221F] text-[#C5221F] px-3 py-2 font-medium  rounded mt-3"
-    style="border: 2px solid"
-   onClick="onActionJobHandler(' {% if job.status == 'active' %} Delete {% else %} Activate {% endif %}', '{{ company.company_name|safe }}');"
-
-  
+    class="w-44 bg-transparent border  px-3 py-2.5 font-medium  font rounded-md mt-3  hover:text-white transition-all {% if job.status == 'active' %} border-accent text-accent hover:bg-accent {% else %}   border-secondary text-secondary hover:bg-secondary{% endif %}"
+    style="border: 1px solid"
+    method="post"
+   
+    onClick="onActionJobHandler(' {% if job.status == 'active' %} Delete {% else %} Activate {% endif %}', '{{ job.job_title }}');"
   >
     {% if job.status == 'active' %} Delete {% else %} Activate {% endif %} Jop Post
   </button>
 </form>
 
-
+<script src="{% static 'management/manage-jobs/manage.js' %}"></script>
 {% endblock job_section %}

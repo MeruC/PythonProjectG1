@@ -14,7 +14,7 @@ table.dataTable tbody {
 table.dataTable .sorting:after,table.dataTable .sorting:before {
     display: none!important;
 }
-#jobsTable_filter, #companiesTable_filter,.buttons-html5, .buttons-print {
+#jobsTable_filter, #companiesTable_filter,#activityLogsTable_filter,.buttons-html5, .buttons-print {
     display: none!important;
 }
 
@@ -23,4 +23,16 @@ table.dataTable .sorting:after,table.dataTable .sorting:before {
  input[type="search"]::-webkit-search-results-button,
  input[type="search"]::-webkit-search-results-decoration {
   display: none!important;
+}
+
+.dataTables_info, .dataTables_paginate .previous,.dataTables_paginate .next {
+    font-size: 14px!important;
+    color:#60646d!important ;
+    font-size: 500!important ;;
+}
+.dataTables_paginate .current {
+    padding:3px 10px!important;
+    border-radius: 3px!important;
+    font-size: 14px!important;
+    color:#60646d!important ;
 }

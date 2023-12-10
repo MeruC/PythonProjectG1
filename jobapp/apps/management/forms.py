@@ -40,7 +40,7 @@ class ProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 "class": (
-                    "block border w-full rounded-md p-2 border-gray-300"
+                    "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary"
                     " outline-none"
                 )
             }
@@ -54,7 +54,7 @@ class ProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 "class": (
-                    "block border w-full rounded-md p-2 border-gray-300"
+                    "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary"
                     " outline-none"
                 )
             }
@@ -68,7 +68,7 @@ class ProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 "class": (
-                    "block border w-full rounded-md p-2 border-gray-300"
+                    "pl-12 form-control w-full rounded focus:ring-1 focus:ring-primary focus:border-primary"
                     " outline-none"
                 )
             }
@@ -81,7 +81,7 @@ class ProfileForm(forms.ModelForm):
         widget=forms.EmailInput(
             attrs={
                 "class": (
-                    "border bg-gray-200 w-full rounded-md p-2 border-gray-300"
+                    "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary"
                     " outline-none"
                 )
             }
@@ -94,8 +94,8 @@ class ProfileForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs={
                 "class": (
-                    "block w-full h-55 rounded-md border border-gray-300"
-                    " outline-none text-sm p-5 resize-none"
+                     "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary"
+                    " outline-none"
                 )
             }
         ),
@@ -424,7 +424,7 @@ class EditCompanyForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": (
-                    "form-control rounded focus:ring-1 focus:ring-primary"
+                    "form-control rounded  focus:ring-1 focus:ring-primary"
                     " focus:border-primary"
                 ),
                 "placeholder": "",
