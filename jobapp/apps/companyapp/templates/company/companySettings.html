@@ -39,14 +39,11 @@
       <div>
         <div>
           <label class="block mb-2 text-sm font-medium text-gray-900" for="file_input">Company Logo</label>
-          <div class="w-20 h-20 mb-2 bg-white p-2 rounded-md overflow-hidden">
-            {% if data.logo %} 
-              <img src="{{ data.logo }}" class="w-full h-full object-contain object-center" alt="logo" />
-            {% else %}
-              <img src="{% static '/assets/default_logo.png' %}" class="w-full h-full object-contain object-center" alt="logo" />
-            {% endif %}
-            
-          </div>
+          {% if data.logo %} 
+            <div class="w-20 h-20 mb-2 bg-white p-2 rounded-md overflow-hidden">
+                <img src="{{ data.logo }}" class="w-full h-full object-contain object-center" alt="logo" />
+            </div>
+          {% endif %}
 
           <form method="post" action="{% url 'companyapp:UploadCompanyLogo' %}" enctype="multipart/form-data">
             {% csrf_token %}
@@ -59,18 +56,17 @@
           
         </div>
       </div>
+
       {% comment %} EDIT COMPANY COVER PHOTO {% endcomment %}
       <div class="mt-10">
         <div>
           <label class="block mb-2 text-sm font-medium text-gray-900" for="file_input_cover">Cover Photo</label>
-          <div class="w-[350px] h-24 mb-2 bg-white border rounded-md overflow-hidden">
-            {% if data.cover_photo %}
-            <img src="{{data.cover_photo}}" alt="cover" class="w-full h-full object-cover object-center" />
-            {% else %}
-              <img src="{% static '/assets/default_cover_photo.png' %}" alt="cover" class="w-full h-full object-cover object-center" />
-            {% endif %}
-            
-          </div>
+
+          {% if data.cover_photo %}
+            <div class="w-[350px] h-24 mb-2 bg-white border rounded-md overflow-hidden">
+              <img src="{{data.cover_photo}}" alt="cover" class="w-full h-full object-cover object-center" />
+            </div>
+          {% endif %}
 
           <form method="post" action="{% url 'companyapp:UploadCompanyCover' %}" enctype="multipart/form-data">
             {% csrf_token %}
