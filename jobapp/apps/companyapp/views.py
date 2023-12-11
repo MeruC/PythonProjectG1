@@ -389,7 +389,11 @@ def resume(request, username):
     
     #OUTPUT
     response = HttpResponse(bytes(pdf.output()), content_type="application/pdf", headers={"Content-Disposition": "inline; filename="+userN+".pdf"})
-    return response
+    if request.method == 'POST':
+        return response
+    else:
+        return render(request, "accessDenied.html")
+        
 
 @login_required(login_url='/account/login/')
 def companyProfileSettings(request):
