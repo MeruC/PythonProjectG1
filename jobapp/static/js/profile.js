@@ -103,6 +103,7 @@ function deletionProcess(URL,csrfToken,element){
             // delete the selected work wrapper
             const container = element.parentElement
             container.remove()
+            location.reload();
         }
     })
     .catch(error => {
@@ -334,5 +335,14 @@ function toggleDeactivateModal(){
         showCloseButton: true
       }).then(result=>{
         if(result.isConfirmed)$('#deact-form').submit()
+      })
+}
+
+function viewResume(missingList){
+    Swal.fire({
+        title: 'Incomplete Data...',
+        text: "Looks like you are missing the following required profile information: " + missingList,
+        icon: 'error',
+        showCloseButton: true
       })
 }
