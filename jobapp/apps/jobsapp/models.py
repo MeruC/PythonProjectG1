@@ -14,6 +14,7 @@ class Company(models.Model):
     logo = models.ImageField(null=True, blank=True,upload_to="images/company/")
     cover_photo= models.ImageField(null=True, blank=True,upload_to="images/company/")
     is_active = models.BooleanField(default=True)
+    email_address = models.EmailField(default='')
 
 
 
