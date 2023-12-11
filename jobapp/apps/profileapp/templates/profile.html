@@ -225,7 +225,7 @@
   </div> {% endcomment %}
 
   {% comment %} -- PAGECONTENT -- {% endcomment %}
-  <div class="min-h-[calc(100vh-56px)]  max-w-[928px] mx-auto flex flex-row gap-5 pt-10">
+  <div class="min-h-[calc(100vh-56px)]  max-w-[928px] mx-auto flex flex-col md:flex-row gap-5 pt-10">
     <aside class="flex flex-col">
       <section class="flex flex-col items-center">
           {% if user.profile_img %}
@@ -247,10 +247,17 @@
             onclick="openTab('profile-tab-btn')">Profile</button>
         <button id="setting-tab-btn" class="text-start pl-3 py-2 hover:bg-gray-100" onclick="openTab('setting-tab-btn')">Account Settings</button>
       </section>
-
+      <hr class="my-5">
+      <section class="text-start flex lg:flex-col gap-2 sm:flex-row sm:justify-center">
+          <a href="{% url 'profileapp:resume' %}">
+            <button onclick="" type="button" id="update-btn" class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]" >
+              View Resume
+            </button>
+          </a>
+        </section>
     </aside>
-    <main class="grow flex flex-col max-h-[calc(100vh-56px)] overflow-y-auto">
-      <div class="profile-tab flex flex-col">
+    <main class="grow flex flex-col max-h-[calc(100vh-56px)]">
+      <div class="profile-tab flex flex-col border border-green-800 rounded">
         {% comment %} -- Profile Summary -- {% endcomment %}
         <section class="min-h-[100px] p-5">
           <h3 class="text-xl font-bold text-green-800">Profile Summary</h3>
@@ -339,7 +346,7 @@
         </section>
       </div>
       <div class="setting-tab hidden">
-        <div class=" gap-2 text-lg p-5">
+        <div class=" gap-2 text-lg p-5 border border-green-800 rounded">
             <form method="POST" action="{% url 'profileapp:index' %}" class="flex flex-col gap-3" enctype="multipart/form-data">
               {% csrf_token %}
               <!-- user image -->
@@ -416,7 +423,7 @@
 
   <!-- modals -->
   <!-- add work experience modal -->
-  <div class="absolute flex items-center justify-center work-history-modal top-0 left-0 w-full h-full z-50 bg-black
+  <div class="fixed flex items-center justify-center work-history-modal top-0 left-0 w-full h-full z-50 bg-black
     bg-opacity-25 hidden">
 
     <div class="w-2/5 rounded-md h-max bg-white p-5">
@@ -484,7 +491,7 @@
 
 
   <!-- education modal -->
-  <div class="absolute flex items-center justify-center education-modal top-0 left-0 w-full h-screen z-50 bg-black
+  <div class="fixed flex items-center justify-center education-modal top-0 left-0 w-full h-screen z-50 bg-black
     bg-opacity-25 hidden">
   
     <div class="w-2/5 rounded-md h-max bg-white p-5">
@@ -537,7 +544,7 @@
 
   
   <!-- update password -->
-  <div class="absolute flex p-5 justify-center top-0 left-0 w-full h-full z-50 bg-black
+  <div class="fixed flex p-5 justify-center top-0 left-0 w-full h-full z-50 bg-black
     bg-opacity-25 update-pass-modal hidden">
   
       <div class="w-2/5 mx-auto rounded-md h-max bg-white p-5 transition duration-150 ease-in-out">
@@ -571,7 +578,7 @@
   </div>
 
   <!-- add skill -->
-  <div class="absolute flex p-5 justify-center top-0 left-0 w-full h-full z-50 bg-black
+  <div class="fixed flex p-5 justify-center top-0 left-0 w-full h-full z-50 bg-black
     bg-opacity-25 hidden skill-modal">
 
     <div class="w-2/5 mx-auto rounded-md h-max bg-white p-5 transition duration-150 ease-in-out">
