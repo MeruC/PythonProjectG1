@@ -19,4 +19,5 @@ urlpatterns = [
     path("myCompany/updatecompanylogo", views.AddCompanyLogo, name="UploadCompanyLogo"),
     path("myCompany/updatecompanycover", views.AddCompanyCoverPhoto, name="UploadCompanyCover"),
     path("myCompany/updatecompanydata", views.updateCompanyData, name="UploadCompanyData"),
+    path('myCompany/applicants/resume/<str:username>',views.resume, name="resume")
 ]
