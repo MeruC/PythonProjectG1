@@ -28,10 +28,20 @@ def createCompany(request):
         
         if not hasCompany:
             if request.method == "POST": 
-                addCompanyData(request)
+                company_form = CompanyDataForm(request.POST)
+                if company_form.is_valid():
+                    #add company based on the current user
+                    company_instance = company_form.save(commit=False)
+                    company_instance.user = current_user
+                    company_instance.save()
                 return redirect('companyapp:companyJobList')
             else:
-                return render(request, "company/createCompany.html")
+                #open create company page with form included
+                company = CompanyDataForm()
+                context = {
+                    "company":company
+                }
+                return render(request, "company/createCompany.html",context)
     
     return redirect('companyapp:companyJobList')
     
