@@ -65,7 +65,7 @@ def jobDetails(request, jobId):
 def getJobList(request):
     if request.user.is_authenticated:
         appliedJobs = jobApplicant.objects.filter(
-            user=request.user.id, status__in=["pending", "active"]
+            user=request.user.id, status__in=["pending", "approved"]
         )
         appliedJobsId = appliedJobs.values_list("job_id", flat=True)
         jobs = (
@@ -121,7 +121,7 @@ def getJobDetails(request, jobId):
         return redirect("jobsapp:index")
 
     hasApplied = jobApplicant.objects.filter(
-        job_id=jobId, user_id=request.user.id, status__in=["pending", "active"]
+        job_id=jobId, user_id=request.user.id, status__in=["pending", "approved"]
     ).exists()
 
     try:
@@ -167,17 +167,11 @@ def manageApplication(request, jobId):
 
         # job_seeker = JobSeeker.objects.get(user=request.user)
         existing_application = jobApplicant.objects.filter(
-            job=job, user=request.user.id
-        ).first()
+            job=job, user=request.user.id, status__in=["pending", "approved"]
+        ).last()
 
         if existing_application:
-            if existing_application.status == "deleted":
-                existing_application.status = "pending"
-            elif existing_application.status == "active" or existing_application.status == "pending":
-                existing_application.status = "deleted"
-            else:
-                pass
-            existing_application.save()
+            existing_application.delete()
         else:
             jobApplicant.objects.create(
                 job_id=job.id, user_id=request.user.id, status="pending"
@@ -190,7 +184,7 @@ def searchJob(request):
     where = request.GET.get("where", "")
     type = request.GET.get("type", "all")
     base_query = Q(status="active")
-    appliedJobs = jobApplicant.objects.filter(user=request.user.id, status__in=["pending", "active"])
+    appliedJobs = jobApplicant.objects.filter(user=request.user.id, status__in=["pending", "approved"])
     appliedJobsId = appliedJobs.values_list("job_id", flat=True)
     if what:
         skills_list = re.split(r"\W+", what)
