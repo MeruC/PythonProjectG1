@@ -193,7 +193,7 @@ function populateWorkModal(resData) {
   const workID = data.id;
   const work_title = data.work_title;
   const company_name = data.company_name;
-  const position = data.position;
+  const job_summary = data.job_summary;
   const started_month = split_start_date[0];
   const started_year = split_start_date[1];
   const end_month = split_end_date[0];
@@ -204,7 +204,7 @@ function populateWorkModal(resData) {
   console.log(data);
   $('input[name="work_title"').val(work_title);
   $('input[name="company_name"').val(company_name);
-  $('input[name="position"').val(position);
+  $('input[name="job_summary"').val(job_summary);
   $('select[name="started_month"').val(started_month);
   $('select[name="started_year"').val(started_year);
   $('select[name="end_month"').val(end_month);
