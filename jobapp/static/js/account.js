@@ -39,11 +39,7 @@ function password_requirment(password_id, requirement_id) {
     if (password.length < 8 || password.length > 20) {
       return false;
     }
-    const has_upperCase = /[A-Z]/.test(password);
-    const has_lowerCase = /[a-z]/.test(password);
-    const has_number = /\d/.test(password);
-    const has_symbol = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password);
-
-    return has_upperCase && has_lowerCase && has_number && has_symbol;
+    const password_pattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>_-])[A-Za-z0-9!@#$%^&*(),.?":{}|<>_-]{8,20}$/;
+    return password_pattern.test(password);
   }
 }

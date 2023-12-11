@@ -14,6 +14,7 @@ urlpatterns = [
     path("myCompany/jobListings/deleteJob/<int:job_id>/", views.deleteJob, name="deleteJob"),
     path("myCompany/jobListings/jobApplicants/<int:job_id>/", views.jobApplicants, name="jobApplicants"),
     path("myCompany/applicants", views.companyApplicants, name="companyApplicants"),
+    path('myCompany/applicants/updateStatus/<int:applicant_id>/<str:action>/', views.updateStatus, name='updateStatus'),
     path("myCompany/", views.companyProfileSettings, name="companyProfileSettings"),
     path("myCompany/updatecompanylogo", views.AddCompanyLogo, name="UploadCompanyLogo"),
     path("myCompany/updatecompanycover", views.AddCompanyCoverPhoto, name="UploadCompanyCover"),

@@ -3,6 +3,9 @@
 {% block title %}Applicants{% endblock title %}
 {% block content %}
 {% include "navbar.html" %}
+
+<script type="text/javascript" src="{% static '/js/actions.js' %}"></script>
+
 <div class="bg-[#F1F8F9] min-h-screen w-full flex flex-col">
   <div class="grow flex flex-row">
     {% comment %} SIDEBAR {% endcomment %}
@@ -29,7 +32,7 @@
     </div>
     {% comment %} CONTENT {% endcomment %}
     <div class="grow overflow-auto p-10">
-      <h1 class="text-2xl font-bold">Applicants</h1>
+      <h1 class="text-2xl font-bold">All Applicants</h1>
       <hr class="mt-5">
       <section class="mt-10">
           <div class="flex flex-row gap-2">
@@ -39,6 +42,58 @@
             </div>
           </div>
         {% comment %} TODO ADD TABLE HERE {% endcomment %}
+
+        <div class="p-5 h-screen">
+          <div class="overflow-auto rounded-lg shadow hidden md:block">
+              <table class="w-full">
+                  <thead class="bg-[#DFFFCB]">
+                      <tr>
+                          <th class=" px-4 py-2 text-[#386641]">Applicant's Name</th>
+                          <th class=" px-4 py-2 text-[#386641]">Email</th>
+                          <th class=" px-4 py-2 text-[#386641]">Job Title</th>
+                          <th class=" px-4 py-2 text-[#386641]">Applied Date</th>
+                          <th class=" px-4 py-2 text-[#386641]">Status</th>
+                          <th class=" px-4 py-2 text-[#386641]">Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-100 bg-white">
+                
+                    {% for applicant in applicants %}
+                    <tr>
+                        <td class="border px-4 py-2 text-center">{{ applicant.user.get_full_name }}</td>
+                        <td class="border px-4 py-2 text-center">{{ applicant.user.email }}</td>
+                        <td class="border px-4 py-2 text-center">{{ applicant.job.job_title }}</td>
+                        <td class="border px-4 py-2 text-center">{{ applicant.date_applied|date:"M j, Y" }}</td>
+                        <td class="border px-4 py-2 text-center">
+                            <div class="{% if applicant.status == 'approved' %}bg-[#BCF09D] text-[#396641]
+                            {% elif applicant.status == 'pending' %}bg-[#B9DEF9] text-[#236FA3]
+                            {% else %}bg-[#FF8F93] text-[#BB4748]{% endif %} rounded-full">&bull; {{ applicant.status|title }}</div>
+                        </td>
+                        <td class="border px-4 py-2">
+                            <div class="flex items-center space-x-2">
+                              {% if applicant.status == 'pending' %}
+                              <a href="#" class="check-button" onclick="confirmStatusChange('{{ applicant.id }}', 'check')">
+                                <i class="fa-regular fa-square-check"></i>
+                              </a>
+                              <a href="#" class="xmark-button" onclick="confirmStatusChange('{{ applicant.id }}', 'xmark')">
+                                  <i class="fa-regular fa-rectangle-xmark"></i>
+                              </a>
+                              {% else %}
+                                  <span class="check-button-disabled"><i class="fa-regular fa-square-check" style="color: #999; cursor: not-allowed;"></i></span>
+                                  <span class="xmark-button-disabled"><i class="fa-regular fa-rectangle-xmark" style="color: #999; cursor: not-allowed;"></i></span>
+                              {% endif %}
+                              <button><i class="fa-regular fa-eye"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                
+                  </tbody>
+              </table>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
+          </div>
+      </div>
       </section>
     </div>
   </div>

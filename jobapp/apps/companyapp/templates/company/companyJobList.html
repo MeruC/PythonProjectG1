@@ -4,7 +4,7 @@
 {% block content %}
 {% include "navbar.html" %}
 
-<script type="text/javascript" src="{% static '/js/jobDeletion.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/actions.js' %}"></script>
 
 <div class="bg-[#F1F8F9] min-h-screen w-full flex flex-col">
   <div class="grow flex flex-row">
@@ -63,7 +63,17 @@
                       <tr>
                           <!--values -->
                           <td class="border px-4 py-2">{{job.job_title}}</td>
-                          <td class="border px-4 py-2 text-center"><a href="{% url 'companyapp:jobApplicants' job.id %}"> {{ job.jobapplicant_set.count }} Applicants </a></td>
+                          <td class="border px-4 py-2 text-center">
+                            {% if job.jobapplicant_set.count > 0 %}
+                                <a href="{% url 'companyapp:jobApplicants' job.id %}" class="text-[#386641] hover:underline">
+                                    {{ job.jobapplicant_set.count }} Applicant{% if job.jobapplicant_set.count > 1 %}s{% endif %}
+                                </a>
+                            {% else %}
+                                <span class="text-[#999]">
+                                    {{ job.jobapplicant_set.count }} Applicants
+                                </span>
+                            {% endif %}
+                          </td>
                           <td class="border px-4 py-2 text-center">
                             <div class="{% if job.status == 'active' %}bg-[#BCF09D] text-[#386641]{% else %}bg-[#FF8F92] text-[#BC4749]{% endif %} rounded-full">
                               &bull; {{ job.status|title }}

@@ -45,7 +45,7 @@ class EditForm(forms.ModelForm):
 class WorkHistoryForm(forms.ModelForm): 
     class Meta:
         model = WorkExperience  # Specify the associated model
-        fields = ['work_title', 'company_name', 'started_month', 'started_year', 'end_month','end_year']
+        fields = ['work_title', 'company_name', 'job_summary','started_month', 'started_year', 'end_month','end_year']
         
     
     @staticmethod
@@ -76,11 +76,11 @@ class WorkHistoryForm(forms.ModelForm):
             attrs={'class':'w-full rounded-md border border-[#B3B3B] outline-none text-sm p-2','placeholder':'Enter your Job Title'}),
         )
     
-    position = forms.CharField(
-        label="Position",
+    job_summary = forms.CharField(
+        label="Job Summary",
         max_length=90,
-        widget=forms.TextInput(
-            attrs={'class':'w-full rounded-md border border-[#B3B3B] outline-none text-sm p-2','placeholder':'Enter your Job Title'})
+        widget=forms.Textarea(
+            attrs={'class':'w-full rounded-md border border-[#B3B3B] outline-none text-sm p-2','placeholder':'Enter your Job Summary'})
     )
     company_name = forms.CharField(
         label="Company Name",
