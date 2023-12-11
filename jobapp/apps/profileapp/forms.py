@@ -78,7 +78,6 @@ class WorkHistoryForm(forms.ModelForm):
     
     job_summary = forms.CharField(
         label="Job Summary",
-        max_length=90,
         widget=forms.Textarea(
             attrs={'class':'w-full rounded-md border border-[#B3B3B] outline-none text-sm p-2','placeholder':'Enter your Job Summary'})
     )
