@@ -1,0 +1,59 @@
+{% extends "management/base_management.html" %}
+{% block title %}
+    Dashboard
+{% endblock title %}
+{% block section %}
+    <h1 class="py-24 text-2xl font-bold text-secondary pl-8">Dashboard</h1>
+    <hr class="mt-5" />
+    <div class="bg-[#F1F8F9] min-h-screen w-full flex flex-col">
+        <div class="grow flex flex-row">
+            <div class="grow overflow-auto p-10">
+                <!--stat container-->
+                <div class="stat-container flex gap-4 flex-wrap lg:flex-nowrap">
+                    <div class="daisy-stat bg-white rounded">
+                        <div class="daisy-stat-figure text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 class="inline-block w-8 h-8 stroke-current">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="daisy-stat-title">Total Likes</div>
+                        <div class="daisy-stat-value text-secondary">25.6K</div>
+                        <div class="daisy-stat-desc">21% more than last month</div>
+                    </div>
+                    <div class="daisy-stat bg-white rounded">
+                        <div class="daisy-stat-figure text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 class="inline-block w-8 h-8 stroke-current">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="daisy-stat-title">Total Likes</div>
+                        <div class="daisy-stat-value text-primary">25.6K</div>
+                        <div class="daisy-stat-desc">21% more than last month</div>
+                    </div>
+                    <div class="daisy-stat bg-white rounded">
+                        <div class="daisy-stat-figure text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 class="inline-block w-8 h-8 stroke-current">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="daisy-stat-title">Total Likes</div>
+                        <div class="daisy-stat-value text-primary">25.6K</div>
+                        <div class="daisy-stat-desc">21% more than last month</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock section %}

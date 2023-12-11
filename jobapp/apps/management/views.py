@@ -18,7 +18,7 @@ def index(request):
 
 # -----------------Dashboard ------------------------------
 def dashboard(request):
-    return render(request, "management/dashboard.html")
+    return render(request, "management/dashboard/index.html")
 
 
 # -----------------Users ------------------------------
