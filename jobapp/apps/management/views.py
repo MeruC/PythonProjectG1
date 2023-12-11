@@ -1,15 +1,27 @@
+from datetime import datetime, timedelta
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth import get_user_model
+
+from django.contrib import messages
+from django.db.models import F, Count
+from django.contrib import messages
+
+# forms
+from .forms import (
+    EducationForm,
+    ProfileForm,
+    WorkHistoryForm,
+    EditCompanyForm,
+    EditCompanyImageForm,
+    EditJobForm,
+)
+
+# models
 from apps.accountapp.models import Education, ActivityLog
 from apps.profileapp.models import JobApplication
-from apps.jobsapp.models import WorkExperience, Job
-from .forms import EducationForm, ProfileForm, WorkHistoryForm
-from django.contrib import messages
-from django.db.models import F
 from apps.jobsapp.models import Job, Company
-from django.contrib import messages
-from .forms import EditCompanyForm, EditCompanyImageForm, EditJobForm
+from apps.jobsapp.models import WorkExperience, Job
+from django.contrib.auth import get_user_model
 
 
 def index(request):
@@ -19,6 +31,81 @@ def index(request):
 # -----------------Dashboard ------------------------------
 def dashboard(request):
     return render(request, "management/dashboard/index.html")
+
+
+def get_job_post_data(request):
+    selected_period = request.GET.get("period", "day")
+
+    current_date = datetime.now()
+    current_year = current_date.year
+    current_month = current_date.month
+    # Fetch job post data based on the selected period (day, month, or year)
+    if selected_period == "day":
+        job_posts_data = (
+            Job.objects.filter(
+                date_posted__month=current_month,
+                date_posted__year=current_year,
+                # status="active",
+            )
+            .values("date_posted__date")
+            .annotate(count=Count("id"))
+        )
+        # Days of the month
+        labels = [
+            f"{current_year}-{current_month}-{day}"
+            for day in range(1, current_date.day + 1)
+        ]
+        data = [0] * current_date.day
+
+        for item in job_posts_data:
+            # add the month to the day
+            day_of_month = item["date_posted__date"].day
+            # Assign count to the corresponding day
+            data[day_of_month - 1] = item["count"]
+        return JsonResponse({"labels": labels, "data": data})
+
+    elif selected_period == "month":
+        # Filter job posts from January of the current year to the current month
+        job_posts_data = (
+            Job.objects.filter(
+                date_posted__year=current_year,
+                date_posted__month__range=[
+                    1,
+                    current_month,
+                ],  # January to current month range
+                # status="active",
+            )
+            .values("date_posted__month")
+            .annotate(count=Count("id"))
+        )
+        # loop through 12 months, and add the count to the month
+        labels = [month for month in range(1, 13)]  # Months of the year
+        data = [0] * 12  # Initialize data list with zeros
+        print(job_posts_data)
+
+        for item in job_posts_data:
+            month = item["date_posted__month"]
+            data[month - 1] = item["count"]
+
+        return JsonResponse({"labels": labels, "data": data})
+
+    elif selected_period == "year":
+        job_posts_data = (
+            Job.objects.values("date_posted__year")
+            .annotate(count=Count("id"))
+            .order_by("date_posted__year")
+        )
+        # get all the years
+        labels = [item["date_posted__year"] for item in job_posts_data]
+        data = [item["count"] for item in job_posts_data]
+
+        return JsonResponse({"labels": labels, "data": data})
+
+    # Prepare data in a format suitable for Chart.js (labels and data)
+    labels = []
+    data = []
+
+    return JsonResponse({"labels": labels, "data": data})
 
 
 # -----------------Users ------------------------------

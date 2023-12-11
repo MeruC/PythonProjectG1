@@ -6,6 +6,7 @@ app_name = "managementapp"
 urlpatterns = [
     path("", views.index, name="index"),
     path("dashboard/", views.dashboard, name="dashboard"),
+    path("dashboard/job_posts/", views.get_job_post_data, name="job_posts"),
     path("users/", views.manage_users, name="manage_users"),
     path("users/<int:id>/profile", views.user_detail, name="user_detail"),
     path(
