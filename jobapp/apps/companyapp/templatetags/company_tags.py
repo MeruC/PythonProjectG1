@@ -8,15 +8,18 @@ register = template.Library()
 def navbar_link_url(user):
     has_company = Company.objects.filter(user=user).exists()
 
+    #make dynamic url linnk
     create_company_url = reverse('companyapp:createCompany')
     my_company_url = reverse('companyapp:companyJobList')
 
-    return my_company_url if has_company else create_company_url
+    redirect_link = my_company_url if has_company else create_company_url
+    return redirect_link
 
 @register.simple_tag
 def navbar_content(user):
     has_company = Company.objects.filter(user=user).exists()
     
+    #dynamic navbar content
     company_name = "Recruit"
     company_img = None
     
