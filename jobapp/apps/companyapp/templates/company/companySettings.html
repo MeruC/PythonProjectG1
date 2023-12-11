@@ -48,7 +48,7 @@
           <form method="post" action="{% url 'companyapp:UploadCompanyLogo' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="mb-2">
-              {{company_logo_form}}
+              {{company_logo_form }}
               <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 500x500px).</p>
             </div>
             <button type="submit" class="px-3 py-2 font-medium text-sm rounded border border-gray-500 text-gray-500">Upload Logo</button>
@@ -74,7 +74,7 @@
               {{company_cover_form}}
               <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 500x500px).</p>
             </div>
-            <button class="px-3 py-2 text-sm font-medium rounded border border-gray-500 text-gray-500">Upload Photo</button>
+            <button type="submit" class="px-3 py-2 text-sm font-medium rounded border border-gray-500 text-gray-500">Upload Photo</button>
           </form>
           
         </div>
@@ -106,5 +106,7 @@
     
   </div>
 </div>
-<!-- <script type="text/javascript" src="{% static 'js/countrySelect.js' %}"></script> -->
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'js/company.js' %}"></script>
 {% endblock content %}

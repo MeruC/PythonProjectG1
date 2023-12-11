@@ -241,7 +241,7 @@
       <form method="POST" action="{% url 'profileapp:addWorkExp' %}">
         {% csrf_token %}
         <!-- job title -->
-        <div class="flex flex-col gap-2 mt-5 gap-1">
+        <div class="flex flex-col gap-2 mt-5">
           <label for="{{work_form.id_for_label}}">Job Title</label>
           {{work_form.work_title}}
         </div>
