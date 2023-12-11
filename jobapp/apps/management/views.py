@@ -13,7 +13,15 @@ from .forms import EditCompanyForm, EditCompanyImageForm, EditJobForm
 
 
 def index(request):
+    return redirect("managementapp:dashboard")
+
+
+# -----------------Dashboard ------------------------------
+def dashboard(request):
     return render(request, "management/dashboard.html")
+
+
+# -----------------Users ------------------------------
 
 
 def manage_users(request):
@@ -195,7 +203,8 @@ def edit_work(request, work):
             work.end_date = "Present"
         else:
             work.end_date = (
-                f"{request.POST.get('end_month')}, {request.POST.get('end_year')}"
+                f"{request.POST.get('end_month')},"
+                f" {request.POST.get('end_year')}"
             )
         work.save()
         messages.success(request, "Work History successfully updated.")
