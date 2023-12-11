@@ -1,15 +1,24 @@
+{% load static %}
+{% load company_tags %}
 <div class="grow flex flex-row">
   {% comment %} SIDEBAR {% endcomment %}
+
+  {% comment %} get instance of the function GetCurrentCompanyInfo in company tags {% endcomment %}
+  {% GetCurrentCompanyInfo request.user as company_data %}
   <div class="w-[300px] bg-white shadow">
     {% comment %} COMPANY INFO {% endcomment %}
       <div class="w-max mx-auto my-5 flex flex-row items-center gap-2 ">
         <div class="w-12 h-12 p-1 rounded-full border-2">
-          {% comment %} TODO: Insert company logo {% endcomment %}
-          <img src="https://img.logoipsum.com/296.svg" class="w-full h-full object-contain object-center" alt="logo" />
+          
+          {% if company_data.company_img %}
+            <img src="{{company_data.company_img.url}}" class="w-full h-full object-contain object-center" alt="logo" />
+          {% else %}
+            <img src="{% static '/assets/default_logo.png' %}" class="w-full h-full object-contain object-center rounded-full" alt="logo" />
+          {% endif %}
         </div>
         <div class="grow">
-          <h4 class="font-semibold">Tech Innovations Co.</h4>
-          <p class="text-sm text-gray-500">owner@techinnovate.com</p>
+          <h4 class="font-semibold">{{company_data.company_name}}</h4>
+          <p class="text-sm text-gray-500">{{company_data.company_email}}</p>
         </div>
       </div>
       {% comment %} END COMPANY INFO {% endcomment %}
