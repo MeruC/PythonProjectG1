@@ -24,243 +24,236 @@
   {% if user.is_authenticated %}
 
   {% if user_data %}
-
-  <div class="md:w-4/5 mx-auto h-screen">
-    <!-- Main navigation container -->
-    {% include 'navbar.html' %}
-    <div class="flex flex-col lg:flex-row gap-2 p-5 h-4/5">
-      <aside class="flex flex-col gap-5 w-full lg:w-1/5 h-full">
-
-        <section class="flex flex-col items-center">
+  
+  {% include 'navbar.html' %}
+  
+  {% comment %} -- PAGECONTENT -- {% endcomment %}
+  <div class="min-h-[calc(100vh-56px)]  max-w-[928px] mx-auto flex flex-col md:flex-row gap-5 pt-10">
+    <aside class="flex flex-col">
+      <section class="flex flex-col items-center">
           {% if user.profile_img %}
             <img class="h-36 w-36 rounded-full object-cover"
             src="{{ user.profile_img.url }}"
-            alt="">
+            alt="profile picture">
           {% else %}
             <!-- default image -->
             <img class="h-36 w-36 rounded-full object-cover"
             src="{% static '/assets/default_profile.png' %}"
-            alt="">
+            alt="profile picture">
           {% endif %}
-          
-
-          <p class="text-xl">{{ user_data.first_name }} {{ user_data.last_name }}</p>
-          <span class="">{{user_data.email}}</span>
-        </section>
-
-        <section class="text-start flex lg:flex-col gap-2 sm:flex-row sm:justify-center">
-          <button class="active-tab text-start" id="profile-tab-btn"
+          <p class="text-xl text-center capitalize font-semibold mt-3">{{ user_data.first_name }} {{ user_data.last_name }}</p>
+          <p class="">{{user_data.email}}</p>
+      </section>
+      <hr class="my-5">
+      <section class="text-start flex flex-row justify-center gap-2 md:flex-col md:items-start">
+        <button class="active-tab text-start pl-3 py-2 hover:bg-gray-100" id="profile-tab-btn"
             onclick="openTab('profile-tab-btn')">Profile</button>
-          <button id="setting-tab-btn" class="text-start" onclick="openTab('setting-tab-btn')">Account Settings</button>
-        </section>
-
-        <section class="text-start flex lg:flex-col gap-2 sm:flex-row sm:justify-center">
+        <button id="setting-tab-btn" class="text-start pl-3 py-2 hover:bg-gray-100" onclick="openTab('setting-tab-btn')">Account Settings</button>
+      </section>
+      <hr class="my-5">
+      <section class="text-start flex flex-row items-center justify-center md:flex-col md:items-start">
           <a href="{% url 'profileapp:resume' %}">
             <button onclick="" type="button" id="update-btn" class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]" >
               View Resume
             </button>
           </a>
         </section>
-
-      </aside>
-
-
-      <main class="lg:w-4/5 w-full">
-        <div class=" h-max max-h-[97%] rounded-lg overflow-y-auto p-5 profile-tab">
-          <!-- profile summary -->
-          <div class=" py-3 w-full">
-            <h1 class="text-lg font-bold text-[#6a994e]">Profile Summary</h1>
-            <pre
-              class="text-[#3C3C3C] text-sm mt-5 indent-5 w-full whitespace-pre-wrap text-justify">{{user_data.profile_summary}}</pre>
-          </div>
-
-
-          <!-- education -->
-          <div class="py-5">
-            <h1 class="text-lg font-bold text-[#6a994e]">Education</h1>
-
-            {% for education in education_data%}
+    </aside>
+    <main class="grow flex flex-col max-h-[calc(100vh-56px)]">
+      <div class="profile-tab flex flex-col border border-green-800 rounded">
+        {% comment %} -- Profile Summary -- {% endcomment %}
+        <section class="min-h-[100px] p-5">
+          <h3 class="text-xl font-bold text-green-800">Profile Summary</h3>
+          <p class="mt-2">{{user_data.profile_summary}}</p>
+        </section>
+        <hr class="my-5">
+        {% comment %} -- EDUCATION -- {% endcomment %}
+        <section class="min-h-[100px] p-5">
+          <h3 class="text-xl font-bold text-green-800 mb-3">Education</h3>
+          {% if education_data %}
             <!-- display all the education of the current user -->
-            <div class="flex justify-between items-start education_wrapper">
+          <div class="flex flex-col gap-2">
+            {% for education in education_data%}
+            <div class="p-5 flex justify-between items-start education_wrapper bg-gray-50 rounded">
               <div>
-                <p class="text-lg">{{education.course}}</p>
+                <p class="text-lg font-medium">{{education.course}}</p>
                 <p>{{education.school_name}}</p>
                 <p class="text-sm text-gray-500">{{education.started_year}} - {{education.ended_year}}</p>
               </div>
-
               <div>
-                <button class="bg-blue-400 hover:bg-blue-500 text-white p-2 rounded-md" onclick="updateEducationModal('{{education.id}}')">Update</button>
-                <button class="hover:bg-red-500 text-red-400 hover:text-white p-2 rounded-md transition delay-25" onclick="deleteEducation('{{education.id}}',this)">Delete</button>
+                <button class="text-sm px-2 py-1 text-gray-500 hover:bg-gray-200 rounded" onclick="updateEducationModal('{{education.id}}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button class="text-sm px-2 py-1 text-gray-500 hover:bg-gray-200 rounded" onclick="deleteEducation('{{education.id}}',this)"><i class="fa-solid fa-trash"></i></button>
               </div>
-              
             </div>
-          
             {% endfor %}
-
-            <button
-              class="py-2 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
-              onclick="toggleModal('open-education-modal')">Add
-              Education</button>
           </div>
-
-          <!-- Work history -->
-          <div class="py-5">
-            <h1 class="text-lg font-bold text-[#6a994e]">Work History</h1>
-            <!-- display all the work experience of the current user -->
+          {% else %}
+            <p class="font-semibold text-gray-500 my-2">No education added</p>
+          {% endif %}
+            <button
+              class="py-2 px-3 mt-5 text-sm text-green-800 font-medium border border-green-800 rounded hover:text-white hover:bg-green-800 transition-all duration-100"
+              onclick="toggleModal('open-education-modal')">Add
+              Education
+            </button>
+        </section>
+        <hr class="my-5">
+        {% comment %} -- WORK HISTORY -- {% endcomment %}
+        <section class="min-h-[100px] p-5">
+          <h3 class="text-xl font-bold text-green-800 mb-3">Work Experience</h3>
+          <!-- display all the work experience of the current user -->
+          {% if work_experiences %}
             {% for experience in work_experiences %}
-            <div class="flex justify-between items-start work_wrapper">
+            <div class="p-5 flex justify-between items-start work_wrapper bg-gray-50 rounded">
               <div class="py-2">
-                <p class="text-lg">{{experience.work_title}}</p>
+                <p class="text-lg font-medium">{{experience.work_title}}</p>
                 <p>{{experience.company_name}}</p>
                 <p class="text-sm text-gray-500">{{experience.start_date}} - {{experience.end_date}}</p>
+                <p class="mt-2 ml-2">{{experience.job_summary}}</p>
               </div>
 
-              <button class="hover:bg-red-500 text-red-400 hover:text-white px-3 py-2 rounded-md transition delay-25" onclick="deleteWork('{{experience.id}}', this)">Delete</button>
+              <button class="text-sm px-2 py-1 text-gray-500 hover:bg-gray-200 rounded" onclick="deleteWork('{{experience.id}}', this)"><i class="fa-solid fa-trash"></i></button>
             </div>
-            <pre class="w-4/5 p-4 border border-gray-300 rounded-md text-gray-500 whitespace-pre-wrap text-justify">{{experience.job_summary}}</pre>
-            {% endfor %}
-
+          {% endfor %}
+          {% else %} 
+            <p class="font-semibold text-gray-500 my-2">No work experience added</p>
+          {% endif %}
             <button
-              class="py-2 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
+              class="py-2 px-3 mt-5 text-sm text-green-800 font-medium border border-green-800 rounded hover:text-white hover:bg-green-800 transition-all duration-100"
               onclick="toggleModal('open-workexp-modal')">Add
-              Work Experience</button>
-          </div>
-
-
-          <!-- skills -->
-          <div class=" py-5">
-            <h1 class="text-lg font-bold text-[#6a994e]">Skills</h1>
-
-            <ul>
+              Work Experience
+            </button>
+        </section>
+        <hr class="my-5">
+        {% comment %} -- SKILLS -- {% endcomment %}
+        <section class="min-h-[100px] p-5">
+            <h3 class="text-xl font-bold text-green-800 mb-3">Skills</h3>
+            {% if user_data.skills %}
+              <ul class="flex flex-row gap-1 flex-wrap">
               {% for skill in user_data.skills %}
-                <li class="flex justify-between items-center py-2">
-                  <p>{{skill|title}}</p>
-                  <a href="{% url 'profileapp:deleteSkill' skill=skill %}">
+                <li class="flex justify-between px-3 py-1 bg-gray-200 rounded">
+                  <p class="font-medium">{{skill|title}}</p>
+                  <a href="{% url 'profileapp:deleteSkill' skill=skill %}" class="ml-3">
                     <span class="fa fa-close text-gray-300 cursor-pointer hover:text-red-400"></span>
                   </a>
-          
                 </li>
               {% endfor %}
-            </ul>
-
+              </ul>
+            {% else %}
+              <p class="font-semibold text-gray-500 my-2">No skills added</p>
+            {% endif %}
             <button
-              class="py-2 px-3 border border-[#6a994e] rounded-md text-[#6a994e] hover:bg-[#6a994e] hover:text-white hover:font-bold mt-5"
+             class="py-2 px-3 mt-5 text-sm text-green-800 font-medium border border-green-800 rounded hover:text-white hover:bg-green-800 transition-all duration-100"
               onclick="toggleModal('open-skill-modal')">
               Add Skill
             </button>
-          </div>
-          
-        </div>
-
-        <!-- setting tab -->
-        <div class=" h-max max-h-[97%] rounded-lg overflow-y-auto p-5 setting-tab hidden">
-          <div class=" gap-2 text-lg">
+        </section>
+      </div>
+      <div class="setting-tab hidden">
+        <div class=" gap-2 text-lg p-5 border border-green-800 rounded">
             <form method="POST" action="{% url 'profileapp:index' %}" class="flex flex-col gap-3" enctype="multipart/form-data">
               {% csrf_token %}
-
               <!-- user image -->
               <div>
+                <h3 class="font-bold text-xl text-green-800 mb-3">Account Settings</h3>
                 {% if user.profile_img %}
-                    <img id="img_settings" class="h-36 w-36 rounded-full object-cover mb-5"
+                    <img id="img_settings" class="h-20 w-20 rounded-full object-cover mb-5"
                         src="{{ user.profile_img.url }}"
                         alt="">
                 {% else %}
                     <!-- default image -->
-                    <img id="img_settings" class="h-36 w-36 rounded-full object-cover mb-5"
+                    <img id="img_settings" class="h-20 w-20 rounded-full object-cover mb-5"
                         src="{% static '/assets/default_profile.png' %}"
                         alt="">
                 {% endif %}
-                
                 {{ form.profile_img }}
               </div>
                            
 
               <div class="flex gap-4">
                 <div class="w-1/2">
-                  <label for="{{form.first_name.id_for_label}}">First name:</label>
+                  <label for="{{form.first_name.id_for_label}}" class="font-medium text-sm">First name:</label>
                   {{ form.first_name }}
                 </div>
                 <div class="w-1/2">
-                  <label for="{{form.last_name.id_for_label}}">Last name:</label>
+                  <label for="{{form.last_name.id_for_label}}" class="font-medium text-sm">Last name:</label>
                   {{ form.last_name }}
                 </div>
               </div>
 
-              <label for="{{form.profile_summary.id_for_label}}">Profile summary</label>
+              <label for="{{form.profile_summary.id_for_label}}" class="font-medium text-sm">Profile summary</label>
               {{form.profile_summary}}
 
-              <label for="{{form.email_address.id_for_label}}">Email address:</label>
+              <label for="{{form.email_address.id_for_label}}" class="font-medium text-sm">Email address:</label>
               {{ form.email }}
 
-              <label for="form.contact_number.id_for_label">Contact No.</label>
+              <label for="form.contact_number.id_for_label" class="font-medium text-sm">Contact No.</label>
               <div class="flex gap-2 items-center">
                 <span>+63</span>
                 {{form.contact_number}}
               </div>
               
-              <div class="flex justify-end gap-2">
+              <div class="flex justify-end gap-3">
                 <button
-                  class="bg-[#386641] py-2 px-3 transition duration-200 hover:bg-[#6a994e] rounded-sm text-white font-bold"
+                  class="text-sm font-medium bg-green-800 text-white py-2 px-3 transition duration-200 hover:bg-[#6a994e] rounded"
                   type="submit">Save changes</button>
-                <button class="text-[#386641] hover:font-bold transition delay-duration-200">Cancel</button>
+                <button class="text-[#386641] text-sm hover:text-[#6a994e] transition delay-duration-200">Cancel</button>
               </div>
-
             </form>
-
+            <hr class="my-5">
             <div>
-              <h2 class="text-lg font-bold py-2 border-b border-gray-300">Account Settings</h2>
-              <div class="flex justify-between items-center text-gray-400 mb-2 py-2">
-                <label for="">Change Password</label>
-                <span class="fa fa-edit hover:text-gray-500 cursor-pointer" onclick="togglePassModal()"></span>  
+              <div class="flex flex-col mb-2 py-2">
+                <label for="" class="py-2">Password</label>
+                {% comment %} <span class="fa fa-edit hover:text-gray-500 cursor-pointer" onclick="togglePassModal()"></span> {% endcomment %}
+                <button class="w-max px-3 py-2 text-sm font-medium text-green-800 border border-green-800 rounded hover:bg-green-800 hover:text-white transition-all duration-200" onclick="togglePassModal()">Change Password</button>  
               </div>
-              <label for="" class="text-red-400 text-lg font-bold">Deactivate Account</label>
-              <form id="deact-form" method="POST" action="{% url 'profileapp:deactAccount' %}">
+              <hr class="my-5">
+              <label for="" class="text-red-500 text-lg font-bold">Deactivate Account</label>
+              <form id="deact-form" class="mb-10" method="POST" action="{% url 'profileapp:deactAccount' %}">
                 {% csrf_token %}
-                <p>This action will make your account <span class="text-red-400 font-semibold">temporarily disabled.</span></p>
-                <button type="button" class="px-3 py-2 rounded-md border-2 border-red-500 mt-5 text-red-500 hover:bg-red-500 hover:text-white" onclick="toggleDeactivateModal()">Deactivate Account</button>
-
+                <p>This action will make your account <span class="text-red-500 font-semibold">temporarily disabled.</span></p>
+                <button type="button" class="px-3 py-2 text-sm font-medium rounded-md border border-red-500 mt-5 text-red-500 hover:bg-red-500 hover:text-white" onclick="toggleDeactivateModal()">Deactivate Account</button>
                 <button type="submit" class="hidden"></button>
               </form>
             </div>
 
           </div>
-        </div>
-      </main>
-    </div>
+      </div>
+    </main>
   </div>
+
+
 
 
   <!-- modals -->
   <!-- add work experience modal -->
-  <div class="absolute flex items-center justify-center work-history-modal top-0 left-0 w-full h-full z-50 bg-black
+  <div class="fixed flex items-center justify-center work-history-modal top-0 left-0 w-full h-full z-50 bg-black
     bg-opacity-25 hidden">
 
-    <div class="w-2/5 rounded-md h-max bg-white p-5">
+    <div class="w-full h-full rounded-md bg-white p-5 sm:max-w-[600px] sm:h-max">
       <h2 class="font-bold text-[#386641] text-lg pb-5">Add Work History</h2>
-
-      <form method="POST" action="{% url 'profileapp:addWorkExp' %}">
+      <form method="POST" class="flex flex-col gap-2" action="{% url 'profileapp:addWorkExp' %}">
         {% csrf_token %}
         <!-- job title -->
-        <div class="flex flex-col gap-2 mt-5">
-          <label for="{{work_form.id_for_label}}">Job Title</label>
+        <div class="flex flex-col gap-1">
+          <label class="font-medium" for="{{work_form.id_for_label}}">Job Title</label>
           {{work_form.work_title}}
         </div>
 
         <!-- company name -->
-        <div class="flex flex-col mt-3 gap-1">
-          <label for="{{work_form.id_for_label}}">Company Name</label>
+        <div class="flex flex-col gap-1">
+          <label class="font-medium" for="{{work_form.id_for_label}}">Company Name</label>
           {{work_form.company_name}}
         </div>
 
         <!-- job summary -->
-        <div class="flex flex-col mt-3 gap-1">
-          <label for="{{work_form.id_for_label}}">Job Summary</label>
+        <div class="flex flex-col gap-1">
+          <label class="font-medium" for="{{work_form.id_for_label}}">Job Summary</label>
           {{work_form.job_summary}}
         </div>
 
         <!-- started -->
-        <div class="flex flex-col gap-2 mt-3">
-          <label for="{{work_form.started_month.id_for_label}}">Started</label>
+        <div class="flex flex-col gap-1">
+          <label class="font-medium" for="{{work_form.started_month.id_for_label}}">Started</label>
           <div class="flex gap-2">
             {{work_form.started_month}}
             {{work_form.started_year}}
@@ -269,9 +262,9 @@
         </div>
 
         <!-- end -->
-        <div class="flex flex-col gap-2 mt-3">
+        <div class="flex flex-col gap-1">
           <div class="flex items-center justify-between gap-2">
-            <label for="{{work_form.id_for_label}}">End</label>
+            <label class="font-medium" for="{{work_form.id_for_label}}">End</label>
 
             <div class="text-gray-600">
               <span>Present</span>
@@ -298,40 +291,39 @@
 
   </div>
 
-
   <!-- education modal -->
-  <div class="absolute flex items-center justify-center education-modal top-0 left-0 w-full h-screen z-50 bg-black
+  <div class="fixed flex items-center justify-center education-modal top-0 left-0 w-full h-screen z-50 bg-black
     bg-opacity-25 hidden">
   
-    <div class="w-2/5 rounded-md h-max bg-white p-5">
+    <div class="w-full h-full rounded-md bg-white p-5 sm:max-w-[600px] sm:h-max">
 
       <h2 class="font-bold text-[#386641] text-lg pb-5">Add Education</h2>
-      <form action="{% url 'profileapp:addEducation' %}" method="POST">
+      <form class="flex flex-col gap-3" action="{% url 'profileapp:addEducation' %}" method="POST">
         {% csrf_token %}
-        <div class="mt-5">
-          <label for="{{ education.id_for_label }}">Education Level:</label>
+        <div class="">
+          <label class="font-medium" for="{{ education.id_for_label }}">Education Level:</label>
           {{education.education_level}}
         </div>
 
         <div>
-          <label for="{education.id_for_label}">Institution / School / University:</label>
+          <label class="font-medium" for="{education.id_for_label}">Institution / School / University:</label>
           {{education.school_name}}
         </div>
 
         <div>
-          <label for="{education.id_for_label}">Field of Study:</label>
+          <label class="font-medium" for="{education.id_for_label}">Field of Study:</label>
           {{education.course}}
         </div>
 
         <div class="flex gap-2">
           <div>
-            <label for="{{ education.id_for_label }}">Start year:</label>
+            <label class="font-medium" for="{{ education.id_for_label }}">Start year:</label>
             {{education.started_year}}
           </div>
   
   
           <div>
-            <label for="{{ education.id_for_label }}">Ended year:</label>
+            <label class="font-medium" for="{{ education.id_for_label }}">Ended year:</label>
             {{education.ended_year}}
           </div>
         </div>
@@ -353,14 +345,11 @@
 
   
   <!-- update password -->
-  <div class="absolute flex p-5 justify-center top-0 left-0 w-full h-full z-50 bg-black
-    bg-opacity-25 update-pass-modal hidden">
-  
-      <div class="w-2/5 mx-auto rounded-md h-max bg-white p-5 transition duration-150 ease-in-out">
+  <div class="fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 bg-black bg-opacity-25 update-pass-modal hidden">
+      <div class="w-full h-full rounded-md bg-white p-5 sm:max-w-[600px] sm:h-max">
         <form method="POST">
           {% csrf_token %}
-          <h2 class="text-xl py-2 border-b border-gray-300">Change Password</h2>
-
+          <h2 class="font-bold text-[#386641] text-lg pb-5">Change Password</h2>
           <p class="text-sm italic text-red-400 hidden unmatch-current-password-msg">Incorrect current password</p>
           <label for="{{password_form.current_password.id_for_label}}">Current Password:</label>
           {{password_form.current_password}}
@@ -376,8 +365,8 @@
           <label>Confirm Password:</label>
           <input type="password" name="confirm_pass" autocomplete="confirm-password" class="block rounded-md border border-gray-300 py-3 p-2 outline-none text-sm w-full resize-none"/>
           <p class="text-sm italic text-red-400 hidden unmatch-new-password-msg">New password not match!</p>
-          <div class="flex gap-2 justify-end mt-2">
-            <button type="button" class="bg-[#6a994e] rounded-md px-3 py-2 text-white hover:bg-[#386641]" onclick="updatePassword('{{user.id}}')">Change password</button>
+          <div class="flex gap-3 justify-end mt-2">
+            <button type="button"class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]" onclick="updatePassword('{{user.id}}')">Change password</button>
             <button class="hover:text-gray-500 text-gray-400" type="button" onclick="togglePassModal()">Cancel</button>
           </div>
         </form>
@@ -387,18 +376,18 @@
   </div>
 
   <!-- add skill -->
-  <div class="absolute flex p-5 justify-center top-0 left-0 w-full h-full z-50 bg-black
+  <div class="fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 bg-black
     bg-opacity-25 hidden skill-modal">
 
-    <div class="w-2/5 mx-auto rounded-md h-max bg-white p-5 transition duration-150 ease-in-out">
+    <div class="w-full h-full rounded-md bg-white p-5 sm:max-w-[600px] sm:h-max">
       <form id="skill-form" action="{% url 'profileapp:addSkill' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <h2 class="text-xl py-2 border-b border-gray-300 mb-2">Add Skill</h2>
+        <h2 class="font-bold text-[#386641] text-lg pb-5">Add Skill</h2>
         <p class="text-red-400 text-sm italic text-end msg-skill-error hidden">Skill is already included</p>
         {{skill_form.skills}}
 
-        <div class="flex justify-end gap-2 mt-2">
-          <button type="button" id="submit-skill" class="bg-[#6a994e] rounded-md px-3 py-2 text-white hover:bg-[#386641]">Add skill</button>
+        <div class="flex justify-end mt-5 gap-3">
+          <button type="button" id="submit-skill" class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]">Add skill</button>
           <button class="hover:text-gray-500 text-gray-400" type="button" onclick="toggleModal('close-skill-modal')">Cancel</button>
         </div>
         
