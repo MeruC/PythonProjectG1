@@ -487,6 +487,7 @@ def createJob(request, job_id=0):
                     action_user=request.user.get_full_name(),
                     user=user,
                     is_read='unread',
+                    job=new_job,
                 ).exists()
 
                 if not existing_alert:
@@ -495,6 +496,7 @@ def createJob(request, job_id=0):
                         action_user=request.user.get_full_name(),
                         user=user,
                         is_read='unread',
+                        job=new_job,
                     )
                     alert.save()
 
