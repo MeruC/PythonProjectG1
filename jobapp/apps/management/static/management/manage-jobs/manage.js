@@ -106,10 +106,10 @@ function onActionJobHandler(action, jobTitle) {
     jobTitle = jobTitle.trim();  
     Swal.fire({
         title: `${action}?`,
-        text: `Are you sure you want to ${action} ${jobTitle}?`,
+        text: `Are you sure you want to ${action.toLowerCase()} ${jobTitle}?`,
         icon: "warning",
         confirmButtonText: `${action}`,
-        confirmButtonColor: "#EF5350",
+        confirmButtonColor: action === "Activate" ? "#386641" : "#BC4749",
         showCancelButton: true,
         showCloseButton: false,
       }).then((result) => {

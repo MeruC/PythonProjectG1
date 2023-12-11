@@ -1,14 +1,14 @@
 {% extends "management/user_detail.html" %}
 {% load static %}
 {% block user_section %}
-    <h2 class="text-secondary font-bold text-2xl">Change Password</h2>
+    <h2 class="text-lg font-bold">Change Password</h2>
     <form method="post" id="change-password-form">
         {% csrf_token %}
         <input type="hidden" name="user_id" value="{{ user_record.id }}">
         <input type="hidden" name="action" value="change_password">
-        <div class="flex flex-col w-8/12 items-start gap-4 my-8">
+        <div class="flex flex-col w-8/12 items-start gap-4 mt-8">
             <div class="w-full">
-                <label for="new_password" class="block">New Password</label>
+                <label for="new_password"class="text-sm font-medium text-gray-900">New Password</label>
                 <div id="password-container" class="relative flex flex-col w-full">
                     <input name="new_password"
                            id="new_password"
@@ -16,7 +16,8 @@
                            placeholder="••••••••"
                            required
                            minlength="8"
-                           class="form-input rounded">
+                           class="form-control rounded  focus:ring-1 focus:ring-primary focus:border-primary">
+                         
                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center ">
                         <button type="button"
                                 id="new_password_toggle"
@@ -28,34 +29,35 @@
             </div>
             <button type="submit"
                     id="updatePassBtn"
-                    class="daisy-btn daisy-btn-outline daisy-btn-accent">Update Password</button>
+                    class="daisy-btn daisy-btn-outline w-44  px-3 py-3 daisy-btn-accent">Update Password</button>
         </div>
     </form>
-    <div class="space-y-4">
+    <hr class="my-10 border-[#D8D8D8]">
+    <div class="space-y-4 text-sm">
         {% if not user_record.is_deactivated %}
-            <h2 class="text-accent font-bold text-2xl">Deactivate Account</h2>
+            <h2 class="text-lg font-bold text-accent">Deactivate Account</h2>
             <p>
-                This action will make the account <span class="text-accent">temporarily disabled and the user will not be able to login.</span>
+                This action will make the account <span class="text-accent font-semibold">temporarily disabled and the user will not be able to login.</span>
             </p>
             <form method="post" id="deactivate-form">
                 {% csrf_token %}
                 <input type="hidden" name="user_id" value="{{ user_record.id }}">
                 <input type="hidden" name="action" value="deactivate">
                 <button id="account-deactivation-btn"
-                        class="daisy-btn daisy-btn-outline daisy-btn-accent"
+                        class="daisy-btn daisy-btn-outline w-44  px-3 py-3 daisy-btn-accent"
                         type="button">Deactivate Account</button>
             </form>
         {% else %}
-            <h2 class="text-primary font-bold text-2xl">Activate Account</h2>
+            <h2 class="text-secondary font-bold text-lg">Activate Account</h2>
             <p>
-                This action will make the account <span class="text-primary">active and the user will be able to login.</span>
+                This action will make the account <span class="text-secondary font-semibold">active and the user will be able to login.</span>
             </p>
             <form method="post" id="activate-form">
                 {% csrf_token %}
                 <input type="hidden" name="user_id" value="{{ user_record.id }}">
                 <input type="hidden" name="action" value="activate">
                 <button id="account-activation-btn"
-                        class="daisy-btn daisy-btn-outline daisy-btn-primary"
+                        class="daisy-btn daisy-btn-outline w-44  px-3 py-3 daisy-btn-secondary "
                         type="button">Activate Account</button>
             </form>
         {% endif %}

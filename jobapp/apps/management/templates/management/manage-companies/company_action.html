@@ -1,5 +1,5 @@
 {% extends "management/manage-companies/company_sidebar.html" %} {% block company_section %}
-
+{% load static %} 
 <form
 method="post"
 action="{% url 'managementapp:action_company' company_id=company.id %}"
@@ -8,20 +8,21 @@ action="{% url 'managementapp:action_company' company_id=company.id %}"
 >
   {% csrf_token %}
 
-  <div class="text-lg font-bold text-[#C5221F] ">
+  <div class="text-lg font-bold   {% if company.is_active == 1 %} text-accent {% else %} text-secondary {% endif %}">
     {% if company.is_active == 1 %} Deactivate {% else %} Activate {% endif %} Company
   </div>
 
 
   <div>
-    {% if company.is_active == 1 %} This action will make the company <span class="font-semibold text-[#C5221F]"> temporarily disabled and will prevent the company for posting jobs.</span>{% else %}
-    This action will make the company <span class="font-semibold text-[#C5221F]"> active and will allow the company to post jobs.</span>{% endif %}
+    {% if company.is_active == 1 %} This action will make the company <span class="font-semibold text-accent"> temporarily disabled and will prevent the company for posting jobs.</span>{% else %}
+    This action will make the company <span class="font-semibold text-secondary"> active and will allow the company to post jobs.</span>{% endif %}
   </div>
 
   <button
     type="button"
-    class="w-44 bg-transparent border border-[#C5221F] text-[#C5221F] px-3 py-2 font rounded-md mt-3"
-    style="border: 2px solid"
+    class="w-44 bg-transparent border  px-3 py-2.5 font-medium font rounded-md mt-3  hover:text-white transition-all {% if company.is_active == 1 %} border-accent 
+    text-accent hover:bg-accent {% else %}   border-secondary text-secondary hover:bg-secondary{% endif %}"
+    style="border: 1px solid"
     method="post"
    
     onClick="onActionCompanyHandler('{{ company.is_active|yesno:"Deactivate,Activate" }}', '{{ company.company_name }}');"
@@ -29,5 +30,5 @@ action="{% url 'managementapp:action_company' company_id=company.id %}"
     {% if company.is_active == 1 %} Deactivate {% else %} Activate {% endif %} Company
   </button>
 </form>
-
+<script src="{% static 'management/manage-companies/manage.js' %}"></script>
 {% endblock company_section %}

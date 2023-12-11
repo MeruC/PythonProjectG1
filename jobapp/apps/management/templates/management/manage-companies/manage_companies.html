@@ -45,11 +45,11 @@
             {% for company in companies %}
             <tr data-company-id="{{ company.id }}">
               <td>
-                <div class="w-8 h-8 rounded-full">
+                <div class="w-10 h-10 rounded-full">
                   <img
                     class="w-full h-full object-cover rounded-full"
                     id="img_settings"
-                    src="{% if user.company_img %}{{ user.company_img.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
+                    src="{% if user.company_img %}{{ user.company_img.url }}{% else %}{% static '/assets/default_logo.png' %}{% endif %}"
                     alt=""
                   />
                 </div>
@@ -62,7 +62,7 @@
               <td>
                 {{ company.city}}, {{ company.country }}
               </td>
-              <td>{{ company.user.contact_number }}</td>
+              <td>{% if company.user.contact_number%}{{ company.user.contact_number }} {% else %} No Contact {% endif %}</td>
               <td>
                 <div
                   class="daisy-badge gap-2 {% if company.is_active == 1 %} daisy-badge-success bg-[#BCF09D]{% else %} daisy-badge-error bg-[#FF8F92] {% endif %}"
@@ -79,13 +79,13 @@
                 </div>
               </td>
               <td>
-                <div class="flex flex-wrap gap-4 text-md">
+                <div class="flex gap-1 text-md">
                   <i
-                    class="fa-regular fa-pen-to-square text-gray-400 cursor-pointer transition hover:text-secondary"
+                    class="fa-regular fa-pen-to-square   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded"
                     onclick="onEditCompanyHandler({{ company.id }})"
                   ></i>
                   <i
-                    class="fa-solid fa-trash-can text-gray-400 cursor-pointer transition hover:text-secondary"
+                    class="fa-solid fa-trash-can   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded"
                     onclick="onDeleteCompanyHandler({{ company.id }}, '{{company.company_name}}')"
                   ></i>
                 </div>

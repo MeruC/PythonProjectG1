@@ -1,49 +1,56 @@
 {% extends "management/user_detail.html" %}
 {% load static %}
 {% block user_section %}
-    {% include "management/messages.html" %}
-    <form method="post"
-          enctype="multipart/form-data"
-          id="profile-form"
-          action="{% url 'managementapp:user_detail' user_record.id %}">
-        {% csrf_token %}
-        <h2 class="text-xl font-bold mb-8 ">Profile Picture</h2>
-        <div class="space-y-4">
-            {{ profileForm.profile_img }}
-            <div class="flex gap-4 ">
-                <div class="w-1/2">
-                    <label class="font-semibold" for="{{ profileForm.first_name.id_for_label }}">First Name:</label>
-                    {{ profileForm.first_name }}
-                </div>
-                <div class="w-1/2">
-                    <label class="font-semibold" for="{{ profileForm.last_name.id_for_label }}">Last Name:</label>
-                    {{ profileForm.last_name }}
-                </div>
+{% include "management/messages.html" %}
+<form method="post" enctype="multipart/form-data" id="profile-form"
+    action="{% url 'managementapp:user_detail' user_record.id %}">
+    {% csrf_token %}
+    <h2 class="text-lg font-bold mb-8 ">Profile Picture</h2>
+    
+    <div class="space-y-4">
+        {{ profileForm.profile_img }}
+        <div class="flex gap-4 ">
+            <div class="form-group flex flex-col gap-1 w-full lg:w-1/2">
+                <label class="text-sm font-medium text-gray-900" for="{{ profileForm.first_name.id_for_label }}">First
+                    Name:</label>
+                {{ profileForm.first_name }}
             </div>
-            <div>
-                <label class="font-semibold"
-                       for="{{ profileForm.profile_summary.id_for_label }}">Profile Summary:</label>
-                {{ profileForm.profile_summary }}
+            <div class="w-full lg:w-1/2 form-group flex flex-col gap-1">
+                <label class="text-sm font-medium text-gray-900" for="{{ profileForm.last_name.id_for_label }}">Last
+                    Name:</label>
+                {{ profileForm.last_name }}
             </div>
-            <div>
-                <label class="font-semibold"
-                       for="{{ profileForm.email_address.id_for_label }}">Email Address:</label>
+        </div>
+
+        <div class="flex gap-4 ">
+            <div class="w-full lg:w-1/2 form-group flex flex-col gap-1">
+                <label class="text-sm font-medium text-gray-900"
+                    for="{{ profileForm.email_address.id_for_label }}">Email Address:</label>
                 {{ profileForm.email }}
             </div>
-            <div>
-                <label class="font-semibold" for="profileForm.contact_number.id_for_label">Contact Number</label>
-                <div class="flex gap-2 items-center">
-                    <span>+63</span>
-                    <div>{{ profileForm.contact_number }}</div>
+            <div class="w-full lg:w-1/2 form-group flex flex-col gap-1">
+                <label class="text-sm font-medium text-gray-900" for="profileForm.contact_number.id_for_label">Contact
+                    Number</label>
+
+
+                <div class="relative">
+                    <span class="absolute left-6 transform -translate-x-1/2 rounded font-bold p-2 pl-3 select-none">+63</span>
+                    {{ profileForm.contact_number }}
                 </div>
             </div>
         </div>
-        <button type="submit"
-                id="update-profile-btn"
-                class="daisy-btn daisy-btn-secondary text-white my-8 hover:bg-primary transition-all">
-            Update Profile
-        </button>
-    </form>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
-    <script defer src="{% static 'management/manage-users/profile.js' %}"></script>
+        <div class="form-group flex flex-col gap-1">
+            <label class="text-sm font-medium text-gray-900 profilePicture"
+                for="{{ profileForm.profile_summary.id_for_label }}">Profile Summary:</label>
+            {{ profileForm.profile_summary }}
+        </div>
+    </div>
+    <button type="submit" id="update-profile-btn"
+        class="w-max mt-5 px-4 py-3 bg-secondary text-white rounded font-semibold">
+        Update Profile
+    </button>
+    </div>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<script defer src="{% static 'management/manage-users/profile.js' %}"></script>
 {% endblock user_section %}

@@ -41,23 +41,23 @@
                 <h1 class="py-8 text-3xl text-secondary font-bold text-center">
                     Work<span class="text-gray-800">It</span>
                 </h1>
-                <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
+                <li class="flex items-center pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
                            {% if request.resolver_match.view_name == 'managementapp:index' %}
                                border-l-2 border-secondary text-secondary
                            {% endif %}">
-                    <i class="fa-solid fa-chart-line fa-md mr-3"></i><a href="{% url 'managementapp:index' %}">Dashboard</a>
+                    <i class="fa-solid fa-chart-line fa-md mr-3"></i><a class="w-full" href="{% url 'managementapp:index' %}">Dashboard</a>
                 </li>
-                <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
+                <li class="flex items-center pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
                            {% if '/users/' in request.path %}border-l-2 border-secondary text-secondary{% endif %}">
-                    <i class="fa-solid fa-user-group mr-3"></i><a href="{% url 'managementapp:manage_users' %}">Users</a>
+                    <i class="fa-solid fa-user-group mr-3"></i><a class="w-full" href="{% url 'managementapp:manage_users' %}">Users</a>
                 </li>
-                <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
+                <li class="flex items-center pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
                            {% if '/companies/' in request.path %}border-l-2 border-secondary text-secondary{% endif %}">
-                    <i class="fa-regular fa-building mr-3"></i><a href="{% url 'managementapp:manage_companies' %}">Companies</a>
+                    <i class="fa-regular fa-building mr-3"></i><a class="w-full" href="{% url 'managementapp:manage_companies' %}">Companies</a>
                 </li>
-                <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
+                <li class="flex items-center pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
                            {% if '/jobs/' in request.path %}border-l-2 border-secondary text-secondary{% endif %}">
-                    <i class="fa-solid fa-briefcase mr-3"></i><a href="{% url 'managementapp:manage_jobs' %}">Jobs</a>
+                    <i class="fa-solid fa-briefcase mr-3"></i><a class="w-full" href="{% url 'managementapp:manage_jobs' %}">Jobs</a>
                 </li>
                 {% comment %} <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100
                            {% if request.resolver_match.view_name == 'managementapp:index' %}

@@ -69,21 +69,31 @@
                             {% elif applicant.status == 'pending' %}bg-[#B9DEF9] text-[#236FA3]
                             {% else %}bg-[#FF8F93] text-[#BB4748]{% endif %} rounded-full">&bull; {{ applicant.status|title }}</div>
                         </td>
-                        <td class="border px-4 py-2">
-                            <div class="flex items-center space-x-2">
-                              {% if applicant.status == 'pending' %}
-                              <a href="#" class="check-button" onclick="confirmStatusChange('{{ applicant.id }}', 'check')">
-                                <i class="fa-regular fa-square-check"></i>
-                              </a>
-                              <a href="#" class="xmark-button" onclick="confirmStatusChange('{{ applicant.id }}', 'xmark')">
-                                  <i class="fa-regular fa-rectangle-xmark"></i>
-                              </a>
-                              {% else %}
-                                  <span class="check-button-disabled"><i class="fa-regular fa-square-check" style="color: #999; cursor: not-allowed;"></i></span>
-                                  <span class="xmark-button-disabled"><i class="fa-regular fa-rectangle-xmark" style="color: #999; cursor: not-allowed;"></i></span>
-                              {% endif %}
-                              <button><i class="fa-regular fa-eye"></i></button>
-                            </div>
+                        <td class="border px-4 py-2 text-center">
+                          <div class="justify-items-auto space-x-2">
+                            {% if applicant.status == 'pending' %}
+                            <form id="changeStatusForm-{{ applicant.id }}-check" action="{% url 'companyapp:updateStatus' applicant.id 'check' %}" method="post" class="inline">
+                                {% csrf_token %}
+                                <button onclick="confirmApprove('{{ applicant.id }}')">
+                                    <i class="fa-regular fa-square-check"></i>
+                                </button>
+                            </form>
+                            <form id="changeStatusForm-{{ applicant.id }}-xmark" action="{% url 'companyapp:updateStatus' applicant.id 'xmark' %}" method="post" class="inline">
+                                {% csrf_token %}
+                                <button onclick="confirmReject('{{ applicant.id }}')">
+                                    <i class="fa-regular fa-rectangle-xmark"></i>
+                                </button>
+                            </form>
+                            {% else %}
+                                <span class="check-button-disabled">
+                                    <i class="fa-regular fa-square-check" style="color: #999; cursor: not-allowed;"></i>
+                                </span>
+                                <span class="xmark-button-disabled">
+                                    <i class="fa-regular fa-rectangle-xmark" style="color: #999; cursor: not-allowed;"></i>
+                                </span>
+                            {% endif %}
+                            <button><i class="fa-regular fa-eye"></i></button>
+                          </div>
                         </td>
                     </tr>
                     {% endfor %}
