@@ -17,15 +17,18 @@
 
     {% if user.is_authenticated %}
     <!-- logged in -->
-    <li class="hidden sm:block text-red-500 underline">
+    <li class="hidden sm:block">
       {% navbar_content request.user as navbar_data %}
-      <a class="flex items-center gap-2" href="{% navbar_link_url request.user %}">
-          {% if navbar_data.company_img %}
-          <img class="h-10 w-10" src="{{navbar_data.company_img.url}}" alt="">
+      <a class="p-2 flex items-center gap-2 border rounded text-green-800 font-semibold" href="{% navbar_link_url request.user %}">
+          {% comment %} {% if navbar_data.company_img %}
+          <img class="h-8 w-8 rounded-full object-cover" src="{{navbar_data.company_img.url}}" alt="">
           {% else %}
-          <img class="h-10 w-10" src="{% static '/assets/default_logo.png' %}" alt="">
-          {% endif %}
-          <span> {{ navbar_data.company_name }}</span>
+           <img class="h-10 w-10" src="{% static '/assets/default_logo.png' %}" alt="">
+          {% endif %} {% endcomment %}
+          <div>
+            <i class="fa-solid fa-building"></i>
+            <span> {{ navbar_data.company_name }}</span>
+          </div>
       </a>
     </li>
   
