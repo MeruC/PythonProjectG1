@@ -1,4 +1,5 @@
 {% load static %}
+{% load company_tags %}
 <nav class="flex bg-white py-3 px-5 md:px-28 shadow-md">
   <ul class="flex w-full gap-4 items-center justify-center">
     <li>
@@ -17,8 +18,17 @@
     {% if user.is_authenticated %}
     <!-- logged in -->
     <li class="hidden sm:block text-red-500 underline">
-      <a href="{% url 'profileapp:index' %}">Recruit</a>
+      {% navbar_content request.user as navbar_data %}
+      <a class="flex items-center gap-2" href="{% navbar_link_url request.user %}">
+          {% if navbar_data.company_img %}
+          <img class="h-10 w-10" src="{{navbar_data.company_img.url}}" alt="">
+          {% else %}
+          <img class="h-10 w-10" src="{% static '/assets/default_logo.png' %}" alt="">
+          {% endif %}
+          <span> {{ navbar_data.company_name }}</span>
+      </a>
     </li>
+  
     <div class="hidden sm:block w-[1px] h-full bg-gray-300"></div>
     <li class="underline relative cursor-pointer">
       {% if hasUnreadNotif %}
