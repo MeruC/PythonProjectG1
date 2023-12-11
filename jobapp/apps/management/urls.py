@@ -7,6 +7,11 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("dashboard/", views.dashboard, name="dashboard"),
     path("dashboard/job_posts/", views.get_job_post_data, name="job_posts"),
+    path(
+        "dashboard/job_applications/",
+        views.get_job_applications_data,
+        name="job_applications",
+    ),
     path("users/", views.manage_users, name="manage_users"),
     path("users/<int:id>/profile", views.user_detail, name="user_detail"),
     path(
