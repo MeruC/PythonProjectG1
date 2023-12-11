@@ -72,6 +72,10 @@ window.document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+function toggleEndWork() {
+  $(".end-work-data").toggle();
+}
+
 async function handleEventListeners() {
   $(".educationEditModalBtn").click(async function (e) {
     e.preventDefault();

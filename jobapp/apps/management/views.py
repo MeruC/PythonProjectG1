@@ -190,9 +190,13 @@ def edit_work(request, work):
             f"{request.POST.get('started_month')},"
             f" {request.POST.get('started_year')}"
         )
-        work.end_date = (
-            f"{request.POST.get('end_month')}, {request.POST.get('end_year')}"
-        )
+        # check if present checkbox is checked
+        if request.POST.get("present"):
+            work.end_date = "Present"
+        else:
+            work.end_date = (
+                f"{request.POST.get('end_month')}, {request.POST.get('end_year')}"
+            )
         work.save()
         messages.success(request, "Work History successfully updated.")
     else:
