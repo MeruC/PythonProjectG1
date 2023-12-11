@@ -2,7 +2,7 @@ from django.db import models
 import datetime as date
 from datetime import datetime
 from django.contrib.auth.models import AbstractUser
-
+from django.utils import timezone
 
 # user table
 class User(AbstractUser):
@@ -69,7 +69,7 @@ class ActivityLog(models.Model):
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     action = models.CharField(max_length=14, choices=ACTION_CHOICES)
-    timestamp = models.DateTimeField(default=date.datetime)  # automatic date today
+    timestamp = models.DateTimeField(default=timezone.now)  # automatic date today
 
 
 class Education(models.Model):

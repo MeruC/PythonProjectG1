@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
-from .models import Alerts
+from .models import ActivityLog, Alerts
 from django.contrib.auth import login, logout
 
 from django.contrib import messages
@@ -73,6 +73,7 @@ def Login(request):
             user = User.objects.get(**{check_identifier(identifier): identifier})
             if not user.is_deactivated:
                 login(request, user)
+                ActivityLog.objects.create(user=user, action="Sign in")
                 if user.is_superuser:  # user is an admin
                     return redirect("managementapp:index")
                 return redirect("jobsapp:index")
@@ -87,6 +88,7 @@ def Login(request):
 
 # ------------------ Logout ------------------
 def Logout(request):
+    ActivityLog.objects.create(user=request.user, action="Sign out")
     logout(request)
     return redirect("accountapp:login")
 
