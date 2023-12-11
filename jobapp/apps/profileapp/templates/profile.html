@@ -301,7 +301,7 @@
     <div class="w-full h-full rounded-md bg-white p-5 sm:max-w-[600px] sm:h-max">
 
       <h2 class="font-bold text-[#386641] text-lg pb-5">Add Education</h2>
-      <form class="flex flex-col gap-3" action="{% url 'profileapp:addEducation' %}" method="POST">
+      <form id="education-form" class="flex flex-col gap-3" action="{% url 'profileapp:addEducation' %}" method="POST">
         {% csrf_token %}
         <div class="">
           <label class="font-medium" for="{{ education.id_for_label }}">Education Level:</label>

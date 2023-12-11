@@ -22,7 +22,13 @@ function openTab(id) {
 
 function toggleModal(action) {
     if (action === 'open-workexp-modal') $('.work-history-modal').removeClass('hidden')
-    else if (action === 'open-education-modal') $('.education-modal').removeClass('hidden')
+    else if (action === 'open-education-modal') {
+        $('#education-form')[0].reset() //always reset the form
+        //always open the add button 
+        $('#add-btn').removeClass('hidden')
+        $('#update-btn').addClass('hidden')
+        $('.education-modal').removeClass('hidden')
+    }
     else if (action === 'open-skill-modal') $('.skill-modal').removeClass('hidden')
     else {
         $('.work-history-modal').addClass('hidden')
