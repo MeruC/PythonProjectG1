@@ -113,10 +113,11 @@ function onDeleteCompanyHandler(companyId, companyName) {
     companyName = companyName.trim();   
     Swal.fire({
         title: `${action}?`,
-        text: `Are you sure you want to ${action} ${companyName}?`,
+        text: `Are you sure you want to ${action.toLowerCase()} ${companyName}?`,
         icon: "warning",
         confirmButtonText: `${action}`,
-        confirmButtonColor: "#EF5350",
+        
+        confirmButtonColor: action === "Activate" ? "#386641" : "#BC4749",
         showCancelButton: true,
         showCloseButton: false,
       }).then((result) => {

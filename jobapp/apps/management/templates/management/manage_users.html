@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="{% static 'management/styles.css' %}">
 {% endblock anotherMetaData %}
 {% block section %}
+<link rel="stylesheet" href="{% static 'css/table.css' %}" />
     <div class="bg-[#F1F8F9] min-h-screen w-full flex flex-col">
         <div class="grow flex flex-row">
             <div class="grow overflow-auto p-10">
                 <h1 class=" text-2xl font-bold text-secondary ">Manage Users</h1>
-                <hr class="mt-5 " />
+                <hr class="mt-5"/>
                 <section class="mt-10">
                     <!-- Table Buttons-->
                     <div class="flex flex-row gap-3 justify-between mb-3">
@@ -24,12 +25,12 @@
                                    id="usersSearchField">
                         </div>
                         <button id="pdfBtn"
-                                class="daisy-btn daisy-btn-accent py-2 px-5  text-white font-medium rounded">
+                                class="py-2 px-5 bg-[#BC4749] text-white font-medium rounded">
                             Generate Report
                         </button>
                     </div>
                     <!-- Table Buttons End-->
-                    <table class="daisy-table w-full" id="user-table" width="100%">
+                    <table class=" w-full row-border" id="user-table" width="100%">
                         <thead class="bg-[#DFFFCB] ">
                             <tr>
                                 <th class="font-bold text-center py-2">Avatar</th>
@@ -45,41 +46,48 @@
                                 <tr>
                                     <td>
                                         <div class="daisy-avatar ">
-                                            <div class="w-10 h-10 rounded-full bg-slate-600 ">
-                                                {% if user.profile_img %}
-                                                    <img width="40px"
-                                                         height="40px"
-                                                         src="{{ user.profile_img.url }}"
-                                                         alt="profile image of the user">
-                                                {% endif %}
-                                            </div>
+                                            <div class="w-10 h-10 rounded-full bg-slate-600 " >
+                                                <img
+                                                  class="w-full h-full object-cover rounded-full"
+                                                  id="img_settings"
+                                                  src="{% if user.profile_img %}{{ user.profile_img.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
+                                                  alt=""
+                                                />
+                                              </div>
+                                            
                                         </div>
                                     </td>
                                     <td>{{ user.first_name|title }}  {{ user.last_name|title }}</td>
                                     <td>{{ user.email }}</td>
                                     <td>{{ user.contact_number|default:"No Contact" }}</td>
                                     <td>
+                                     
                                         {% if not user.is_deactivated %}
-                                            <div class="daisy-badge daisy-badge-success gap-2">
-                                                <div class="daisy-badge daisy-badge-secondary daisy-badge-sm"></div>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                Active
+                                            <div class="daisy-badge gap-2 daisy-badge-success bg-[#BCF09D]">
+                                                <div class="w-2 h-2 rounded-full bg-[#386641]"></div>
+                                                <p
+                                                class="font-semibold text-[#386641]"
+                                              >
+                                                Active</p>
                                             </div>
                                         {% else %}
-                                            <div class="daisy-badge daisy-badge-error gap-2">
-                                                <div class="daisy-badge daisy-badge-error daisy-badge-sm"></div>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                Inactive
+                                        <div class="daisy-badge gap-2 daisy-badge-success bg-[#FF8F92]">
+                                            <div class="w-2 h-2 rounded-full bg-[#BC4749]"></div>
+                                            <p
+                                                class="font-semibold text-[#BC4749]"
+                                              >
+                                                Inactive</p>
                                             </div>
+                                        </div>
                                         {% endif %}
                                     </td>
                                     <td>
-                                        <div class="flex flex-wrap gap-4">
+                                        <div class="flex gap-1">
                                             <a href="{% url 'managementapp:user_detail' user.id %}"
-                                               class="hover:bg-primary">
-                                                <i class="fa-regular fa-pen-to-square"></i>
+                                               >
+                                                <i class="fa-regular fa-pen-to-square   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded"></i>
                                             </a>
-                                            <div class="placeholderElem" ><i class="fa-solid fa-trash-can"></i></div>
+                                            <div class="placeholderElem" ><i class="fa-solid fa-trash-can   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded"></i></div>
                                         </div>
                                     </td>
                                 </tr>

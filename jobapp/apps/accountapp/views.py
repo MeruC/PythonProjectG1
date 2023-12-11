@@ -51,8 +51,7 @@ def Register(request):
                 # request,
                 # "Internal Server Error.",)
                 print("Internal Server Error", e)
-                
-
+            
     else:
         form = RegisterForm()
 

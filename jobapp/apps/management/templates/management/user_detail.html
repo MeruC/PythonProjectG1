@@ -4,35 +4,55 @@
     User
 {% endblock title %}
 {% block section %}
-    <section class="p-4">
-        <div class="flex gap-4 items-center">
-            <a class="daisy-btn w-fit daisy-btn-sm text-gray-400 hover:text-gray-800 daisy-glass"
-               href="{% url 'managementapp:manage_users' %}">
-                <i class="fa-solid fa-arrow-left"></i>
-                Back
-            </a>
-            <h1 class="text-xl font-bold text-secondary ">{{ user_record.first_name|title }} {{ user_record.last_name|title }}</h1>
+    <section class="px-10">
+        <div class="flex gap-4 items-center pt-14 ">
+            <span class="text-xs text-gray-400 bg-gray-200 transition hover:text-gray-500 hover:bg-gray-300 my-auto px-3 py-1 rounded-md">
+                <a class="" href="{% url 'managementapp:manage_users' %}"
+                  ><i class=" fa-solid fa-arrow-left-long text"></i> Back</a
+                >
+              </span>
+            <h1 class="text-2xl font-bold text-secondary ">{{ user_record.first_name|title }} {{ user_record.last_name|title }}</h1>
         </div>
         <!-- Divides into 2 section-->
-        <div class=" container mx-auto flex flex-wrap mt-8">
-            <ul class="daisy-menu bg-base-transparent min-h-full w-56 p-0 [&_li>*]:rounded-none gap-2">
-                <li>
-                    <a href="{% url 'managementapp:user_detail' user_record.id %}">Profile</a>
+        <div class=" mx-auto flex ">
+            <ul class="daisy-menu bg-base-transparent min-h-full gap-2 font-semibold text-sm w-[250px] mt-10 ">
+                <li >
+                  <a href="{% url 'managementapp:user_detail' user_record.id %}"
+                  class="block py-2 px-5 rounded-lg hover:bg-gray-200 {% if request.resolver_match.view_name == 'managementapp:user_detail' %} border-b-[2px] bg-gray-200 {% endif %}"
+                  >
+                  Profile
+                  </a>
                 </li>
-                <li>
-                    <a href="{% url 'managementapp:user_qualification' user_record.id %}">Qualifications</a>
+                <li class="">
+                  <a href="{% url 'managementapp:user_qualification' user_record.id %}"
+                  class="block py-2 px-5 rounded-lg hover:bg-gray-200 {% if request.resolver_match.view_name == 'managementapp:user_qualification' %}border-b-[2px] bg-gray-200{% endif %}"
+                  >
+                  Qualifications
+                  </a>
                 </li>
-                <li>
-                    <a href="{% url 'managementapp:user_history' user_record.id %}">Application History</a>
+                <li class="">
+                  <a href="{% url 'managementapp:user_history' user_record.id %}"
+                  class="block py-2 px-5 rounded-lg hover:bg-gray-200 {% if request.resolver_match.view_name == 'managementapp:user_history' %}border-b-[2px] bg-gray-200{% endif %}"
+                  >
+                  Application History
+                  </a>
                 </li>
-                <li>
-                    <a href="{% url 'managementapp:user_actions' user_record.id %}">Account Actions</a>
+                <li class="">
+                  <a href="{% url 'managementapp:user_actions' user_record.id %}"
+                  class="block py-2 px-5 rounded-lg hover:bg-gray-200 {% if request.resolver_match.view_name == 'managementapp:user_actions' %}border-b-[2px] bg-gray-200{% endif %}"
+                  >
+                  Account Actions
+                  </a>
                 </li>
-                <li>
-                    <a href="{% url 'managementapp:user_logs' user_record.id %}">Activity Log</a>
+                <li class="">
+                  <a href="{% url 'managementapp:user_logs' user_record.id %}"
+                  class="block py-2 px-5 rounded-lg hover:bg-gray-200 {% if request.resolver_match.view_name == 'managementapp:user_logs' %}border-b-[2px] bg-gray-200{% endif %}"
+                  >
+                  Activity Log
+                  </a>
                 </li>
-            </ul>
-            <section class="flex-1 px-6">
+              </ul>
+            <section class="flex-1 pl-3 py-10 min-w-[700px]">
                 {% block user_section %}
                 {% endblock user_section %}
             </section>

@@ -82,3 +82,17 @@ function handleProfileConfirmation(form) {
     }
   });
 }
+
+// document.getElementById('profilePicture').addEventListener('change', function () {
+//   var selectedFile = this.files[0];
+
+//   if (selectedFile) {
+//       var reader = new FileReader();
+
+//       reader.onload = function (e) {
+//           document.getElementById('profileInput').src = e.target.result;
+//       };
+
+//       reader.readAsDataURL(selectedFile);
+//   }
+// });

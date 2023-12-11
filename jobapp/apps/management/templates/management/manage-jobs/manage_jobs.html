@@ -76,16 +76,16 @@
                         <td>{{ job.date_posted|date:"M d, Y" }}<br>
                             {{ job.date_posted|time:"g:i a" }}</td>
                         
-                        <td>
+                        <td >
                             <div class="daisy-badge gap-2   {% if job.status == 'active' %} daisy-badge-success bg-[#BCF09D]{% else %} daisy-badge-error bg-[#FF8F92] {% endif %}">
                             <div class="w-2 h-2 rounded-full {% if job.status == 'active' %} bg-[#386641] {% else %} bg-[#BC4749] {% endif %}"></div>
                                <p class=" font-semibold  {% if job.status == 'active' %} text-[#386641] {% else %} text-[#BC4749] {% endif %}"> {% if job.status == 'active' %} Active {% else %} Inactive {% endif %}</p>
                             </div>
                         </td>
                         <td>
-                            <div class="flex flex-wrap gap-4 text-md">
-                                <i class="fa-regular fa-pen-to-square   text-gray-400 cursor-pointer transition hover:text-secondary" onclick="onEditJobHandler({{ job.id }})"></i>
-                                <i class="fa-solid fa-trash-can  text-gray-400 cursor-pointer transition hover:text-secondary" onclick="onDeleteJobHandler({{ job.id }}, '{{job.job_title}}')"></i>
+                            <div class="flex gap-1 text-md">
+                                <i class="fa-regular fa-pen-to-square   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded" onclick="onEditJobHandler({{ job.id }})"></i>
+                                <i class="fa-solid fa-trash-can  text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded" onclick="onDeleteJobHandler({{ job.id }}, '{{job.job_title}}')"></i>
                             </div>
                         </td>
                     </tr>
