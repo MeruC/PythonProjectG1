@@ -54,12 +54,15 @@
           <button id="setting-tab-btn" class="text-start" onclick="openTab('setting-tab-btn')">Account Settings</button>
         </section>
 
-        <section class="text-start flex lg:flex-col gap-2 sm:flex-row sm:justify-center">
+        <section>
           <a href="{% url 'profileapp:resume' %}" target="_blank" rel="noopener">
-            <button onclick="" type="button" id="update-btn" class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]" >
+            <button onclick="" type="button" {% if not hasInfo %} hidden {% endif %} class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e] disabled:cursor-not-allowed" >
               View Resume
             </button>
           </a>
+            <button onclick="viewResume('{{missingList}}')" type="button" {% if hasInfo %} hidden {% endif %} class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e] disabled:cursor-not-allowed" >
+              View Resume
+            </button>
         </section>
 
       </aside>

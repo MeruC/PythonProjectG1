@@ -68,6 +68,28 @@ def index(request):
     user_data = get_user_data(request)
     work_experiences = get_user_work_experience(request)
     education = get_user_education(request)
+    
+    hasInfo = (request.user.email and 
+               request.user.id and 
+               request.user.username and 
+               request.user.first_name and 
+               request.user.last_name and 
+               request.user.profile_summary and 
+               request.user.profile_img and 
+               request.user.skills and 
+               education)
+    missingList = []
+    if not request.user.profile_summary:
+        missingList.append("Profile Summary")
+    if not request.user.profile_img:
+        missingList.append("Profile Image")
+    if not request.user.skills:
+        missingList.append("Skills")
+    if not education:
+         missingList.append("Education")
+         
+    missingList = ", ".join(missingList)
+    
 
     context = {
         "user_data": user_data, 
@@ -78,7 +100,9 @@ def index(request):
         "education_data":education,
         "password_form":password_form,
         "skill_form":skill_form,
-        "hasUnreadNotif":hasUnreadNotif(request)
+        "hasUnreadNotif":hasUnreadNotif(request),
+        "hasInfo":hasInfo,
+        "missingList":missingList
         }
     
     return render(request, template, context)
@@ -325,7 +349,8 @@ def resume(request):
     
     #GETS EVERY WORK EXPERIENCE
     work_experiences = get_user_work_experience(request)
-    last_work = work_experiences[len(work_experiences)-1]
+    if(work_experiences):
+        last_work = work_experiences[len(work_experiences)-1]
     
     #GETS EVERY EDUCATION
     education = get_user_education(request)
@@ -397,40 +422,46 @@ def resume(request):
     pdf.cell(190, 0.5, "", ln=True, fill=True)
     pdf.cell(0, 4, "", ln=True)
     
-    for work in work_experiences:
-        #WORK TITLE
+    if (work_experiences):
+        for work in work_experiences:
+            #WORK TITLE
+            pdf.cell(1,48,"")
+            pdf.set_font('helvetica', '', 18)
+            pdf.set_text_color(0, 0, 0)
+            pdf.cell(0, 8, work.work_title, ln=True)
+            
+            #COMPANY NAME
+            pdf.cell(10, 8, "")
+            pdf.set_font('helvetica', '', 14)
+            pdf.set_text_color(97,178,113)
+            company_width = pdf.get_string_width(work.company_name)
+            pdf.cell(company_width+1, 8, work.company_name)
+            
+            #DIVIDER
+            pdf.set_font('helvetica', '', 12)
+            pdf.set_text_color(75, 75, 75)
+            pdf.cell(4, 8, "\t|\t")
+            
+            #START AND END DATES
+            pdf.set_font('helvetica', '', 8)
+            date = work.start_date + " to " + work.end_date
+            pdf.cell(40, 9, date, ln=True)
+            
+            #JOB SUMMARY
+            pdf.set_font('helvetica', '', 12)
+            pdf.set_text_color(0, 0, 0)
+            pdf.multi_cell(0, 5, "\t\t\t\t\t\t\t\t\t" + work.job_summary, align="J", ln=True)
+            pdf.set_text_color(50, 50, 50)
+            
+            #MINI LINE BREAK
+            if (work != last_work):
+                pdf.cell(0, 8, "--------------------------------------------------------------------------------------------------------------------------------------", ln=True, align="C")
+    else:
         pdf.cell(1,48,"")
         pdf.set_font('helvetica', '', 18)
         pdf.set_text_color(0, 0, 0)
-        pdf.cell(0, 8, work.work_title, ln=True)
-        
-        #COMPANY NAME
-        pdf.cell(10, 8, "")
-        pdf.set_font('helvetica', '', 14)
-        pdf.set_text_color(97,178,113)
-        company_width = pdf.get_string_width(work.company_name)
-        pdf.cell(company_width+1, 8, work.company_name)
-        
-        #DIVIDER
-        pdf.set_font('helvetica', '', 12)
-        pdf.set_text_color(75, 75, 75)
-        pdf.cell(4, 8, "\t|\t")
-        
-        #START AND END DATES
-        pdf.set_font('helvetica', '', 8)
-        date = work.start_date + " to " + work.end_date
-        pdf.cell(40, 9, date, ln=True)
-        
-        #JOB SUMMARY
-        pdf.set_font('helvetica', '', 12)
-        pdf.set_text_color(0, 0, 0)
-        pdf.multi_cell(0, 5, "\t\t\t\t\t\t\t\t\t" + work.job_summary, align="J", ln=True)
-        pdf.set_text_color(50, 50, 50)
-        
-        #MINI LINE BREAK
-        if (work != last_work):
-            pdf.cell(0, 8, "--------------------------------------------------------------------------------------------------------------------------------------", ln=True, align="C")
-        
+        pdf.cell(0, 8, "NO WORK EXPERIENCE", ln=True)
+                
     ###EDUCATION
     #TITLE
     pdf.cell(1,48,"")
