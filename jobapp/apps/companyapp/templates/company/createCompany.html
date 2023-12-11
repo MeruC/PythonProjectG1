@@ -24,26 +24,24 @@
         <h3 class="text-xl font-bold text-secondary">Company Details</h3>
       </div>
       <div class="form-group flex flex-col gap-1">
-        <label for="company_name" class="font-semibold">Company Name</label>
-        <input type="text" name="company_name" id="company_name" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Enter Company Name">
+        <label for="{{company.company_name.id_for_label}}" class="font-semibold">Company Name</label>
+        {{ company.company_name }}
       </div>
       <div class="form-group flex flex-col gap-1">
         <div>
-          <label for="description" class="font-semibold">Company Description</label>
+          <label for="{{company.description.id_for_label}}" class="font-semibold">Company Description</label>
           <p>Provide a brief overview of your company, its history, and mission.</p>
         </div>
-        <textarea name="description" rows="5" id="description" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Enter Company Description"> </textarea>
+        {{company.description}}
       </div>
       <div class="form-group grid grid-cols-1 gap-2 sm:grid-cols-2">
           <div class="form-group flex flex-col gap-1">
-            <label for="company_country" class="text-sm font-medium text-gray-900">Country</label>
-            <select id="company_country" name="country" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary">
-              <option disabled selected>Select a Country</option>
-            </select>
+            <label for="{{company.country.id_for_label}}" class="text-sm font-medium text-gray-900">Country</label>
+            {{company.country}}
           </div>
           <div class="flex flex-col gap-1">
-            <label for="city" class="text-sm font-medium text-gray-900">City</label>
-            <input type="text" name="city" id="city" class="form-control rounded focus:ring-1 focus:ring-primary focus:border-primary" placeholder="City" />
+            <label for="{{company.city.id_for_label}}" class="text-sm font-medium text-gray-900">City</label>
+            {{company.city}}
           </div>
         </div>
       <div class="action">
@@ -52,5 +50,5 @@
     </form>
   </div>
 </div>
-<script type="text/javascript" src="{% static 'js/countrySelect.js' %}"></script>
+
 {% endblock %}

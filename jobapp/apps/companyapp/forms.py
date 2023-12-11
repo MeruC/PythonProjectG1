@@ -40,6 +40,7 @@ class CompanyDataForm(forms.ModelForm):
         widget= forms.TextInput(attrs={
             'class':'form-control rounded focus:ring-1 focus:ring-primary focus:border-primary',
             'id':'company_name',
+            'placeholder':'Enter Company Name'
         })
     )
     
@@ -48,12 +49,13 @@ class CompanyDataForm(forms.ModelForm):
         widget= forms.Textarea(attrs={
             'class':'form-control rounded focus:ring-1 focus:ring-primary focus:border-primary resize-none',
             'id':'company_description',
-            'row':5
+            'row':5,
+            'placeholder':'Enter Company Description'
         })
     )
     
     country = forms.ChoiceField(
-        choices=countries,
+        choices=[('', 'Select your Country')] + list(countries),  #add default option
         widget=forms.Select(attrs={
             'class':'form-control rounded focus:ring-1 focus:ring-primary focus:border-primary',
             'id':'company_country',
@@ -65,7 +67,8 @@ class CompanyDataForm(forms.ModelForm):
         label='City',
         widget=forms.TextInput(attrs={
             'class':'form-control rounded focus:ring-1 focus:ring-primary focus:border-primary',
-            'id':'company_city'
+            'id':'company_city',
+            'placeholder':'Enter City'
         })
     )
     
