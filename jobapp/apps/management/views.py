@@ -33,7 +33,7 @@ def get_work_api(request, id):
             "id": work.id,
             "work_title": work.work_title,
             "company_name": work.company_name,
-            "position": work.position,
+            "job_summary": work.job_summary,
             "start_date": work.start_date,
             "end_date": work.end_date,
         }
@@ -135,21 +135,23 @@ def get_logs(request, id):
     User = get_user_model()
     user = get_object_or_404(User, pk=id)
     # get all activity logs
-    
+
     # all user
     # activityLogs = ActivityLog.objects.all()
     # context = {'activityLogs': activityLogs}
     # return render(request, "management/activity-logs/activity_logs.html",context)
-    
+
     # per user
-   
+
     try:
         activityLogs = ActivityLog.objects.filter(user_id=id)
     except ActivityLog.DoesNotExist:
         activityLogs = []
-        
+
     return render(
-        request, "management/user_detail/logs.html", {"user_record": user, "activityLogs": activityLogs}
+        request,
+        "management/user_detail/logs.html",
+        {"user_record": user, "activityLogs": activityLogs},
     )
 
 
@@ -183,20 +185,25 @@ def edit_work(request, work):
     if work_form.is_valid():
         work.work_title = request.POST.get("work_title")
         work.company_name = request.POST.get("company_name")
-        work.position = request.POST.get("position")
+        work.job_summary = request.POST.get("job_summary")
         work.start_date = (
             f"{request.POST.get('started_month')},"
             f" {request.POST.get('started_year')}"
         )
-        work.end_date = (
-            f"{request.POST.get('end_month')}, {request.POST.get('end_year')}"
-        )
+        # check if present checkbox is checked
+        if request.POST.get("present"):
+            work.end_date = "Present"
+        else:
+            work.end_date = (
+                f"{request.POST.get('end_month')}, {request.POST.get('end_year')}"
+            )
         work.save()
-        messages.success(request, "work added successfully.")
+        messages.success(request, "Work History successfully updated.")
     else:
         messages.error(
             request,
-            f"work update failed. Please check the form. {work_form.errors}",
+            "Work History update failed. Please check the form."
+            f" {work_form.errors}",
         )
         return redirect("managementapp:user_qualification", id=id)
 
