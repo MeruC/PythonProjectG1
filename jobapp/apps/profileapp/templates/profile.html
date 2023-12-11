@@ -242,13 +242,13 @@
           <p class="">{{user_data.email}}</p>
       </section>
       <hr class="my-5">
-      <section class="text-start flex lg:flex-col gap-2 sm:flex-row sm:justify-center">
+      <section class="text-start flex flex-row justify-center gap-2 md:flex-col md:items-start">
         <button class="active-tab text-start pl-3 py-2 hover:bg-gray-100" id="profile-tab-btn"
             onclick="openTab('profile-tab-btn')">Profile</button>
         <button id="setting-tab-btn" class="text-start pl-3 py-2 hover:bg-gray-100" onclick="openTab('setting-tab-btn')">Account Settings</button>
       </section>
       <hr class="my-5">
-      <section class="text-start flex lg:flex-col gap-2 sm:flex-row sm:justify-center">
+      <section class="text-start flex flex-row items-center justify-center md:flex-col md:items-start">
           <a href="{% url 'profileapp:resume' %}">
             <button onclick="" type="button" id="update-btn" class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]" >
               View Resume
@@ -426,32 +426,31 @@
   <div class="fixed flex items-center justify-center work-history-modal top-0 left-0 w-full h-full z-50 bg-black
     bg-opacity-25 hidden">
 
-    <div class="w-2/5 rounded-md h-max bg-white p-5">
+    <div class="w-full h-full rounded-md bg-white p-5 sm:max-w-[600px] sm:h-max">
       <h2 class="font-bold text-[#386641] text-lg pb-5">Add Work History</h2>
-
-      <form method="POST" action="{% url 'profileapp:addWorkExp' %}">
+      <form method="POST" class="flex flex-col gap-2" action="{% url 'profileapp:addWorkExp' %}">
         {% csrf_token %}
         <!-- job title -->
-        <div class="flex flex-col gap-2 mt-5 gap-1">
-          <label for="{{work_form.id_for_label}}">Job Title</label>
+        <div class="flex flex-col gap-1">
+          <label class="font-medium" for="{{work_form.id_for_label}}">Job Title</label>
           {{work_form.work_title}}
         </div>
 
         <!-- company name -->
-        <div class="flex flex-col mt-3 gap-1">
-          <label for="{{work_form.id_for_label}}">Company Name</label>
+        <div class="flex flex-col gap-1">
+          <label class="font-medium" for="{{work_form.id_for_label}}">Company Name</label>
           {{work_form.company_name}}
         </div>
 
         <!-- job summary -->
-        <div class="flex flex-col mt-3 gap-1">
-          <label for="{{work_form.id_for_label}}">Job Summary</label>
+        <div class="flex flex-col gap-1">
+          <label class="font-medium" for="{{work_form.id_for_label}}">Job Summary</label>
           {{work_form.job_summary}}
         </div>
 
         <!-- started -->
-        <div class="flex flex-col gap-2 mt-3">
-          <label for="{{work_form.started_month.id_for_label}}">Started</label>
+        <div class="flex flex-col gap-1">
+          <label class="font-medium" for="{{work_form.started_month.id_for_label}}">Started</label>
           <div class="flex gap-2">
             {{work_form.started_month}}
             {{work_form.started_year}}
@@ -460,9 +459,9 @@
         </div>
 
         <!-- end -->
-        <div class="flex flex-col gap-2 mt-3">
+        <div class="flex flex-col gap-1">
           <div class="flex items-center justify-between gap-2">
-            <label for="{{work_form.id_for_label}}">End</label>
+            <label class="font-medium" for="{{work_form.id_for_label}}">End</label>
 
             <div class="text-gray-600">
               <span>Present</span>
@@ -489,40 +488,39 @@
 
   </div>
 
-
   <!-- education modal -->
   <div class="fixed flex items-center justify-center education-modal top-0 left-0 w-full h-screen z-50 bg-black
     bg-opacity-25 hidden">
   
-    <div class="w-2/5 rounded-md h-max bg-white p-5">
+    <div class="w-full h-full rounded-md bg-white p-5 sm:max-w-[600px] sm:h-max">
 
       <h2 class="font-bold text-[#386641] text-lg pb-5">Add Education</h2>
-      <form action="{% url 'profileapp:addEducation' %}" method="POST">
+      <form class="flex flex-col gap-3" action="{% url 'profileapp:addEducation' %}" method="POST">
         {% csrf_token %}
-        <div class="mt-5">
-          <label for="{{ education.id_for_label }}">Education Level:</label>
+        <div class="">
+          <label class="font-medium" for="{{ education.id_for_label }}">Education Level:</label>
           {{education.education_level}}
         </div>
 
         <div>
-          <label for="{education.id_for_label}">Institution / School / University:</label>
+          <label class="font-medium" for="{education.id_for_label}">Institution / School / University:</label>
           {{education.school_name}}
         </div>
 
         <div>
-          <label for="{education.id_for_label}">Field of Study:</label>
+          <label class="font-medium" for="{education.id_for_label}">Field of Study:</label>
           {{education.course}}
         </div>
 
         <div class="flex gap-2">
           <div>
-            <label for="{{ education.id_for_label }}">Start year:</label>
+            <label class="font-medium" for="{{ education.id_for_label }}">Start year:</label>
             {{education.started_year}}
           </div>
   
   
           <div>
-            <label for="{{ education.id_for_label }}">Ended year:</label>
+            <label class="font-medium" for="{{ education.id_for_label }}">Ended year:</label>
             {{education.ended_year}}
           </div>
         </div>
@@ -544,14 +542,11 @@
 
   
   <!-- update password -->
-  <div class="fixed flex p-5 justify-center top-0 left-0 w-full h-full z-50 bg-black
-    bg-opacity-25 update-pass-modal hidden">
-  
-      <div class="w-2/5 mx-auto rounded-md h-max bg-white p-5 transition duration-150 ease-in-out">
+  <div class="fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 bg-black bg-opacity-25 update-pass-modal hidden">
+      <div class="w-full h-full rounded-md bg-white p-5 sm:max-w-[600px] sm:h-max">
         <form method="POST">
           {% csrf_token %}
-          <h2 class="text-xl py-2 border-b border-gray-300">Change Password</h2>
-
+          <h2 class="font-bold text-[#386641] text-lg pb-5">Change Password</h2>
           <p class="text-sm italic text-red-400 hidden unmatch-current-password-msg">Incorrect current password</p>
           <label for="{{password_form.current_password.id_for_label}}">Current Password:</label>
           {{password_form.current_password}}
@@ -567,8 +562,8 @@
           <label>Confirm Password:</label>
           <input type="password" name="confirm_pass" autocomplete="confirm-password" class="block rounded-md border border-gray-300 py-3 p-2 outline-none text-sm w-full resize-none"/>
           <p class="text-sm italic text-red-400 hidden unmatch-new-password-msg">New password not match!</p>
-          <div class="flex gap-2 justify-end mt-2">
-            <button type="button" class="bg-[#6a994e] rounded-md px-3 py-2 text-white hover:bg-[#386641]" onclick="updatePassword('{{user.id}}')">Change password</button>
+          <div class="flex gap-3 justify-end mt-2">
+            <button type="button"class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]" onclick="updatePassword('{{user.id}}')">Change password</button>
             <button class="hover:text-gray-500 text-gray-400" type="button" onclick="togglePassModal()">Cancel</button>
           </div>
         </form>
@@ -578,18 +573,18 @@
   </div>
 
   <!-- add skill -->
-  <div class="fixed flex p-5 justify-center top-0 left-0 w-full h-full z-50 bg-black
+  <div class="fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 bg-black
     bg-opacity-25 hidden skill-modal">
 
-    <div class="w-2/5 mx-auto rounded-md h-max bg-white p-5 transition duration-150 ease-in-out">
+    <div class="w-full h-full rounded-md bg-white p-5 sm:max-w-[600px] sm:h-max">
       <form id="skill-form" action="{% url 'profileapp:addSkill' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <h2 class="text-xl py-2 border-b border-gray-300 mb-2">Add Skill</h2>
+        <h2 class="font-bold text-[#386641] text-lg pb-5">Add Skill</h2>
         <p class="text-red-400 text-sm italic text-end msg-skill-error hidden">Skill is already included</p>
         {{skill_form.skills}}
 
-        <div class="flex justify-end gap-2 mt-2">
-          <button type="button" id="submit-skill" class="bg-[#6a994e] rounded-md px-3 py-2 text-white hover:bg-[#386641]">Add skill</button>
+        <div class="flex justify-end mt-5 gap-3">
+          <button type="button" id="submit-skill" class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]">Add skill</button>
           <button class="hover:text-gray-500 text-gray-400" type="button" onclick="toggleModal('close-skill-modal')">Cancel</button>
         </div>
         
