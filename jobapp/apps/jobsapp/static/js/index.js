@@ -44,14 +44,24 @@ async function getJobList() {
           ${jsonResponse.jobs
             .map(function (job) {
               let hasApplied = false;
-              if (jsonResponse.appliedJobsId.length > 0) {
-                if (jsonResponse.appliedJobsId.includes(job.id)) {
-                  console.log(job.id);
-                  hasApplied = true;
+              
+                let isApproved = false;
+
+                if (jsonResponse.appliedJobsId.length > 0) {
+                  if (jsonResponse.appliedJobsId.includes(job.id)) {
+                    console.log(job.id);
+                    hasApplied = true;
+                  }
+                  if (jsonResponse.approvedJobsId.length > 0) {
+                    if (jsonResponse.approvedJobsId.includes(job.id)) {
+                      console.log(job.id);
+                      isApproved = true;
+                    }
+                  }
                 }
-              }
-              return renderJobs(jsonResponse.userId,job, hasApplied);
-            })
+                return renderJobs(jsonResponse.userId,job, hasApplied, isApproved);
+              })
+            
             .join("")}
         `;
         }
@@ -106,7 +116,7 @@ async function getJobDetails() {
         document
           .querySelector("#applyButton")
           .addEventListener("click", async function () {
-            onApplyHandler("jobDetails", jobId, jsonResponse.hasApplied);
+            onApplyHandler("jobDetails", jobId, jsonResponse.hasApplied, jsonResponse.isApproved);
           });
           console.log(job.company__user_id);
           console.log(jsonResponse.userId);
@@ -121,7 +131,7 @@ async function getJobDetails() {
   }
 }
 
-function renderJobs(userId, job, hasApplied) {
+function renderJobs(userId, job, hasApplied,isApproved) {
 
   const sanitizedDescription = encodeURIComponent(job.description);
   return `
@@ -134,7 +144,7 @@ function renderJobs(userId, job, hasApplied) {
     job.type
   }', ' PHP ${job.min_salary.toLocaleString()} - ${job.max_salary.toLocaleString()}', '${
     sanitizedDescription
-  }', '${formatDate(job.date_posted)}', ${hasApplied})"
+  }', '${formatDate(job.date_posted)}', ${hasApplied}, ${isApproved})"
           >
         <div class="text-lg font-semibold">${job.job_title}</div>
 
@@ -217,14 +227,21 @@ async function searchJob(event) {
             ${jsonResponse.jobs
               .map(function (job) {
                 let hasApplied = false;
+                let isApproved = false;
 
                 if (jsonResponse.appliedJobsId.length > 0) {
                   if (jsonResponse.appliedJobsId.includes(job.id)) {
                     console.log(job.id);
                     hasApplied = true;
                   }
+                  if (jsonResponse.approvedJobsId.length > 0) {
+                    if (jsonResponse.approvedJobsId.includes(job.id)) {
+                      console.log(job.id);
+                      isApproved = true;
+                    }
+                  }
                 }
-                return renderJobs(jsonResponse.userId,job, hasApplied);
+                return renderJobs(jsonResponse.userId,job, hasApplied, isApproved);
               })
               .join("")}
         `;
@@ -247,7 +264,8 @@ function handleJobClick(
   salary,
   description,
   posted,
-  hasApplied
+  hasApplied,
+  isApproved
 ) {
   if (window.innerWidth <= 768) {
     window.location.href = `/jobs/${id}`;
@@ -262,7 +280,8 @@ function handleJobClick(
       salary,
       description,
       posted,
-      hasApplied
+      hasApplied,
+      isApproved
     );
   }
 }
@@ -386,7 +405,8 @@ function showJobDetails(
   salary,
   description,
   posted,
-  hasApplied
+  hasApplied,
+  isApproved
 ) {
   const decodedDescription = decodeURIComponent(description);
   console.log(hasApplied);
@@ -413,8 +433,8 @@ function showJobDetails(
                 </div>
                 <div class="mt-3 mb-4">
                 <button id="applyButton-${id}" class="${isOwned ? 'hidden' : 'inline'} text-sm py-2 px-4  rounded-md font-semibold bg-[#BC4749] text-white disabled:cursor-not-allowed "
-  onclick="onApplyHandler('jobList','${id}', ${hasApplied})" ${
-    hasInfo == "True" ? "" : (disabled = "disabled")
+  onclick="onApplyHandler('jobList','${id}', ${hasApplied},  ${isApproved})" ${
+      hasInfo == "True" ? "" : (disabled = "disabled")
   }>
   ${hasApplied == true ? "Withraw Application" : "Apply Now"}
   
@@ -437,7 +457,7 @@ function showJobDetails(
 
 
 
-function onApplyHandler(target ,id, hasApplied) {
+function onApplyHandler(target ,id, hasApplied, isApproved) {
   let isApplying 
   if(target == "jobDetails"){
     isApplying = document.getElementById(`applyButton`).innerHTML.trim() == "Apply Now" ? true : false;
@@ -446,7 +466,7 @@ function onApplyHandler(target ,id, hasApplied) {
   }
   Swal.fire({
     title: `${isApplying ? "Apply" : "Withdraw Application"}?`,
-    text: `Are you sure you want to ${isApplying ? "apply" : "withdraw your application"} for this job?`,
+    text: `${isApproved ? 'You are already approved for this job. ':''}Are you sure you want to ${isApplying ? "apply" : "withdraw your application"}?`,
     icon: "info",
     confirmButtonText: "Continue",
     confirmButtonColor:  isApplying ? "#386641" : "#BC4749",

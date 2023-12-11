@@ -3,13 +3,13 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.db.models import Q
 
-from ..accountapp.models import Education
+from ..accountapp.models import Alerts, Education
 from ..accountapp.views import hasUnreadNotif
 # from ..profileapp.models import JobApplication
 from .models import Job, WorkExperience, jobApplicant
 from django.contrib.auth import get_user_model
 from apps.jobsapp.models import Job, Company
-
+from django.utils  import timezone
 User = get_user_model()
 
 
@@ -68,6 +68,10 @@ def getJobList(request):
             user=request.user.id, status__in=["pending", "approved"]
         )
         appliedJobsId = appliedJobs.values_list("job_id", flat=True)
+        approvedJobs = jobApplicant.objects.filter(
+            user=request.user.id, status__in=[ "approved"]
+        )
+        approvedJobsId = approvedJobs.values_list("job_id", flat=True)
         jobs = (
             Job.objects.filter(status="active", company__is_active=True)
             .select_related("company")
@@ -96,6 +100,7 @@ def getJobList(request):
                 "jobs": list(jobs),
                 "appliedJobsId": list(appliedJobsId),
                 "userId": request.user.id,
+                "approvedJobsId": list(approvedJobsId),
             }
         )
     else:
@@ -122,6 +127,9 @@ def getJobDetails(request, jobId):
 
     hasApplied = jobApplicant.objects.filter(
         job_id=jobId, user_id=request.user.id, status__in=["pending", "approved"]
+    ).exists()
+    isApproved = jobApplicant.objects.filter(
+        job_id=jobId, user_id=request.user.id, status__in=["approved"]
     ).exists()
 
     try:
@@ -157,7 +165,7 @@ def getJobDetails(request, jobId):
     except Job.DoesNotExist:
         return redirect("jobsapp:index")
     return JsonResponse(
-        {"success": True, "job": job, "hasApplied": hasApplied, "hasInfo": hasInfo,  "userId": request.user.id}
+        {"success": True, "job": job, "hasApplied": hasApplied, "hasInfo": hasInfo,  "userId": request.user.id, "isApproved": isApproved}
     )
 
 
@@ -176,6 +184,16 @@ def manageApplication(request, jobId):
             jobApplicant.objects.create(
                 job_id=job.id, user_id=request.user.id, status="pending"
             )
+            # Alerts.objects.create(
+            #     notification="Applicant",
+            #     message=f"New applicant applied to your post ({user.username} for {job.job_title}).",
+            #     user=request.user.id,
+            #     job=job,
+            #     action_user= request.user.firstname  + " " + request.user.lastname,
+            #     application_status="",
+            #     is_read="unread"
+            # )
+           
         return JsonResponse({"success": True})
 
 
@@ -186,6 +204,13 @@ def searchJob(request):
     base_query = Q(status="active")
     appliedJobs = jobApplicant.objects.filter(user=request.user.id, status__in=["pending", "approved"])
     appliedJobsId = appliedJobs.values_list("job_id", flat=True)
+    
+    
+    approvedJobs = jobApplicant.objects.filter(
+            user=request.user.id, status__in=[ "approved"]
+        )
+    approvedJobsId = approvedJobs.values_list("job_id", flat=True)
+        
     if what:
         skills_list = re.split(r"\W+", what)
         for part in skills_list:
@@ -227,7 +252,8 @@ def searchJob(request):
             "success": True,
             "jobs": list(jobs),
             "appliedJobsId": list(appliedJobsId),
-            "userId": request.user.id
+            "userId": request.user.id,
+            "approvedJobsId": list(approvedJobsId),
         }
     )
 
