@@ -70,7 +70,9 @@
                                     <i class="fa-regular fa-rectangle-xmark" style="color: #999; cursor: not-allowed;"></i>
                                 </span>
                             {% endif %}
-                            <button><i class="fa-regular fa-eye"></i></button>
+                            <a href="{% url 'companyapp:resume' applicant.user %}" target="_blank" rel="noopener">
+                              <button><i class="fa-regular fa-eye"></i></button>
+                            </a>
                           </div>
                         </td>
                     </tr>
