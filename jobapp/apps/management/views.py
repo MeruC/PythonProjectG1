@@ -30,7 +30,21 @@ def index(request):
 
 # -----------------Dashboard ------------------------------
 def dashboard(request):
-    return render(request, "management/dashboard/index.html")
+    # get the total active job posts
+    total_active_job_posts = Job.objects.filter(status="active").count()
+    # get the total employers
+    total_employers = Company.objects.all().count()
+    # get the total job seekers
+    total_job_seekers = get_user_model().objects.filter(
+        is_superuser=False,
+        is_staff=False,
+    ).count()
+
+    return render(request, "management/dashboard/index.html", {
+        "total_active_job_posts": total_active_job_posts,
+        "total_employers": total_employers,
+        "total_job_seekers": total_job_seekers,
+    })
 
 
 def get_job_post_data(request):
