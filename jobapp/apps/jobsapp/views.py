@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.db.models import Q
 
-from ..accountapp.models import Alerts, Education
+from ..accountapp.models import ActivityLog, Alerts, Education
 from ..accountapp.views import hasUnreadNotif
 # from ..profileapp.models import JobApplication
 from .models import Job, WorkExperience, jobApplicant
@@ -193,7 +193,7 @@ def manageApplication(request, jobId):
             #     application_status="",
             #     is_read="unread"
             # )
-           
+            ActivityLog.objects.create(user=request.user, action="Applied")
         return JsonResponse({"success": True})
 
 
