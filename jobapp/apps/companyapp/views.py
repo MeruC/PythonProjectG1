@@ -1,4 +1,4 @@
-
+from django.utils import timezone
 from django.conf import settings
 from django.contrib import messages
 from .forms import *
@@ -28,10 +28,20 @@ def createCompany(request):
         
         if not hasCompany:
             if request.method == "POST": 
-                addCompanyData(request)
+                company_form = CompanyDataForm(request.POST)
+                if company_form.is_valid():
+                    #add company based on the current user
+                    company_instance = company_form.save(commit=False)
+                    company_instance.user = current_user
+                    company_instance.save()
                 return redirect('companyapp:companyJobList')
             else:
-                return render(request, "company/createCompany.html")
+                #open create company page with form included
+                company = CompanyDataForm()
+                context = {
+                    "company":company
+                }
+                return render(request, "company/createCompany.html",context)
     
     return redirect('companyapp:companyJobList')
     
@@ -40,9 +50,13 @@ def createCompany(request):
 def companyProfile(request,company_id):
     try:
         company= Company.objects.get(id=company_id)
-        if (company.is_active == False):
-            return redirect("jobsapp:index")
-        jobs = Job.objects.filter(company_id=company_id)
+        
+        if (company.user != request.user):
+            if (company.is_active == False):
+                return redirect("jobsapp:index")
+        
+        
+        jobs = Job.objects.filter(company_id=company_id, status="active")
         context = {
             "company":company,
             "jobs":jobs,
@@ -70,9 +84,12 @@ def companyJobList(request):
     # If the user has a company, retrieve jobs owned by the company
     job_list = Job.objects.filter(company=company)
     
+    user = request.user
+    
     template = "company/companyJobList.html"
     context = {
         "job_list": job_list,
+        "user": user,
     }
     return render(request, template, context)
 
@@ -136,18 +153,42 @@ def updateStatus(request, applicant_id, action):
     valid_actions = ['check', 'xmark']
 
     if action not in valid_actions:
-        return HttpResponse("Invalid action")
+        # Redirect to the current page with an error message
+        messages.error(request, 'Invalid action')
+        return redirect(request.META.get('HTTP_REFERER', 'companyapp:companyApplicants'))
+
+    # Get the current user (assuming the user is authenticated)
+    user = request.user
 
     # Update the status based on the action
     if action == 'check':
         applicant.status = 'approved'
+        alert_message = 'Your application has been accepted for the job.'
+        application_status = 'accepted'
     elif action == 'xmark':
         applicant.status = 'rejected'
+        alert_message = 'Your application has been rejected for the job.'
+        application_status = 'rejected'
 
     # Save the updated status
     applicant.save()
 
-    return redirect("companyapp:companyApplicants")
+    # Create an alert notification
+    alert = Alerts.objects.create(
+        notification='ApplicationResult',
+        message=alert_message,
+        timestamp=timezone.now(),
+        status='active',
+        action_user=user.get_full_name(),
+        user=applicant.user,
+        job=applicant.job,
+        application_status=application_status,
+        is_read='unread',
+    )
+
+    # Redirect to the current page with a success message
+    messages.success(request, 'Status updated successfully')
+    return redirect(request.META.get('HTTP_REFERER', 'companyapp:companyApplicants'))
 
 
 @login_required(login_url='/account/login/')

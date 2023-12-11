@@ -16,6 +16,7 @@ $(document).ready(function() {
         buttons: [
           {
               extend: 'pdf',
+              download: 'open',
               exportOptions: {
                 columns: [ 0, 1,2,3,4 ]
               },
@@ -31,7 +32,8 @@ $(document).ready(function() {
             
                 //set specific widths for the columns
                 doc.content[1].table.widths = ['*', '*', '15%', '15%', '10%'];
-            
+                const rowCount = doc.content[1].table.body.length - 1; 
+                doc.content.push({ text: `Total: ${rowCount}`, alignment: 'left', margin: [5, 10] });
             
                 // align table header to left
                 const header = doc.content[1].table.body[0];
@@ -61,7 +63,8 @@ $(document).ready(function() {
                                     minute: 'numeric',
                                     hour12: true
                                 }), alignment: 'left'
-                            }
+                            },
+                            { text: `\n${page}`, alignment: 'right' },
                         ],
                         margin: [40, 0],
                         fontSize: 10

@@ -4,20 +4,21 @@ $(document).ready(function() {
       dom: 'Bfrtip',
       "autoWidth": false,
       "columnDefs": [
-        { "width": "33%", "targets": 0 },
-        { "width": "33%", "targets": 1 },
-        { "width": "33%", "targets": 2 },
+        // { "width": "33%", "targets": 0 },
+        { "width": "65%", "targets": 0 },
+        { "width": "35%", "targets": 1 },
      
       ],
       buttons: [
         {
             extend: 'pdf',
+            download: 'open',
           //   exportOptions: {
           //     // starting index is 0
           //     columns: [  1,2,3 ],
           //   },
            
-            title: 'Activity Logs',
+            title: `${nameOfUser} Activity Logs`,
             customize: function (doc) {
               // change table header background color
               doc.content[1].table.headerRows = 1;
@@ -25,9 +26,12 @@ $(document).ready(function() {
               doc.content[1].table.body[0].forEach(function (column, index) {
                   column.fillColor = '#386641';
               });
-          
+
+              const rowCount = doc.content[1].table.body.length - 1; 
+              doc.content.push({ text: `Total: ${rowCount}`, alignment: 'left', margin: [5, 10] });
+
               //set specific widths for the columns
-              // doc.content[1].table.widths = ['*', '*', '15%'];
+              doc.content[1].table.widths = ['*', '15%'];
           
           
               // align table header to left
@@ -58,7 +62,7 @@ $(document).ready(function() {
                                   minute: 'numeric',
                                   hour12: true
                               }), alignment: 'left'
-                          }
+                          },{ text: `\n${page}`, alignment: 'right' },
                       ],
                       margin: [40, 0],
                       fontSize: 10

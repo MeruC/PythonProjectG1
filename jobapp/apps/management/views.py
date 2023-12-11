@@ -351,7 +351,7 @@ def action_job(request, job_id):
     if request.method == "POST":
         try:
             if job.status == "active":
-                job.status = "deleted"
+                job.status = "inactive"
             else:
                 job.status = "active"
             job.save()
@@ -359,7 +359,7 @@ def action_job(request, job_id):
                 request,
                 "Job Activated Successfully"
                 if job.status == "active"
-                else "Job Deleted Successfully",
+                else "Job Deactivated Successfully",
             )
         except Exception as e:
             messages.error(request, "Internal Server Error")

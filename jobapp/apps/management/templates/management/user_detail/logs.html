@@ -30,7 +30,7 @@
         <table id="activityLogsTable" class="row-border">
           <thead>
             <tr>
-              <th>User</th>
+              {% comment %} <th>User</th> {% endcomment %}
               <th>Action</th>
               <th>Date</th>
             </tr>
@@ -39,10 +39,10 @@
           <tbody class="">
             {% for activityLog in activityLogs %}
             <tr>
-              <td>
+              {% comment %} <td>
                 {{ activityLog.user.first_name }} {{ activityLog.user.last_name }}
                 <br />{{activityLog.user.email }}
-              </td>
+              </td> {% endcomment %}
               <td>
                 {{activityLog.action.title}} 
               </td>
@@ -55,6 +55,6 @@
         </table>
       </section>
     </div>
-
+<script> const nameOfUser = "{{ user.first_name }} {{ user.last_name }}"; </script>
 <script defer src="{% static 'management/manage-users/logs.js' %}"></script>
 {% endblock user_section %}

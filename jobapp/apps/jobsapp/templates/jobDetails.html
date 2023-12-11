@@ -45,7 +45,7 @@
           <button
             id="applyButton"
             {% if not hasInfo %} disabled {% endif %}
-            class=" text-sm py-2 px-6 mt-3 mb-4 rounded-md font-semibold bg-[#386641] text-white disabled:cursor-not-allowed"
+            class="hidden text-sm py-2.5 px-6 mt-3 mb-4 rounded-md font-semibold bg-[#386641] text-white disabled:cursor-not-allowed  transition-all"
            
           >
             Apply
@@ -69,8 +69,11 @@
             </div>
             {% endif %}
             <h1 class="font-semibold text-lg">Job Details</h1>
-
+            
             <div class="mt-2" id="jobDetails"></div>
+    
+            <h1 class="font-semibold text-lg mt-10" id="companyAbout">About</h1>
+            <div class="mt-2"  id="companyDetails"></div>
           </div>
         </div>
 

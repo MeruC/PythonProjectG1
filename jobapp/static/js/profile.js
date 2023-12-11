@@ -22,7 +22,13 @@ function openTab(id) {
 
 function toggleModal(action) {
     if (action === 'open-workexp-modal') $('.work-history-modal').removeClass('hidden')
-    else if (action === 'open-education-modal') $('.education-modal').removeClass('hidden')
+    else if (action === 'open-education-modal') {
+        $('#education-form')[0].reset() //always reset the form
+        //always open the add button 
+        $('#add-btn').removeClass('hidden')
+        $('#update-btn').addClass('hidden')
+        $('.education-modal').removeClass('hidden')
+    }
     else if (action === 'open-skill-modal') $('.skill-modal').removeClass('hidden')
     else {
         $('.work-history-modal').addClass('hidden')
@@ -103,6 +109,7 @@ function deletionProcess(URL,csrfToken,element){
             // delete the selected work wrapper
             const container = element.parentElement
             container.remove()
+            location.reload();
         }
     })
     .catch(error => {
@@ -334,5 +341,14 @@ function toggleDeactivateModal(){
         showCloseButton: true
       }).then(result=>{
         if(result.isConfirmed)$('#deact-form').submit()
+      })
+}
+
+function viewResume(missingList){
+    Swal.fire({
+        title: 'Incomplete Data...',
+        text: "Looks like you are missing the following required profile information: " + missingList,
+        icon: 'error',
+        showCloseButton: true
       })
 }
