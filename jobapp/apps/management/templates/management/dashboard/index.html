@@ -65,7 +65,7 @@
                 <hr class="mt-5" />
                 <div class="flex flex-wrap gap-4 lg:justify-between xl:[&>*]:flex-1">
                     <!--chart container-->
-                    <div class="chart-container mt-5 bg-white text-gray-700 p-4 rounded-md">
+                    <div class="chart-container mt-5 bg-white text-gray-700 p-4 rounded-md shadow-lg">
                         <div class="chart-title flex flex-col gap-4">
                             <h2 class="text-2xl font-bold text-secondary">Job Posts</h2>
                             <div class="chart-title-actions">
@@ -79,10 +79,11 @@
                         <div class="chart w-full relative ">
                             <canvas id="jobPostingChart"></canvas>
                         </div>
-                        <div class="label">Month Of December 2023</div>
+                        <p id="jobPostingLabel"
+                           class="py-4 chart-label text-secondary font-bold text-center"></p>
                     </div>
                     <!--chart container-->
-                    <div class="chart-container mt-5 bg-white text-gray-700 p-4  rounded-md">
+                    <div class="chart-container mt-5 bg-white text-gray-700 p-4  rounded-md shadow-lg">
                         <div class="chart-title flex flex-col gap-4">
                             <h2 class="text-2xl font-bold text-secondary">Job Applications</h2>
                             <div class="chart-title-actions flex gap-4">
@@ -96,7 +97,8 @@
                         <div class="chart  w-full relative ">
                             <canvas id="jobPostingChart"></canvas>
                         </div>
-                        <div class="label">Month Of December 2023</div>
+                        <p id="jobApplicationsLabel"
+                           class="py-4 chart-label text-secondary font-bold text-center"></p>
                     </div>
                 </div>
             </div>

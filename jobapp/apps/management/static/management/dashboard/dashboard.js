@@ -7,6 +7,7 @@ $(document).ready(function () {
 
   $("#jobPostsSelect").on("change", function () {
     const period = $(this).val();
+
     initChart(period);
   });
 
@@ -22,13 +23,23 @@ $(document).ready(function () {
       let config;
 
       if (period === "day") {
+        // get the current date
+        const date = new Date(2023, data.month - 1, 1);
+        const month = date.toLocaleString("default", {
+          month: "long",
+        });
+        $("#jobPostingLabel").text(`Job Postings for ${month}`);
+        // Generate human-readable date labels (e.g., 'Dec 8', 'Dec 9', etc.)
+
         const readableDate = getDayDates(data.labels);
         config = jobPostingChartConfig(readableDate, data.data);
       } else if (period === "month") {
-        // Generate human-readable date labels (e.g., 'Dec 8', 'Dec 9', etc.)
+        $("#jobPostingLabel").text(`Job Postings for ${data.year}`);
         const readableDate = getMonths(data.labels);
         config = jobPostingChartConfig(readableDate, data.data);
       } else if (period === "year") {
+        $("#jobPostingLabel").text(`Job Postings for All Years`);
+
         config = jobPostingChartConfig(data.labels, data.data);
       }
 

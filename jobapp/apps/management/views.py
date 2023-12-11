@@ -62,7 +62,7 @@ def get_job_post_data(request):
             day_of_month = item["date_posted__date"].day
             # Assign count to the corresponding day
             data[day_of_month - 1] = item["count"]
-        return JsonResponse({"labels": labels, "data": data})
+        return JsonResponse({"labels": labels, "data": data, "month": current_month})
 
     elif selected_period == "month":
         # Filter job posts from January of the current year to the current month
@@ -87,7 +87,7 @@ def get_job_post_data(request):
             month = item["date_posted__month"]
             data[month - 1] = item["count"]
 
-        return JsonResponse({"labels": labels, "data": data})
+        return JsonResponse({"labels": labels, "data": data, "year": current_year})
 
     elif selected_period == "year":
         job_posts_data = (
