@@ -268,6 +268,9 @@ def user_detail(request, id):
         form = ProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             try:
+                if form.cleaned_data["profile_img"]:
+                    form.profile_img = form.cleaned_data["profile_img"]
+
                 form.save()
                 messages.success(request, "Profile updated successfully.")
                 return redirect(
@@ -287,7 +290,6 @@ def user_detail(request, id):
 
     else:
         profileForm = ProfileForm(instance=user)
-
         return render(
             request,
             "management/user_detail/profile.html",

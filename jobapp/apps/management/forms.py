@@ -6,10 +6,6 @@ from apps.jobsapp.models import WorkExperience
 from django_countries import countries
 
 
-class CustomClearableFileInput(ClearableFileInput):
-    template_name = "widgets/custom_profile_input.html"
-
-
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
@@ -24,16 +20,30 @@ class ProfileForm(forms.ModelForm):
         ]
 
     profile_img = forms.ImageField(
-        widget=CustomClearableFileInput(
+        widget=forms.FileInput(
             attrs={
+                "class": "hidden",
                 "id": "profileInput",
-                "class": (
-                    "daisy-file-input daisy-file-input-primary "
-                    " daisy-file-input-bordered  w-full max-w-xs block"
-                ),
             }
-        )
+        ),
     )
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        return cleaned_data
+
+    # profile_img = forms.ImageField(
+    #     widget=CustomClearableFileInput(
+    #         attrs={
+    #             "id": "profileInput",
+    #             "class": (
+    #                 "daisy-file-input daisy-file-input-primary "
+    #                 " daisy-file-input-bordered  w-full max-w-xs block"
+    #             ),
+    #         }
+    #     )
+    # )
     first_name = forms.CharField(
         label="First name",
         max_length=100,

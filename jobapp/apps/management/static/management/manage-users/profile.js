@@ -85,16 +85,16 @@ function handleProfileConfirmation(form) {
   });
 }
 
-// document.getElementById('profilePicture').addEventListener('change', function () {
-//   var selectedFile = this.files[0];
+document.getElementById("profileInput").addEventListener("change", function () {
+  var selectedFile = this.files[0];
 
-//   if (selectedFile) {
-//       var reader = new FileReader();
+  if (selectedFile) {
+    var reader = new FileReader();
 
-//       reader.onload = function (e) {
-//           document.getElementById('profileInput').src = e.target.result;
-//       };
+    reader.onload = function (e) {
+      document.getElementById("img_settings").src = e.target.result;
+    };
 
-//       reader.readAsDataURL(selectedFile);
-//   }
-// });
+    reader.readAsDataURL(selectedFile);
+  }
+});
