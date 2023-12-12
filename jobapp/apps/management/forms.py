@@ -4,7 +4,7 @@ from apps.accountapp.models import User, Education
 from django.forms.widgets import ClearableFileInput
 from apps.jobsapp.models import WorkExperience
 from django_countries import countries
-
+from ckeditor.widgets import CKEditorWidget
 class CustomClearableFileInput(ClearableFileInput):
     template_name = "widgets/custom_profile_input.html"
 
@@ -374,19 +374,15 @@ class EditJobForm(forms.Form):
     )
 
     description = forms.CharField(
-        widget=forms.Textarea(
-            attrs={
-                "class": (
-                    "form-control rounded focus:ring-1 focus:ring-primary"
-                    " focus:border-primary"
-                ),
-                "rows": 5,
-                "autocomplete": "off",
-                "required": "true",
-            },
-        ),
+        label="Job Description",
+        widget=CKEditorWidget(attrs={
+            "class": "block border w-full rounded-md p-2 border-gray-400 outline-none",
+            "autocomplete": "off",
+            "required": "true",
+        }),
     )
-
+    
+    
     type_choices = [("parttime", "Part Time"), ("fulltime", "Full Time")]
     type = forms.ChoiceField(
         choices=type_choices,

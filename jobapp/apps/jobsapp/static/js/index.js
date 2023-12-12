@@ -470,7 +470,7 @@ function showJobDetails(
   </div>
                 <div class="text-sm text-gray-700">Posted ${posted}</div>
                 <hr class="my-5 bg-gray-300" />
-                <h1 class="font-semibold">Job Details</h1>
+                <div class="font-semibold description">Job Details</div>
                 <div class="mt-2">${decodedDescription}</div>
         `;
 }
