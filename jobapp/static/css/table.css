@@ -25,6 +25,9 @@ table.dataTable .sorting:after,table.dataTable .sorting:before {
   display: none!important;
 }
 
+.dataTables_info, .dataTables_paginate .previous,.dataTables_paginat {
+    font-size: 12px!important;
+}
 .dataTables_info, .dataTables_paginate .previous,.dataTables_paginate .next {
     font-size: 14px!important;
     color:#60646d!important ;
@@ -36,3 +39,35 @@ table.dataTable .sorting:after,table.dataTable .sorting:before {
     font-size: 14px!important;
     color:#60646d!important ;
 }
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: none!important;
+    border-color: transparent!important;
+    color: black!important;
+    
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: none!important;
+    border-color: transparent!important;
+    color: black!important;
+    
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:active {
+    background: none!important;
+    border-color: transparent!important;
+    outline: none!important;
+    color: black!important;
+    box-shadow: 0!important;
+    
+}
+
+.dataTables_wrapper .dataTables_paginate .current,.dataTables_wrapper .dataTables_paginate .current:hover {
+    background: #E5E7EB!important ;
+    border-color: #E5E7EB!important ;
+    color: black!important;
+    border-radius: 5px!important;
+    font-weight: 500!important;
+  }
+  

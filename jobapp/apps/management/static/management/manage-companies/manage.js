@@ -13,6 +13,7 @@ $(document).ready(function() {
           { "width": "10%", "targets": 5 },
           { "width": "5%", "targets": 6 }
         ],
+        order: [[1, 'asc']],
         buttons: [
           {
               extend: 'pdf',

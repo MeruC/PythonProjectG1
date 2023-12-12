@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}ACCESS DENIED{% endblock title %}
+{% block title %}404 - Not Found{% endblock title %}
 
 {% block content %} 
     <head>
@@ -12,8 +12,8 @@
         window.onload = function alert(){
             Swal.fire({
               icon: "error",
-              title: "ACCESS DENIED!",
-              text: "Click OK to go back to homepage!",
+              title: "404",
+              text: "Page Not Found!",
               color: "#f27474",
               background: 'rgba(50,50,50,1)',
               confirmButtonColor: "#f27474",

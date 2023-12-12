@@ -1,0 +1,41 @@
+#jobContent ul {
+    padding-left: 25px;
+    padding-top: 10px;
+}
+ 
+#jobContent ul li{
+    list-style-type: disc;
+
+}
+
+#jobContent h2,#jobContent h1,#jobContent h3,#jobContent h4,#jobContent h5,#jobContent h6 {
+    line-height: 1;
+}
+#jobContent p:not(ul li p),#jobContent p:not(ol li p) {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#jobContent h1 {
+    font-size: 2em;
+}
+
+#jobContent h2 {
+    font-size: 1.5em;
+}
+
+#jobContent h3 {
+    font-size: 1.17em;
+}
+
+#jobContent h4 {
+    font-size: 1em;
+}
+
+#jobContent h5 {
+    font-size: 0.83em;
+}
+
+#jobContent h6 {
+    font-size: 0.67em;
+}

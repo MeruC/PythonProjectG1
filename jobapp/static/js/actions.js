@@ -81,9 +81,4 @@ function getConfirmationTitle(action) {
 function getConfirmButtonColor(action) {
     return action === 'check' ? '#4CAF50' : (action === 'xmark' ? '#EF5350' : '');
 }
-
-
-
-
-
 // Path: jobapp/static/js/actions.js

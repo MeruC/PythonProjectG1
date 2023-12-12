@@ -4,6 +4,7 @@ from apps.accountapp.models import User, Education
 from django.forms.widgets import ClearableFileInput
 from apps.jobsapp.models import WorkExperience
 from django_countries import countries
+from ckeditor.widgets import CKEditorWidget
 
 
 class ProfileForm(forms.ModelForm):
@@ -393,17 +394,16 @@ class EditJobForm(forms.Form):
     )
 
     description = forms.CharField(
-        widget=forms.Textarea(
+        label="Job Description",
+        widget=CKEditorWidget(
             attrs={
                 "class": (
-                    "form-control  focus:ring-1 focus:ring-primary"
-                    " focus:border-primary rounded focus:ring-1"
-                    " focus:ring-primary focus:border-primary"
+                    "block border w-full rounded-md p-2 border-gray-400"
+                    " outline-none"
                 ),
-                "rows": 5,
                 "autocomplete": "off",
                 "required": "true",
-            },
+            }
         ),
     )
 
