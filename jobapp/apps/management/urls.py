@@ -21,6 +21,11 @@ urlpatterns = [
     ),
     path("job_history/<int:id>", views.get_work_api, name="job_history"),
     path("users/<int:id>/history", views.history, name="user_history"),
+    path(
+        "users/<int:id>/history/<int:application_id>/delete",
+        views.delete_application,
+        name="user_history_delete",
+    ),
     path("users/<int:id>/actions", views.action, name="user_actions"),
     path("users/<int:id>/logs", views.get_logs, name="user_logs"),
     path("jobs/", views.manage_jobs, name="manage_jobs"),

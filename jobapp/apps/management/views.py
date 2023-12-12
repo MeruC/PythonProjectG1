@@ -35,16 +35,24 @@ def dashboard(request):
     # get the total employers
     total_employers = Company.objects.all().count()
     # get the total job seekers
-    total_job_seekers = get_user_model().objects.filter(
-        is_superuser=False,
-        is_staff=False,
-    ).count()
+    total_job_seekers = (
+        get_user_model()
+        .objects.filter(
+            is_superuser=False,
+            is_staff=False,
+        )
+        .count()
+    )
 
-    return render(request, "management/dashboard/index.html", {
-        "total_active_job_posts": total_active_job_posts,
-        "total_employers": total_employers,
-        "total_job_seekers": total_job_seekers,
-    })
+    return render(
+        request,
+        "management/dashboard/index.html",
+        {
+            "total_active_job_posts": total_active_job_posts,
+            "total_employers": total_employers,
+            "total_job_seekers": total_job_seekers,
+        },
+    )
 
 
 def get_job_post_data(request):
@@ -211,6 +219,23 @@ def get_job_applications_data(request):
 
 def manage_users(request):
     User = get_user_model()
+    if request.method == "POST":
+        action = request.POST.get("action")
+        user_id = request.POST.get("user_id")
+        user = get_object_or_404(User, pk=user_id)
+        print(user)
+        if not user:
+            messages.error(request, "User not found.")
+            return redirect("managementapp:manage_users")
+        if action == "deactivate":
+            deactivate_user_account(user)
+            messages.success(request, "User deactivated successfully.")
+            return redirect("managementapp:manage_users")
+        elif action == "activate":
+            activate_user_account(user)
+            messages.success(request, "User activated successfully.")
+            return redirect("managementapp:manage_users")
+
     normal_users = User.objects.filter(is_superuser=False)
 
     return render(
@@ -460,16 +485,20 @@ def deactivate_user_account(user):
     user.save()
 
 
+# ----------------- Application History ------------------------------
+
+
 def history(request, id):
     User = get_user_model()
     user = get_object_or_404(User, pk=id)
     # get all the recent applications of the user.
-    application_list = JobApplication.objects.filter(user_id=id).values(
+    application_list = jobApplicant.objects.filter(user_id=id).values(
         "id",
         "status",
         "user_id",
+        "date_applied",
         company_name=F("job__company__company_name"),
-        date_posted=F("job__date_posted"),
+        job_title=F("job__job_title"),
     )
 
     print(application_list)
@@ -477,8 +506,24 @@ def history(request, id):
     return render(
         request,
         "management/user_detail/history.html",
-        {"applications": application_list, "user_record": user},
+        {"application_list": application_list, "user_record": user},
     )
+
+
+def delete_application(request, id, application_id):
+    try:
+        application = jobApplicant.objects.get(id=application_id)
+        application.delete()
+        messages.success(
+            request,
+            "Application deleted successfully",
+        )
+    except jobApplicant.DoesNotExist:
+        return redirect("managementapp:user_history", id=id)
+    except Exception as e:
+        messages.error(request, "Internal Server Error")
+        print(e)
+    return redirect("managementapp:user_history", id=id)
 
 
 # manage jobs ------------------------------
