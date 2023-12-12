@@ -217,7 +217,7 @@ function togglePassword(icon){
 
 function updatePassword(id){
     const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value; //make the request POST secured
-    const URL = `/profile/updatePassword/${parseInt(id)}/`; //link for views for updating password
+    const URL = `/profile/check_current_password/${parseInt(id)}/`; //link for views for updating password
     const currentPassword = document.querySelector('input[name="current_password"]').value;
     const newPassword = $('input[name="password"]').val()
     const confirm_pass = $('input[name="confirm_pass"]').val()
@@ -230,30 +230,37 @@ function updatePassword(id){
 
     $('.unmatch-current-password-msg').addClass('hidden')
     $('.unmatch-new-password-msg').addClass('hidden')
-    if(newPassword === confirm_pass && isStrongPassword(newPassword)){
-        
-        fetch(URL, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'X-CSRFToken': csrfToken,
-            },
-            body: JSON.stringify(data),
-        })
-        .then(response => response.json())
-        .then(response => {
-            if(response.status === 200){
-                // check for validation
-                if(response.message === 'Password unmatched') $('.unmatch-current-password-msg').removeClass('hidden')
-                else{
-                    // match and updated password
-                    $('.update-pass-modal').addClass('hidden')
+
+    // current and new password is not the same
+    if(newPassword !== currentPassword){
+        if(newPassword === confirm_pass && isStrongPassword(newPassword)){
+            $('.match-newandconfirm-password-msg').addClass('hidden')
+            fetch(URL, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(response => {
+                if(response.status === 200){
+                    // check for validation
+                    if(response.message === 'Password unmatched'){
+                        $('.unmatch-current-password-msg').removeClass('hidden')
+                    }
+                    else if(response.message === 'Password matched'){
+                        $('#password-update-form').submit()
+                    }
                 }
-            }
-        })
+            })
+        }
+        else $('.unmatch-new-password-msg').removeClass('hidden')
+    }else
+        $('.match-newandconfirm-password-msg').removeClass('hidden')
+
     
-    } else
-        $('.unmatch-new-password-msg').removeClass('hidden')
     
 }
 
@@ -333,7 +340,7 @@ function updateEducation(id){
 function toggleDeactivateModal(){
     Swal.fire({
         title: 'Deactivate Account?',
-        text: 'This action prevents you from logging in. Only the administrator will be able to activate this account. Are you sure you want to continue?',
+        text: 'You will be unable to log in as a result of this action. This account can only be activated by the administrator. Are you certain you want to proceed?',
         icon: 'error',
         confirmButtonText: 'Delete',
         confirmButtonColor: '#EF5350',

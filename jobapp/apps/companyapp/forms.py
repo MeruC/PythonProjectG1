@@ -31,7 +31,7 @@ class CompanyCoverForm(forms.ModelForm):
 class CompanyDataForm(forms.ModelForm):
     class Meta:
         model = Company
-        fields = ['company_name','description','city','country']
+        fields = ['company_name','email_address','description','city','country']
         
     #input fields
     company_name = forms.CharField(
@@ -41,6 +41,15 @@ class CompanyDataForm(forms.ModelForm):
             'class':'form-control rounded focus:ring-1 focus:ring-primary focus:border-primary',
             'id':'company_name',
             'placeholder':'Enter Company Name'
+        })
+    )
+    
+    email_address = forms.EmailField(
+        label='Email Address',
+        widget=forms.EmailInput(attrs={
+            'class':'form-control rounded focus:ring-1 focus:ring-primary focus:border-primary',
+            'id':'email_address',
+            'placeholder':'Enter Company Email '
         })
     )
     
@@ -55,7 +64,7 @@ class CompanyDataForm(forms.ModelForm):
     )
     
     country = forms.ChoiceField(
-        choices=[('', 'Select your Country')] + list(countries),  #add default option
+        choices=[('', 'Select your Country')] + [(country, country) for code, country in countries],  #add default option
         widget=forms.Select(attrs={
             'class':'form-control rounded focus:ring-1 focus:ring-primary focus:border-primary',
             'id':'company_country',

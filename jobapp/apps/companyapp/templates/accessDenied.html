@@ -2,6 +2,22 @@
 
 {% block title %}ACCESS DENIED{% endblock title %}
 
-{% block content %}
-    <p> ACCESS DENIED!</p>
+{% block content %} 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        window.onload = function alert(){
+            Swal.fire({
+              icon: "error",
+              title: "ACCESS DENIED!",
+              text: "Click OK to go back to homepage!",
+              color: "#f27474",
+              background: 'rgba(50,50,50,1)',
+              confirmButtonColor: "#f27474",
+              backdrop: 'rgba(20,20,20,1)',
+            }).then(function() {
+                window.location = '/';
+            });
+        }
+    </script>
+    <body style="background-color:#141414">
 {% endblock %}

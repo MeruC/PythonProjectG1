@@ -2,13 +2,13 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .forms import EditForm, WorkHistoryForm, EducationForm, PasswordForm, SkillForm
 from django.shortcuts import get_object_or_404, render, redirect
 from apps.jobsapp.models import WorkExperience
 from apps.accountapp.models import Education, User
 from django.core.exceptions import ValidationError
-from ..accountapp.views import hasUnreadNotif
+from ..accountapp.views import Login, hasUnreadNotif
 from django.contrib.auth import logout
 from fpdf import FPDF
 
@@ -38,7 +38,7 @@ def get_user_education(request):
     education = Education.objects.filter(user=user)
     return education
 
-@login_required(login_url="login")
+@login_required(login_url='/account/login/')
 def index(request):
     if request.method == 'POST':
         form = EditForm(request.POST,request.FILES ,instance=request.user)  # instance of the current user
@@ -49,10 +49,10 @@ def index(request):
         if form.is_valid():  # checking if there's an error
             try:
                 form.save()  # update the data of the current user     
-                messages.success(request, 'Profile updated successfully.')
+                messages.success(request, 'Profile successfully updated.')
                 return redirect('profileapp:index')  # direct only to the profile again
             except Exception as e:
-                messages.error(request, 'Profile update failed. An error occurred.')
+                messages.error(request,f'Error: {e}')
         else:
             messages.error(request, 'Profile update failed. Please check the form.')
 
@@ -148,7 +148,7 @@ def addWorkExp(request):
                 work_experience.company_name = company_name
                 work_experience.save() #add the new work experience
                 
-                messages.success(request, 'Work experience added successfully.')
+                messages.success(request, 'Work experience successfully added.')
                 return redirect('profileapp:index')
             except ValidationError as e:
                  messages.error(request, 'Profile update failed. An error occurred.')
@@ -177,7 +177,7 @@ def addEducation(request):
                 new_education.user = request.user
                 new_education.save()
 
-                messages.success(request, 'Education added successfully.')
+                messages.success(request, 'Education successfully added.')
                 return redirect('profileapp:index')  # Redirect to the profile again
             except Exception as e:
                 messages.error(request,'Education update failed')
@@ -198,17 +198,21 @@ def addEducation(request):
 def addSkill(request):
     
     if request.method == 'POST':
-        current_skill = request.user.skills #skill of the user
-        added_skill = request.POST.get('skills')    
-        
-        # concatenating the skills already available (if any) in the newly added skill
-        new_skill = f"{current_skill},{added_skill}" if current_skill !="" else added_skill
-        
-        User.objects.filter(username = request.user.username).update(skills=new_skill)# update skill data
+        try:
+            
+            current_skill = request.user.skills #skill of the user
+            added_skill = request.POST.get('skills')    
+            
+            # concatenating the skills already available (if any) in the newly added skill
+            new_skill = f"{current_skill},{added_skill}" if current_skill !="" else added_skill
+            User.objects.filter(username = request.user.username).update(skills=new_skill)# update skill data
+            messages.success(request,'Skill successfully added.')
+        except Exception as e:
+            messages.error(request, "Error: {e}")
     return redirect('profileapp:index')
 
 
-def updatePassword(request, id):
+def check_current_password(request, id):
     if(request.method == 'POST'):
         user = get_object_or_404(User,id=id)
         
@@ -216,19 +220,34 @@ def updatePassword(request, id):
             # load body to get the data sent
             data = json.loads(request.body)
             current_password = data.get('current_password')
-            new_password = data.get('new_password')
-            user_auth = authenticate(request, username=user.username, password=current_password)
-            
+            user_auth = authenticate(request, username=user.username, password=current_password)  
             
             # check current password for validation
             if user_auth is not None:
-                user.set_password(new_password)
-                user.save()
-                return JsonResponse({'status':200,'message':'Successfully updated'})
-            else : return JsonResponse({'status':200,'message':'Password unmatched'})
+                return JsonResponse({'status':200,'message':'Password matched'})
+            else:
+                return JsonResponse({'status':200,'message':'Password unmatched'})
             
-        except Exception: 
+        except Exception as e:
+            messages.error(request,f'Error: {e}') 
             return redirect('profileapp:index')  # Redirect to the profile again
+        
+    return redirect('profileapp:index')
+
+
+def update_password(request):
+    if(request.method == 'POST'):
+        new_password = request.POST.get('password')
+        
+        #update password
+        try:
+            user = request.user
+            user.set_password(new_password)
+            user.save()
+            
+            messages.success(request,'Password successfully updated.')
+        except Exception as e:
+            messages.error(request,f'Erro: {e}')
         
     return redirect('profileapp:index')
 
@@ -253,9 +272,11 @@ def updateEducation(request,id):
                 ended_year=ended_year
                 
             )
+            
+            messages.success(request,'Education successfully updated.')
             return JsonResponse({'status':200,'message':'Successfully updated'})
-        except Exception:
-            pass
+        except Exception as e:
+            messages.error(request,f'Error: {e}')
     
         
         return redirect('profileapp:index')
@@ -267,10 +288,10 @@ def delete_work(request,id):
     del_work = get_object_or_404(WorkExperience, id=id)
     try:
         del_work.delete() #delete the selected data in the record
-        messages.success(request,'Deletetion of work Success')
+        messages.success(request,'Work successfully removed.')
         return JsonResponse({'status':200,'message':'Success Deletion'})
-    except Exception:
-        messages.error(request,'Deletion of work failed')
+    except Exception as e:
+        messages.error(request,f'Error: {e}')
         
     return redirect('profileapp:index')
 
@@ -279,24 +300,28 @@ def delete_education(request,id):
     del_education = get_object_or_404(Education,id=id)
     try:
         del_education.delete() #delete education record
-        messages.success(request,'Deletion of education success')
+        messages.success(request,'Education successfully removed.')
         return JsonResponse({'status':200,'message':'Success Deletion'})
-    except Exception:
-        messages.error(request,'Deletion of education failed')
+    except Exception as e:
+        messages.error(request,f'Error: {e}')
         
     return redirect('profileapp:index')
 
 
 # ===== Skill Deletion
 def delete_skill(request,skill):
-    current_ID = request.user.id
-    user_skill = User.objects.get(id=current_ID)
-    skills_arr = formatted_skill(user_skill.skills) # format the string into array
-    
-    skills_arr.remove(skill) # remove specific item in the list
-    updated_skill = ",".join(skills_arr)
-    
-    User.objects.filter(id=current_ID).update(skills=updated_skill) #update the skill data
+    try:
+        current_ID = request.user.id
+        user_skill = User.objects.get(id=current_ID)
+        skills_arr = formatted_skill(user_skill.skills) # format the string into array
+        
+        skills_arr.remove(skill) # remove specific item in the list
+        updated_skill = ",".join(skills_arr)
+        
+        User.objects.filter(id=current_ID).update(skills=updated_skill) #update the skill data
+        messages.success(request,'Skill successfully removed.')
+    except Exception as e:
+        messages.error(request,f'Error: {e}')
     return redirect('profileapp:index')
 
 
@@ -309,8 +334,8 @@ def isSkillAvailable(request,skill):
             isAvailable = True if skill in current_skill else False
                 
             return JsonResponse({'status':200,'isAvailable':isAvailable})
-        except:
-            messages.error(request,'Education update failed')
+        except Exception as e:
+            messages.error(request,f'Error: {e}')
             return redirect('profileapp:index')
         
     
@@ -320,13 +345,16 @@ def isSkillAvailable(request,skill):
 # deactivate account
 def DeactivateAccount(request):
     if request.method == "POST":
-        current_id = request.user.id
-        User.objects.filter(id=current_id).update(is_deactivated = True)
-        messages.success(request,"Account successfully deactivated")
-        
-        #direct logout
-        logout(request)
-        return redirect("accountapp:login")
+        try:
+            current_id = request.user.id
+            User.objects.filter(id=current_id).update(is_deactivated = True)
+            messages.success(request,"Account successfully deactivated")
+            
+            #direct logout
+            logout(request)
+            return redirect("accountapp:login")
+        except Exception as e:
+            messages.error(request,f'Error: {e}')
     
     return redirect("profileapp:index")
 
