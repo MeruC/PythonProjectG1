@@ -190,7 +190,6 @@ def updateStatus(request, applicant_id, action):
     )
 
     # Redirect to the current page with a success message
-    messages.success(request, 'Status updated successfully')
     return redirect(request.META.get('HTTP_REFERER', 'companyapp:companyApplicants'))
 
 def resume(request, username):
@@ -493,6 +492,7 @@ def createJob(request, job_id=0):
                     user=user,
                     is_read='unread',
                     job=new_job,
+                    message="Great news! A newly posted job aligns perfectly with your skills. Check it out now and seize the opportunity!"
                 ).exists()
 
                 if not existing_alert:
@@ -502,6 +502,7 @@ def createJob(request, job_id=0):
                         user=user,
                         is_read='unread',
                         job=new_job,
+                        message="Great news! A newly posted job aligns perfectly with your skills. Check it out now and seize the opportunity!"
                     )
                     alert.save()
 
