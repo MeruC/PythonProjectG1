@@ -1,23 +1,241 @@
+from datetime import datetime, timedelta
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth import get_user_model
+
+from django.contrib import messages
+from django.db.models import F, Count
+from django.contrib import messages
+
+# forms
+from .forms import (
+    EducationForm,
+    ProfileForm,
+    WorkHistoryForm,
+    EditCompanyForm,
+    EditCompanyImageForm,
+    EditJobForm,
+)
+
+# models
 from apps.accountapp.models import Education, ActivityLog
 from apps.profileapp.models import JobApplication
+from apps.jobsapp.models import Job, Company, jobApplicant
 from apps.jobsapp.models import WorkExperience, Job
-from .forms import EducationForm, ProfileForm, WorkHistoryForm
-from django.contrib import messages
-from django.db.models import F
-from apps.jobsapp.models import Job, Company
-from django.contrib import messages
-from .forms import EditCompanyForm, EditCompanyImageForm, EditJobForm
+from django.contrib.auth import get_user_model
 
 
 def index(request):
-    return render(request, "management/dashboard.html")
+    return redirect("managementapp:dashboard")
+
+
+# -----------------Dashboard ------------------------------
+def dashboard(request):
+    # get the total active job posts
+    total_active_job_posts = Job.objects.filter(status="active").count()
+    # get the total employers
+    total_employers = Company.objects.all().count()
+    # get the total job seekers
+    total_job_seekers = (
+        get_user_model()
+        .objects.filter(
+            is_superuser=False,
+            is_staff=False,
+        )
+        .count()
+    )
+
+    return render(
+        request,
+        "management/dashboard/index.html",
+        {
+            "total_active_job_posts": total_active_job_posts,
+            "total_employers": total_employers,
+            "total_job_seekers": total_job_seekers,
+        },
+    )
+
+
+def get_job_post_data(request):
+    selected_period = request.GET.get("period", "day")
+
+    current_date = datetime.now()
+    current_year = current_date.year
+    current_month = current_date.month
+    # Fetch job post data based on the selected period (day, month, or year)
+    if selected_period == "day":
+        job_posts_data = (
+            Job.objects.filter(
+                date_posted__month=current_month,
+                date_posted__year=current_year,
+                # status="active",
+            )
+            .values("date_posted__date")
+            .annotate(count=Count("id"))
+        )
+        # Days of the month
+        labels = [
+            f"{current_year}-{current_month}-{day}"
+            for day in range(1, current_date.day + 1)
+        ]
+        data = [0] * current_date.day
+
+        for item in job_posts_data:
+            # add the month to the day
+            day_of_month = item["date_posted__date"].day
+            # Assign count to the corresponding day
+            data[day_of_month - 1] = item["count"]
+        return JsonResponse(
+            {"labels": labels, "data": data, "month": current_month}
+        )
+
+    elif selected_period == "month":
+        # Filter job posts from January of the current year to the current month
+        job_posts_data = (
+            Job.objects.filter(
+                date_posted__year=current_year,
+                date_posted__month__range=[
+                    1,
+                    current_month,
+                ],  # January to current month range
+                # status="active",
+            )
+            .values("date_posted__month")
+            .annotate(count=Count("id"))
+        )
+        # loop through 12 months, and add the count to the month
+        labels = [month for month in range(1, 13)]  # Months of the year
+        data = [0] * 12  # Initialize data list with zeros
+        print(job_posts_data)
+
+        for item in job_posts_data:
+            month = item["date_posted__month"]
+            data[month - 1] = item["count"]
+
+        return JsonResponse(
+            {"labels": labels, "data": data, "year": current_year}
+        )
+
+    elif selected_period == "year":
+        job_posts_data = (
+            Job.objects.values("date_posted__year")
+            .annotate(count=Count("id"))
+            .order_by("date_posted__year")
+        )
+        # get all the years
+        labels = [item["date_posted__year"] for item in job_posts_data]
+        data = [item["count"] for item in job_posts_data]
+
+        return JsonResponse({"labels": labels, "data": data})
+
+    # Prepare data in a format suitable for Chart.js (labels and data)
+    labels = []
+    data = []
+
+    return JsonResponse({"labels": labels, "data": data})
+
+
+def get_job_applications_data(request):
+    selected_period = request.GET.get("period", "day")
+    print(request.GET)
+    current_date = datetime.now()
+    current_year = current_date.year
+    current_month = current_date.month
+    # Fetch job post data based on the selected period (day, month, or year)
+    if selected_period == "day":
+        applications_data = (
+            jobApplicant.objects.filter(
+                date_applied__month=current_month,
+                date_applied__year=current_year,
+                # status="active",
+            )
+            .values("date_applied__date")
+            .annotate(count=Count("id"))
+        )
+        # Days of the month
+        labels = [
+            f"{current_year}-{current_month}-{day}"
+            for day in range(1, current_date.day + 1)
+        ]
+        data = [0] * current_date.day
+
+        for item in applications_data:
+            # add the month to the day
+            day_of_month = item["date_applied__date"].day
+            # Assign count to the corresponding day
+            data[day_of_month - 1] = item["count"]
+        return JsonResponse(
+            {"labels": labels, "data": data, "month": current_month}
+        )
+
+    elif selected_period == "month":
+        # Filter job posts from January of the current year to the current month
+        applications_data = (
+            jobApplicant.objects.filter(
+                date_applied__year=current_year,
+                date_applied__month__range=[
+                    1,
+                    current_month,
+                ],  # January to current month range
+                # status="active",
+            )
+            .values("date_applied__month")
+            .annotate(count=Count("id"))
+        )
+        print("heew")
+        # loop through 12 months, and add the count to the month
+        labels = [month for month in range(1, 13)]  # Months of the year
+        data = [0] * 12  # Initialize data list with zeros
+        print(applications_data)
+
+        for item in applications_data:
+            month = item["date_applied__month"]
+            data[month - 1] = item["count"]
+
+        return JsonResponse(
+            {"labels": labels, "data": data, "year": current_year}
+        )
+
+    elif selected_period == "year":
+        applications_data = (
+            jobApplicant.objects.values("date_applied__year")
+            .annotate(count=Count("id"))
+            .order_by("date_applied__year")
+        )
+        # get all the years
+        labels = [item["date_applied__year"] for item in applications_data]
+        data = [item["count"] for item in applications_data]
+
+        return JsonResponse({"labels": labels, "data": data})
+
+    # Prepare data in a format suitable for Chart.js (labels and data)
+    labels = []
+    data = []
+
+    return JsonResponse({"labels": labels, "data": data})
+
+
+# -----------------Users ------------------------------
 
 
 def manage_users(request):
     User = get_user_model()
+    if request.method == "POST":
+        action = request.POST.get("action")
+        user_id = request.POST.get("user_id")
+        user = get_object_or_404(User, pk=user_id)
+        print(user)
+        if not user:
+            messages.error(request, "User not found.")
+            return redirect("managementapp:manage_users")
+        if action == "deactivate":
+            deactivate_user_account(user)
+            messages.success(request, "User deactivated successfully.")
+            return redirect("managementapp:manage_users")
+        elif action == "activate":
+            activate_user_account(user)
+            messages.success(request, "User activated successfully.")
+            return redirect("managementapp:manage_users")
+
     normal_users = User.objects.filter(is_superuser=False)
 
     return render(
@@ -144,7 +362,9 @@ def get_logs(request, id):
     # per user
 
     try:
-        activityLogs = ActivityLog.objects.filter(user_id=id)
+        activityLogs = ActivityLog.objects.filter(user_id=id).order_by(
+            "-timestamp"
+        )
     except ActivityLog.DoesNotExist:
         activityLogs = []
 
@@ -195,7 +415,8 @@ def edit_work(request, work):
             work.end_date = "Present"
         else:
             work.end_date = (
-                f"{request.POST.get('end_month')}, {request.POST.get('end_year')}"
+                f"{request.POST.get('end_month')},"
+                f" {request.POST.get('end_year')}"
             )
         work.save()
         messages.success(request, "Work History successfully updated.")
@@ -266,16 +487,20 @@ def deactivate_user_account(user):
     user.save()
 
 
+# ----------------- Application History ------------------------------
+
+
 def history(request, id):
     User = get_user_model()
     user = get_object_or_404(User, pk=id)
     # get all the recent applications of the user.
-    application_list = JobApplication.objects.filter(user_id=id).values(
+    application_list = jobApplicant.objects.filter(user_id=id).values(
         "id",
         "status",
         "user_id",
+        "date_applied",
         company_name=F("job__company__company_name"),
-        date_posted=F("job__date_posted"),
+        job_title=F("job__job_title"),
     )
 
     print(application_list)
@@ -283,15 +508,31 @@ def history(request, id):
     return render(
         request,
         "management/user_detail/history.html",
-        {"applications": application_list, "user_record": user},
+        {"application_list": application_list, "user_record": user},
     )
+
+
+def delete_application(request, id, application_id):
+    try:
+        application = jobApplicant.objects.get(id=application_id)
+        application.delete()
+        messages.success(
+            request,
+            "Application deleted successfully",
+        )
+    except jobApplicant.DoesNotExist:
+        return redirect("managementapp:user_history", id=id)
+    except Exception as e:
+        messages.error(request, "Internal Server Error")
+        print(e)
+    return redirect("managementapp:user_history", id=id)
 
 
 # manage jobs ------------------------------
 
 
 def manage_jobs(request):
-    jobs = Job.objects.all()
+    jobs = Job.objects.all().order_by("-id")
     context = {"jobs": jobs}
     return render(request, "management/manage-jobs/manage_jobs.html", context)
 
@@ -380,7 +621,7 @@ def delete_job(request, job_id):
 
 
 def manage_companies(request):
-    companies = Company.objects.all()
+    companies = Company.objects.all().order_by("-id")
     context = {"companies": companies}
     return render(
         request, "management/manage-companies/manage_companies.html", context

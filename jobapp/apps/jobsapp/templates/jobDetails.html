@@ -13,6 +13,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link rel="stylesheet" href={% static '/css/ckeditor.css' %} />
   </head>
 
   <body>
@@ -38,7 +39,7 @@
         </div>
           <div class="flex-1">
             <div class="text-2xl font-semibold" id="jobTitle"></div>
-            <a href="{% url 'companyapp:companyProfile' company.id %}" class="text-gray-800" id="companyName"></a>
+            <a href="{% url 'companyapp:companyProfile' company.id %}" class="text-gray-800 hover:underline transition-all" id="companyName"></a>
           </div>
           {% if not user_has_applied %}
           <!-- prettier-ignore -->
@@ -46,7 +47,7 @@
             id="applyButton"
             {% if not hasInfo %} disabled {% endif %}
             class="hidden text-sm py-2.5 px-6 mt-3 mb-4 rounded-md font-semibold bg-[#386641] text-white disabled:cursor-not-allowed  transition-all"
-           
+           style="{% if isOwned %} display:none!important {% endif %}"
           >
             Apply
           </button>
@@ -56,23 +57,23 @@
 
       <!-- content -->
       <div
-        class="w-full flex flex-col-reverse md:flex-row gap-5 py-10 leading-5 px-5 md:px-20 lg:px-40 xl:px-64"
+        class="w-full flex flex-col-reverse md:flex-row gap-5 py-10 leading-5 px-5 md:px-20 lg:px-40 xl:px-64" id="jobContent"
       >
         <div class="flex-1">
           <!-- items -->
           <div class="">
-            {% if not hasInfo %}
+            {% if not hasInfo and not isOwned %}
             <div class="text-xs text-red-500 mt-1 mb-3">
-              <i class="fa-solid fa-circle-exclamation mr-1"></i>Set up
+              <i class="fa-solid fa-circle-exclamation mr-1" id="setUpError"></i>Set up
               <a href="/profile/" class="underline">your profile</a> to apply
               for a job
             </div>
             {% endif %}
-            <h1 class="font-semibold text-lg">Job Details</h1>
+            <div class="font-semibold text-lg description">Job Details</div>
             
             <div class="mt-2" id="jobDetails"></div>
     
-            <h1 class="font-semibold text-lg mt-10" id="companyAbout">About</h1>
+            <div class="font-semibold text-lg mt-10" id="companyAbout">About</div>
             <div class="mt-2"  id="companyDetails"></div>
           </div>
         </div>

@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="{% static 'management/styles.css' %}">
 {% endblock anotherMetaData %}
 {% block section %}
-<link rel="stylesheet" href="{% static 'css/table.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/table.css' %}" />
     <div class="bg-[#F1F8F9] min-h-screen w-full flex flex-col">
         <div class="grow flex flex-row">
             <div class="grow overflow-auto p-10">
                 <h1 class=" text-2xl font-bold text-secondary ">Manage Users</h1>
-                <hr class="mt-5"/>
+                <hr class="mt-5" />
                 <section class="mt-10">
                     <!-- Table Buttons-->
                     <div class="flex flex-row gap-3 justify-between mb-3">
@@ -25,9 +25,7 @@
                                    id="usersSearchField">
                         </div>
                         <button id="pdfBtn"
-                                class="py-2 px-5 bg-[#BC4749] text-white font-medium rounded">
-                            Generate Report
-                        </button>
+                                class="py-2 px-5 bg-[#BC4749] text-white font-medium rounded">Generate Report</button>
                     </div>
                     <!-- Table Buttons End-->
                     <table class=" w-full row-border" id="user-table" width="100%">
@@ -46,57 +44,77 @@
                                 <tr>
                                     <td>
                                         <div class="daisy-avatar ">
-                                            <div class="w-10 h-10 rounded-full bg-slate-600 " >
-                                                <img
-                                                  class="w-full h-full object-cover rounded-full"
-                                                  id="img_settings"
-                                                  src="{% if user.profile_img %}{{ user.profile_img.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
-                                                  alt=""
-                                                />
-                                              </div>
-                                            
+                                            <div class="w-10 h-10 rounded-full bg-slate-600 ">
+                                                <img class="w-full h-full object-cover rounded-full"
+                                                     id="img_settings"
+                                                     src="{% if user.profile_img %}{{ user.profile_img.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
+                                                     alt="" />
+                                            </div>
                                         </div>
                                     </td>
                                     <td>{{ user.first_name|title }}  {{ user.last_name|title }}</td>
                                     <td>{{ user.email }}</td>
                                     <td>{{ user.contact_number|default:"No Contact" }}</td>
                                     <td>
-                                     
                                         {% if not user.is_deactivated %}
                                             <div class="daisy-badge gap-2 daisy-badge-success bg-[#BCF09D]">
                                                 <div class="w-2 h-2 rounded-full bg-[#386641]"></div>
-                                                <p
-                                                class="font-semibold text-[#386641]"
-                                              >
-                                                Active</p>
+                                                <p class="font-semibold text-[#386641]">Active</p>
                                             </div>
                                         {% else %}
-                                        <div class="daisy-badge gap-2 daisy-badge-success bg-[#FF8F92]">
-                                            <div class="w-2 h-2 rounded-full bg-[#BC4749]"></div>
-                                            <p
-                                                class="font-semibold text-[#BC4749]"
-                                              >
-                                                Inactive</p>
+                                            <div class="daisy-badge gap-2 daisy-badge-success bg-[#FF8F92]">
+                                                <div class="w-2 h-2 rounded-full bg-[#BC4749]"></div>
+                                                <p class="font-semibold text-[#BC4749]">Inactive</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="flex gap-1">
+                                        <a href="{% url 'managementapp:user_detail' user.id %}">
+                                            <i class="fa-regular fa-pen-to-square   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded"></i>
+                                        </a>
+                                        <div class="deaactivate-container">
+                                            <div class="removeAccountIcon" >
+                                             {% if not user.is_deactivated %}
+                                                <form method="post" class="deactivate-form" >
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                                    <input type="hidden" name="full_name" value="{{ user.first_name|title }}  {{ user.last_name|title }}">
+                                                    <input type="hidden" name="action" value="deactivate">
+                                                    <button type="button">
+                                                        <i class="fa-solid fa-trash-can   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <div class="activate-container">
+                                            <div class="activateAccountIcon">
+                                                <form method="post" id="activate-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                                    <input type="hidden" name="full_name" value="{{ user.first_name|title }}  {{ user.last_name|title }}">
+                                                    <input type="hidden" name="action" value="activate">
+                                                    <button
+                                            
+                                                            type="button">
+                                                            <i class="fa-solid fa-trash-can-arrow-up   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded"></i>
+                                                        </button>
+                                                </form>
                                             </div>
                                         </div>
                                         {% endif %}
-                                    </td>
-                                    <td>
-                                        <div class="flex gap-1">
-                                            <a href="{% url 'managementapp:user_detail' user.id %}"
-                                               >
-                                                <i class="fa-regular fa-pen-to-square   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded"></i>
-                                            </a>
-                                            <div class="placeholderElem" ><i class="fa-solid fa-trash-can   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded"></i></div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </section>
-            </div>
+                                        
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
         </div>
     </div>
-    <script src="{% static 'management/manage-users/manage.js' %}"></script>
+</div>
+<script src="{% static 'management/manage-users/manage.js' %}"></script>
 {% endblock section %}

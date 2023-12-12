@@ -30,8 +30,14 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 7. Run the server
+
+if DEBUG = True
 ```bash
 python manage.py runserver
+```
+if DEBUG = False
+```bash
+py manage.py runserver --insecure
 ```
 
 - For using and running the tailwind please refer here: https://clarencedimafelix.notion.site/Using-django-tailwind-caf8a872c5a743939cd2a0c1182eb8f5?pvs=4

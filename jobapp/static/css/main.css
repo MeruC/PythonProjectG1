@@ -34,3 +34,18 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
     border-color: #bee5eb;
 }
 
+
+/* Hide scrollbar for Firefox */
+.no-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+  
+  /* Hide scrollbar for Webkit/Blink */
+  .no-scrollbar::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  .no-scrollbar::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }

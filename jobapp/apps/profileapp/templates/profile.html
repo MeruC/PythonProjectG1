@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <link rel="stylesheet" href="{% static '/css/main.css' %}">
   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
   
@@ -20,7 +22,7 @@
   <title>Profile</title>
 </head>
 
-<body class="relative">
+<body class="relative h-screen">
   {% if user.is_authenticated %}
 
   {% if user_data %}
@@ -28,7 +30,7 @@
   {% include 'navbar.html' %}
   
   {% comment %} -- PAGECONTENT -- {% endcomment %}
-  <div class="min-h-[calc(100vh-56px)]  max-w-[928px] mx-auto flex flex-col md:flex-row gap-5 pt-10">
+  <div class="h-90 max-w-[928px] mx-auto flex flex-col md:flex-row gap-5 pt-10">
     <aside class="flex flex-col">
       <section class="flex flex-col items-center">
           {% if user.profile_img %}
@@ -62,9 +64,19 @@
             </button>
         </section>
     </aside>
-    <main class="grow flex flex-col max-h-[calc(100vh-56px)]">
-      <div class="profile-tab flex flex-col border border-green-800 rounded">
+    <main class="grow flex flex-col h-full overflow-y-auto no-scrollbar border border-green-800 rounded">
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert {{message.tags}}">
+            <div>{{message}}</div>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <div class="profile-tab flex flex-col">
         {% comment %} -- Profile Summary -- {% endcomment %}
+      
         <section class="min-h-[100px] p-5">
           <h3 class="text-xl font-bold text-green-800">Profile Summary</h3>
           <p class="mt-2">{{user_data.profile_summary}}</p>
@@ -152,7 +164,7 @@
         </section>
       </div>
       <div class="setting-tab hidden">
-        <div class=" gap-2 text-lg p-5 border border-green-800 rounded">
+        <div class="gap-2 text-lg p-5">
             <form method="POST" action="{% url 'profileapp:index' %}" class="flex flex-col gap-3" enctype="multipart/form-data">
               {% csrf_token %}
               <!-- user image -->
@@ -168,7 +180,7 @@
                         src="{% static '/assets/default_profile.png' %}"
                         alt="">
                 {% endif %}
-                {{ form.profile_img }}
+                <input type="file" name="{{ form.profile_img.name }}" id="{{ form.profile_img.id_for_label }}" accept="image/*" />
               </div>
                            
 
@@ -349,8 +361,8 @@
   
   <!-- update password -->
   <div class="fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 bg-black bg-opacity-25 update-pass-modal hidden">
-      <div class="w-full h-full rounded-md bg-white p-5 sm:max-w-[600px] sm:h-max">
-        <form method="POST">
+      <div class="w-full block mx-auto h-full rounded-md bg-white p-5 sm:max-w-[600px] sm:h-max">
+        <form id="password-update-form" action="{% url 'profileapp:updatePassword' %}" method="POST">
           {% csrf_token %}
           <h2 class="font-bold text-[#386641] text-lg pb-5">Change Password</h2>
           <p class="text-sm italic text-red-400 hidden unmatch-current-password-msg">Incorrect current password</p>
@@ -368,6 +380,7 @@
           <label>Confirm Password:</label>
           <input type="password" name="confirm_pass" autocomplete="confirm-password" class="block rounded-md border border-gray-300 py-3 p-2 outline-none text-sm w-full resize-none"/>
           <p class="text-sm italic text-red-400 hidden unmatch-new-password-msg">New password not match!</p>
+          <p class="text-sm italic text-red-400 hidden match-newandconfirm-password-msg">Current and New password match!</p>
           <div class="flex gap-3 justify-end mt-2">
             <button type="button"class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]" onclick="updatePassword('{{user.id}}')">Change password</button>
             <button class="hover:text-gray-500 text-gray-400" type="button" onclick="togglePassModal()">Cancel</button>

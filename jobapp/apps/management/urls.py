@@ -5,6 +5,13 @@ from . import views
 app_name = "managementapp"
 urlpatterns = [
     path("", views.index, name="index"),
+    path("dashboard/", views.dashboard, name="dashboard"),
+    path("dashboard/job_posts/", views.get_job_post_data, name="job_posts"),
+    path(
+        "dashboard/job_applications/",
+        views.get_job_applications_data,
+        name="job_applications",
+    ),
     path("users/", views.manage_users, name="manage_users"),
     path("users/<int:id>/profile", views.user_detail, name="user_detail"),
     path(
@@ -14,6 +21,11 @@ urlpatterns = [
     ),
     path("job_history/<int:id>", views.get_work_api, name="job_history"),
     path("users/<int:id>/history", views.history, name="user_history"),
+    path(
+        "users/<int:id>/history/<int:application_id>/delete",
+        views.delete_application,
+        name="user_history_delete",
+    ),
     path("users/<int:id>/actions", views.action, name="user_actions"),
     path("users/<int:id>/logs", views.get_logs, name="user_logs"),
     path("jobs/", views.manage_jobs, name="manage_jobs"),

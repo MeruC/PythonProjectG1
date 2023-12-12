@@ -64,9 +64,11 @@ const fetchNotifications = async () => {
       return;
     }
     notificationContent = data.map(notification => {
+
+      const href = notification.job_id ? `/jobs/${notification.job_id}` : '#';
       return `
         <li class="p-3 bg-gray-50 rounded-md">
-          <a href="#">
+          <a href="${href}">
             <div class="flex flex-row items-start gap-3">
               ${createBadge(notification.notification)}
               <div class="flex flex-col gap-1">
