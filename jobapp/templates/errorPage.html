@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}404 - Not Found{% endblock title %}
+
+{% block content %} 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        window.onload = function alert(){
+            Swal.fire({
+              icon: "error",
+              title: "404",
+              text: "Page Not Found!",
+              color: "#f27474",
+              background: 'rgba(50,50,50,1)',
+              confirmButtonColor: "#f27474",
+              backdrop: 'rgba(20,20,20,1)',
+            }).then(function() {
+                window.location = '/';
+            });
+        }
+    </script>
+    <body style="background-color:#141414">
+{% endblock %}
