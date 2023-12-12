@@ -49,7 +49,7 @@
                   <img
                     class="w-full h-full object-cover rounded-full"
                     id="img_settings"
-                    src="{% if user.company_img %}{{ user.company_img.url }}{% else %}{% static '/assets/default_logo.png' %}{% endif %}"
+                    src="{% if company.logo %}{{ company.logo.url }}{% else %}{% static '/assets/default_logo.png' %}{% endif %}"
                     alt=""
                   />
                 </div>

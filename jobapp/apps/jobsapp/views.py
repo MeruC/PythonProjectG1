@@ -22,7 +22,7 @@ def index(request):
         else:
             hasInfo = False
             
-        if not WorkExperience.objects.filter(user_id=request.user).exists() or not Education.objects.filter(user_id=request.user).exists():
+        if not Education.objects.filter(user_id=request.user).exists():
             hasInfo = False
         
         
@@ -42,6 +42,7 @@ def index(request):
 
 
 def jobDetails(request, jobId):
+    
     if not request.user.is_authenticated:
         hasInfo = False
         return redirect("jobsapp:index")
@@ -52,13 +53,20 @@ def jobDetails(request, jobId):
         else:
             hasInfo = False
             
-        if not WorkExperience.objects.filter(user_id=request.user).exists() or not Education.objects.filter(user_id=request.user).exists():
+        if  not Education.objects.filter(user_id=request.user).exists():
             hasInfo = False
 
         if not Job.objects.filter(id=jobId, status="active",company__is_active=True).select_related("company").values("company__is_active").exists():
             return redirect("jobsapp:index")
+      
+        
         company = Company.objects.get(id=Job.objects.get(id=jobId).company_id)
-    return render(request, "jobDetails.html", {"hasInfo": hasInfo, "company": company})
+        
+        if company.user_id == request.user.id:
+            isOwned = True
+        else:
+            isOwned = False
+    return render(request, "jobDetails.html", {"hasInfo": hasInfo, "company": company, "isOwned": isOwned})
 
 
 # async (views used in ajax call )
@@ -119,7 +127,7 @@ def getJobDetails(request, jobId):
     else:
         hasInfo = False
     
-    if not WorkExperience.objects.filter(user_id=request.user).exists() or not Education.objects.filter(user_id=request.user).exists():
+    if not Education.objects.filter(user_id=request.user).exists():
             hasInfo = False
 
     if not request.user.is_authenticated:

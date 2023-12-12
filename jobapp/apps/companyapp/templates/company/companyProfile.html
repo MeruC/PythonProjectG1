@@ -24,11 +24,19 @@
             <h1 class="text-3xl font-bold">{{company.company_name}}</h1>
    
             <p class="text-gray-500 flex items-center gap-1 sm:ml-1"><i class="fa-solid fa-location-dot text-sm"></i> {{company.country}}, {{company.city}} City</p>
+          
+          
           </div>
          {% if company.user_id == user.id%}
           <a href="{%  url 'companyapp:companyProfileSettings' %}"class="py-3 px-5 text-secondary border border-secondary rounded hover:bg-secondary hover:text-white transition-all duration-100">Edit Company Profile</a>
           {% endif %}
+       
         </div>
+        {% if company.is_active == 0 %}
+            <div class="text-xs text-red-500 pt-5 pl-10">
+              <i class="fa-solid fa-circle-exclamation mr-1" id="setUpError"></i> Your company has been disabled. If you think this is a mistake, please contact the administrator.
+            </div>
+            {% endif %}
       </header>
       {% comment %} -- JOB INFORMATION -- {% endcomment %}
       <section class="p-5 mx-5 flex flex-col gap-2 bg-white shadow rounded-lg sm:mx-10 sm:p-10">
@@ -42,19 +50,19 @@
       {% if jobs %}
       <div class="grid grid-cols-1 gap-5 mx-5 pb-10 sm:mx-10 sm:grid-cols-2">
         {% for job in jobs %}
-        <div class="min-h-[200px] p-5 flex flex-col justify-between bg-white rounded-lg shadow md:p-10 hover:shadow-lg hover:-translate-y-1 transition-all duration-100 cursor-pointer"
-        onclick="window.location.href=`{% url 'jobsapp:jobDetails' job.id %}`"
+        <div class="min-h-[200px] p-5 flex flex-col justify-between bg-white rounded-lg shadow md:p-10 hover:shadow-lg hover:-translate-y-1 transition-all duration-100 {% if company.is_active == 1 %} cursor-pointer  {% endif %}"
+        onclick=" {% if company.is_active == 1 %} window.location.href=`{% url 'jobsapp:jobDetails' job.id %}  {% endif %}`"
         >
           <div>
             <h4 class="mb-2 text-lg font-semibold">{{job.job_title}}</h4>
             <p class="line-clamp-3">
-              {{job.description}}
+              {{job.description|striptags}}
             </p>
           </div>
           <p class="text-gray-500">
           {% comment %} temporary solution {% endcomment %}Posted 
             <script>
-            document.write(formatDate('{{ job.date_posted |date:"Y-m-d H:i:s" }}')) 
+            document.write(formatDate('{{ job.date_posted |date:"Y-m-d\TH:i:s\Z" }}')) 
         </script>
         </div>
     
