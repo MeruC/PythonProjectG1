@@ -179,6 +179,8 @@ display: -webkit-box;
 
 async function searchJob(event) {
   event.preventDefault();
+  document.getElementById("whereSuggestion").classList.add("hidden");
+  document.getElementById("whatSuggestion").classList.add("hidden");
   const jobContentElement = document.getElementById("jobContent");
   const noJobElement = document.getElementById("noJob");
   const noDetailsElement = document.getElementById("noDetails");
@@ -196,6 +198,13 @@ async function searchJob(event) {
       const jsonResponse = await response.json();
 
       if (jsonResponse.success) {
+        //document.getElementById("noDetails").style.display = "flex";
+          document.getElementById("jobDetails").innerHTML = `<div class=" flex p-5 min-h-full  flex-col justify-center items-center bg-white rounded-xl border border-gray-300" id="noDetails">
+
+          <div class="text-xl font-semibold ">You haven't selected a job</div>
+          <div class="text-center">Select a job on the left to see the details here.</div>
+
+        </div>`;
         console.log(jsonResponse);
         if (jsonResponse.jobs.length == 0) {
           if (
@@ -209,6 +218,7 @@ async function searchJob(event) {
             noDetailsElement.style.display = "none";
             dividerElement.style.display = "none";
           }
+          
         } else {
           if (
             jobContentElement &&

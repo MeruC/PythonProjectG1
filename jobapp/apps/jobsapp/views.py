@@ -296,15 +296,16 @@ def getWhereSuggestion(request):
         active_query = Q(status="active")
         company_active_query = Q(company__is_active=True)
         jobs = (
-            Job.objects.filter(city_query | country_query & active_query & company_active_query)
-            .values("company__city", "company__country","status","company__is_active")
+            Job.objects.filter(city_query | country_query, active_query, company_active_query)
+            .values("company__city", "company__country","company__is_active","status")
             .distinct()
         )
-
         for job in jobs:
             suggestion = f"{job['company__city']}, {job['company__country']}"
             suggestions.add(suggestion)
 
+        print ("list(suggestions)")
+        print (list(suggestions))
     return JsonResponse({"success": True, "suggestions": list(suggestions)})
 
 

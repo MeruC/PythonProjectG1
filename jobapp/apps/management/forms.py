@@ -3,7 +3,7 @@ from django import forms
 from apps.accountapp.models import User, Education
 from django.forms.widgets import ClearableFileInput
 from apps.jobsapp.models import WorkExperience
-
+from django_countries import countries
 
 class CustomClearableFileInput(ClearableFileInput):
     template_name = "widgets/custom_profile_input.html"
@@ -459,7 +459,8 @@ class EditCompanyForm(forms.Form):
         ),
     )
 
-    country = forms.CharField(
+    country = forms.ChoiceField(
+        choices=[('', 'Select your Country')] + [(country, country) for code, country in countries],
         widget=forms.Select(
             attrs={
                 "class": (

@@ -55,7 +55,7 @@ class CompanyDataForm(forms.ModelForm):
     )
     
     country = forms.ChoiceField(
-        choices=[('', 'Select your Country')] + list(countries),  #add default option
+        choices=[('', 'Select your Country')] + [(country, country) for code, country in countries],  #add default option
         widget=forms.Select(attrs={
             'class':'form-control rounded focus:ring-1 focus:ring-primary focus:border-primary',
             'id':'company_country',
