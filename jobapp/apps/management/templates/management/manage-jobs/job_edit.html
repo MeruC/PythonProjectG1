@@ -25,7 +25,9 @@
 
   <div class="form-group flex flex-col gap-1">
     <label for="{{ form.description.id_for_label }}" class="text-sm font-medium text-gray-900">Job Description</label>
-    {{ form.description }} {% if form.errors.description %}
+    {{ form.media }}
+    {{ form.description }}
+   {% if form.errors.description %}
     <div class="text-[13px] text-red-500">
       {{ form.errors.description}}
     </div>
@@ -40,7 +42,7 @@
       {% endif %}
     </div>
 
-    <div class="flex flex-col gap-1l md:w-3/4">
+    <div class="flex flex-col gap-1 md:w-3/4">
       <label for="{{ form.skills.id_for_label }}">Skills</label>
       {{ form.skills }} {% if form.errors.skills %}
       <div class="text-[13px] text-red-500">{{ form.errors.skills}}</div>
