@@ -13,6 +13,14 @@
     {% comment %} CONTENT {% endcomment %}
     <div class="grow overflow-auto p-10">
       <h1 class="text-2xl font-bold">Company Information</h1>
+      {% comment %} MESSAGES prompt {% endcomment %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert {{message.tags}}">
+            <div>{{message}}</div>
+          </div>
+        {% endfor %}
+      {% endif %}
       <hr class="my-5">
       {% comment %} EDIT COMPANY LOGO {% endcomment %}
       <div>
@@ -89,6 +97,8 @@
     
   </div>
 </div>
+
+<link rel="stylesheet" href="{% static '/css/main.css' %}">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
 crossorigin="anonymous"></script>
 <script type="text/javascript" src="{% static 'js/company.js' %}"></script>
