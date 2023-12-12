@@ -541,9 +541,10 @@ def AddCompanyLogo(request):
         
         if logo_form.is_valid():
             logo_form.save()
-            messages.success(request,'Company Logo Successfully updated!')
+            messages.success(request,'Company Logo successfully updated.')
             return redirect('companyapp:companyProfileSettings')
-        
+        else:
+            messages.error(request,'Error updating logo')
     return redirect('companyapp:createCompany')
 
 # Upload company logo
@@ -556,9 +557,10 @@ def AddCompanyCoverPhoto(request):
         
         if cover_form.is_valid():
             cover_form.save()
-            messages.success(request,'Company Cover Successfully updated!')
+            messages.success(request,'Company cover successfully updated.')
             return redirect('companyapp:companyProfileSettings')
-
+        else:
+            messages.error(request,'Error updating cover photo')
     return redirect('companyapp:createCompany')
 
 
@@ -571,10 +573,10 @@ def updateCompanyData(request):
         try:   
             if company_data_form.is_valid():
                 company_data_form.save()
-                messages.success(request,'Company details successfully updated')
+                messages.success(request,'Company details successfully updated.')
                 return redirect('companyapp:companyProfileSettings')
         except Exception as ex:
             print(ex)
-            messages.error(request,ex)
+            messages.error(request, f"Error: {ex}")
             
     return redirect('companyapp:createCompany')
