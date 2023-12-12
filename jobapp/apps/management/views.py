@@ -33,13 +33,16 @@ def dashboard(request):
     # get the total active job posts
     total_active_job_posts = Job.objects.filter(status="active").count()
     # get the total employers
-    total_employers = Company.objects.all().count()
+    total_employers = Company.objects.filter(
+        is_active=True,
+    ).count()
     # get the total job seekers
     total_job_seekers = (
         get_user_model()
         .objects.filter(
             is_superuser=False,
             is_staff=False,
+            is_deactivated=False,
         )
         .count()
     )
