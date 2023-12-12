@@ -473,9 +473,9 @@ def createJob(request, job_id=0):
             new_job.save()
             
             if job_id == 0:
-                ActivityLog.objects.create(user=request.user, action="Posted Job")
+                ActivityLog.objects.create(user=request.user, action="Posted Job", timestamp=timezone.now())
             else:
-                ActivityLog.objects.create(user=request.user, action="Update Post")
+                ActivityLog.objects.create(user=request.user, action="Update Post", timestamp=timezone.now())
 
             # Identify users whose skills have at least one partial match with the posted job
             job_skills = [skill.strip() for skill in new_job.skills.split(',')]

@@ -1,3 +1,4 @@
+from datetime import timezone
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
@@ -32,26 +33,27 @@ def Register(request):
             try:
                 # check if username already exists
                 new_user = User.objects.create_user(
-                first_name=form.cleaned_data["first_name"],
-                last_name=form.cleaned_data["last_name"],
-                username=form.cleaned_data["username"],
-                email=form.cleaned_data["email"],
-                password=form.cleaned_data["password"],
+                    first_name=form.cleaned_data["first_name"],
+                    last_name=form.cleaned_data["last_name"],
+                    username=form.cleaned_data["username"],
+                    email=form.cleaned_data["email"],
+                    password=form.cleaned_data["password"],
                 )
                 new_user.save()
 
                 # generate a success message when registration is successful
                 messages.success(
                     request,
-                    "Registration successful. You can now login to your account.",
+                    "Registration successful. You can now login to your"
+                    " account.",
                 )
                 return redirect("accountapp:login")
-            except Exception as e: 
+            except Exception as e:
                 # messages.error(
                 # request,
                 # "Internal Server Error.",)
                 print("Internal Server Error", e)
-            
+
     else:
         form = RegisterForm()
 
@@ -70,10 +72,14 @@ def Login(request):
 
         if form.is_valid():
             identifier = form.cleaned_data["identifier"]
-            user = User.objects.get(**{check_identifier(identifier): identifier})
+            user = User.objects.get(
+                **{check_identifier(identifier): identifier}
+            )
             if not user.is_deactivated:
                 login(request, user)
-                ActivityLog.objects.create(user=user, action="Sign in")
+                ActivityLog.objects.create(
+                    user=user, action="Sign in", timestamp=timezone.now()
+                )
                 if user.is_superuser:  # user is an admin
                     return redirect("managementapp:index")
                 return redirect("jobsapp:index")
@@ -85,32 +91,42 @@ def Login(request):
 
     return render(request, "login.html", {"form": form})
 
+
 def index(request):
     return redirect("accountapp:login")
 
+
 # ------------------ Logout ------------------
 def Logout(request):
-    ActivityLog.objects.create(user=request.user, action="Sign out")
+    ActivityLog.objects.create(
+        user=request.user, action="Sign out", timestamp=timezone.now()
+    )
     logout(request)
     return redirect("accountapp:login")
 
 
-
 # ----------------- notification -----------
 MAX_LIMIT = 20
+
+
 def Notification(request, offset):
-    user_id = request.user.id #current user
-    
-    #offset with max to 20 notif
+    user_id = request.user.id  # current user
+
+    # offset with max to 20 notif
     limit = offset + MAX_LIMIT
-    notifications = Alerts.objects.filter(user_id=user_id).order_by("-timestamp")[offset:limit].values()
+    notifications = (
+        Alerts.objects.filter(user_id=user_id)
+        .order_by("-timestamp")[offset:limit]
+        .values()
+    )
     notification_list = list(notifications)
     return JsonResponse(notification_list, safe=False)
 
+
 # ------------------ check user notification unread ---------
 def hasUnreadNotif(request):
-    #check for unread notification
-    query = Alerts.objects.filter(user=request.user,is_read="unread").count()
-    
-    hasUnread = query>0 #check if it has unread
+    # check for unread notification
+    query = Alerts.objects.filter(user=request.user, is_read="unread").count()
+
+    hasUnread = query > 0  # check if it has unread
     return hasUnread
