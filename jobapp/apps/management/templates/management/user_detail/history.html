@@ -17,9 +17,9 @@
                 <input type="search"
                        placeholder="Search"
                        class="w-full rounded pl-12 border-none focus:border-none focus:outline-none focus:ring-primary focus:border-primary resize-none"
-                       id="usersSearchField">
+                       id="applicationSearchField">
             </div>
-            <button id="pdfBtn"
+            <button id="applicationPdfBtn"
                     class="py-2 px-5 bg-[#BC4749] text-white font-medium rounded">Generate Report</button>
         </div>
         <table class="daisy-table daisy-table-zebra " id="history-table">
@@ -28,7 +28,7 @@
                     <th>Job Title</th>
                     <th>Company</th>
                     <th>Status</th>
-                    <th>Date</th>
+                    <th>Date Applied</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -57,7 +57,7 @@
                         </div>
                     {% endif %}
                 </td>
-                <td>{{ application.date_posted }}</td>
+                <td>{{ application.date_applied }}</td>
                 <td>
                     <button class="historyDeleteBtn daisy-btn daisy-btn-accent daisy-btn-sm daisy-btn-outline"
                             data-job="{{ application.job_title }}"
@@ -72,5 +72,6 @@
     </tbody>
 </table>
 </section>
+<script>const full_name = "{{ user_record.first_name }}  {{ user_record.last_name }}" </script>
 <script src="{% static 'management/manage-users/history.js' %}"></script>
 {% endblock user_section %}

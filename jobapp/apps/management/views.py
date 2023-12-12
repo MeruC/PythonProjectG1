@@ -479,9 +479,9 @@ def history(request, id):
         "id",
         "status",
         "user_id",
+        "date_applied",
         company_name=F("job__company__company_name"),
         job_title=F("job__job_title"),
-        date_posted=F("job__date_posted"),
     )
 
     print(application_list)
