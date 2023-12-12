@@ -22,7 +22,7 @@ def index(request):
         else:
             hasInfo = False
             
-        if not WorkExperience.objects.filter(user_id=request.user).exists() or not Education.objects.filter(user_id=request.user).exists():
+        if not Education.objects.filter(user_id=request.user).exists():
             hasInfo = False
         
         
@@ -42,6 +42,7 @@ def index(request):
 
 
 def jobDetails(request, jobId):
+    
     if not request.user.is_authenticated:
         hasInfo = False
         return redirect("jobsapp:index")
@@ -52,13 +53,20 @@ def jobDetails(request, jobId):
         else:
             hasInfo = False
             
-        if not WorkExperience.objects.filter(user_id=request.user).exists() or not Education.objects.filter(user_id=request.user).exists():
+        if  not Education.objects.filter(user_id=request.user).exists():
             hasInfo = False
 
         if not Job.objects.filter(id=jobId, status="active",company__is_active=True).select_related("company").values("company__is_active").exists():
             return redirect("jobsapp:index")
+      
+        
         company = Company.objects.get(id=Job.objects.get(id=jobId).company_id)
-    return render(request, "jobDetails.html", {"hasInfo": hasInfo, "company": company})
+        
+        if company.user_id == request.user.id:
+            isOwned = True
+        else:
+            isOwned = False
+    return render(request, "jobDetails.html", {"hasInfo": hasInfo, "company": company, "isOwned": isOwned})
 
 
 # async (views used in ajax call )
@@ -119,7 +127,7 @@ def getJobDetails(request, jobId):
     else:
         hasInfo = False
     
-    if not WorkExperience.objects.filter(user_id=request.user).exists() or not Education.objects.filter(user_id=request.user).exists():
+    if not Education.objects.filter(user_id=request.user).exists():
             hasInfo = False
 
     if not request.user.is_authenticated:
@@ -288,15 +296,16 @@ def getWhereSuggestion(request):
         active_query = Q(status="active")
         company_active_query = Q(company__is_active=True)
         jobs = (
-            Job.objects.filter(city_query | country_query & active_query & company_active_query)
-            .values("company__city", "company__country","status","company__is_active")
+            Job.objects.filter(city_query | country_query, active_query, company_active_query)
+            .values("company__city", "company__country","company__is_active","status")
             .distinct()
         )
-
         for job in jobs:
             suggestion = f"{job['company__city']}, {job['company__country']}"
             suggestions.add(suggestion)
 
+        print ("list(suggestions)")
+        print (list(suggestions))
     return JsonResponse({"success": True, "suggestions": list(suggestions)})
 
 

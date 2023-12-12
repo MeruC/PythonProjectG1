@@ -162,23 +162,25 @@ function renderJobs(userId, job, hasApplied,isApproved) {
           ${job.type == "fulltime" ? "Full Time" : "Part-time"}
         </div>
 
-        <div class="text-gray-700 py-5">${job.description.split('<p>&nbsp;</p>')[0].trim()}</div>
+        <div class="text-gray-700 pt-5" style="
+overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 5;
+">${job.description.split('<p>&nbsp;</p>')[0].trim()}</div>
 
-        <div class="text-sm text-gray-700">
+        <div class="text-sm text-gray-700 pt-5">
           Posted ${formatDate(job.date_posted)} 
         </div>
       </div>
           `;
 }
-// style="
-// overflow: hidden;
-// text-overflow: ellipsis;
-// display: -webkit-box;
-// -webkit-box-orient: vertical;
-// -webkit-line-clamp: 5;
-// "
+
 async function searchJob(event) {
   event.preventDefault();
+  document.getElementById("whereSuggestion").classList.add("hidden");
+  document.getElementById("whatSuggestion").classList.add("hidden");
   const jobContentElement = document.getElementById("jobContent");
   const noJobElement = document.getElementById("noJob");
   const noDetailsElement = document.getElementById("noDetails");
@@ -196,6 +198,13 @@ async function searchJob(event) {
       const jsonResponse = await response.json();
 
       if (jsonResponse.success) {
+        //document.getElementById("noDetails").style.display = "flex";
+          document.getElementById("jobDetails").innerHTML = `<div class=" flex p-5 min-h-full  flex-col justify-center items-center bg-white rounded-xl border border-gray-300" id="noDetails">
+
+          <div class="text-xl font-semibold ">You haven't selected a job</div>
+          <div class="text-center">Select a job on the left to see the details here.</div>
+
+        </div>`;
         console.log(jsonResponse);
         if (jsonResponse.jobs.length == 0) {
           if (
@@ -209,6 +218,7 @@ async function searchJob(event) {
             noDetailsElement.style.display = "none";
             dividerElement.style.display = "none";
           }
+          
         } else {
           if (
             jobContentElement &&
@@ -302,9 +312,10 @@ function getWhatSuggestion(query) {
 
           whatSuggestion.classList.remove("hidden");
         } else {
-          const suggestionItem = createSuggestionElement("No result", "what");
-          whatSuggestion.appendChild(suggestionItem);
-
+         if (!hasNoResultElement(whatSuggestion)) {
+            const suggestionItem = createSuggestionElement("No result", "what");
+            whatSuggestion.appendChild(suggestionItem);
+          }
           whatSuggestion.classList.remove("hidden");
         }
       } else {
@@ -330,9 +341,11 @@ function getWhereSuggestion(query) {
 
           whereSuggestion.classList.remove("hidden");
         } else {
-          const suggestionItem = createSuggestionElement("No result", "where");
+          
+          if (!hasNoResultElement(whereSuggestion)) {
+            const suggestionItem = createSuggestionElement("No result", "where");
           whereSuggestion.appendChild(suggestionItem);
-
+          }
           whereSuggestion.classList.remove("hidden");
         }
       } else {
@@ -355,6 +368,12 @@ function createSuggestionElement(text, type) {
     });
   }
   return suggestionItem;
+}
+
+function hasNoResultElement(container) {
+  return Array.from(container.children).some(
+    (child) => child.textContent === "No result"
+  );
 }
 
 async function jobApplication(target, jobId, hasApplied) {
@@ -416,11 +435,12 @@ function showJobDetails(
   });
   console.log(hasInfo);
   document.getElementById(`job-${id}`).classList.add("border-[#386641]");
+
   document.getElementById("jobDetails").innerHTML = `
             <div class="min-h-full bg-white rounded-xl border border-gray-300 p-5 leading-5">
               <a href="jobs/${id}">
 
-                <div class="text-2xl font-semibold">${title}</div>
+                <div class="text-2xl font-semibold hover:underline transition-all">${title}</div>
               </a>
                 <div class="text-gray-800">${companyName}</div>
                 <div class="text-gray-800 text-sm">${location}</div>
@@ -441,7 +461,7 @@ function showJobDetails(
 </button>
 
 <div class=" text-xs text-red-500 mt-1 ${
-    hasInfo == "True" ? "hidden " : "block"
+    hasInfo == "True" ||  isOwned? "hidden " : "block"
   }">
   <i class="fa-solid fa-circle-exclamation mr-1"></i>Set up 
  <a href="/profile/" class="underline">your profile</a> to apply for  job
