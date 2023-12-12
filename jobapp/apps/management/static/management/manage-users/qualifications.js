@@ -95,15 +95,35 @@ async function handleEventListeners() {
     document.querySelector("#workModal").showModal();
   });
 
-  $(".educationDeleteModalBtn").click(function (e) {
-    e.preventDefault();
-    handleEducationDeleteConfirmation();
-  });
+  $(".education-container .edit-btns").on(
+    "click",
+    ".form-container",
+    function (e) {
+      //prevent propagation
+      e.stopPropagation();
+      e.preventDefault();
+      // get the child form
+      const form = $(this).children("form");
+      console.log(form);
+      console.log(this);
+      handleEducationDeleteConfirmation(form);
+    }
+  );
 
-  $(".workDeleteModalBtn").click(function (e) {
-    e.preventDefault();
-    handleWorkDeleteConfirmation();
-  });
+  $(".work-container .edit-work-btns").on(
+    "click",
+    ".form-container",
+    function (e) {
+      //prevent propagation
+      e.stopPropagation();
+      e.preventDefault();
+      // get the child form
+      const form = $(this).children("form");
+      console.log(form);
+      console.log(this);
+      handleWorkDeleteConfirmation(form);
+    }
+  );
 }
 
 async function handleEducationConfirmation(form) {
@@ -136,38 +156,38 @@ async function handleWorkConfirmation(form) {
   });
 }
 
-async function handleEducationDeleteConfirmation() {
+async function handleEducationDeleteConfirmation(form) {
   const res = await Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
+    title: "Remove Education History?",
+    text: "Are you sure to remove this education history?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#d33",
     cancelButtonColor: "#3085d6",
-    confirmButtonText: "Yes, delete it!",
+    confirmButtonText: "Yes, remove it!",
   });
 
   if (res.isConfirmed) {
     // get the form
-    $("#deleteEducationForm").submit();
+    form.submit();
   } else {
   }
 }
 
-async function handleWorkDeleteConfirmation() {
+async function handleWorkDeleteConfirmation(form) {
   const res = await Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
+    title: "Remove Work Experience?",
+    text: "Are you sure to remove this work experience?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#d33",
     cancelButtonColor: "#3085d6",
-    confirmButtonText: "Yes, delete it!",
+    confirmButtonText: "Yes, remove it!",
   });
 
   if (res.isConfirmed) {
     // get the form
-    $("#deleteWorkForm").submit();
+    form.submit();
   } else {
   }
 }
