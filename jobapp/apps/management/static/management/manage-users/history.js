@@ -90,13 +90,13 @@ $(document).ready(function () {
       title: "Remove?",
       text: `Are you sure you want to remove their application for ${companyName} as a ${jobTitle}?`,
       icon: "warning",
-      confirmButtonText: "Delete",
+      confirmButtonText: "Remove Application",
       confirmButtonColor: "#EF5350",
       showCancelButton: true,
       showCloseButton: false,
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = `history/${id.trim()}/delete`;
+        window.location.href = `history/${id.toString().trim()}/delete`;
       }
     });
   });
