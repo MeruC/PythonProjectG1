@@ -438,7 +438,7 @@ function showJobDetails(
 
   document.getElementById("jobDetails").innerHTML = `
             <div class="min-h-full bg-white rounded-xl border border-gray-300 p-5 leading-5">
-              <a href="jobs/${id}">
+              <a href="jobs/${id}/">
 
                 <div class="text-2xl font-semibold hover:underline transition-all">${title}</div>
               </a>
