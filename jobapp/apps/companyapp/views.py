@@ -8,7 +8,7 @@ from ..jobsapp.models import Company
 from django.contrib.auth.decorators import login_required
 from ..jobsapp.models import Job, jobApplicant,Company
 from django.contrib.auth import get_user_model
-from ..accountapp.models import Alerts
+from ..accountapp.models import ActivityLog, Alerts
 from django.http import JsonResponse, HttpResponse
 from django.template.loader import render_to_string
 from apps.jobsapp.models import WorkExperience
@@ -471,6 +471,11 @@ def createJob(request, job_id=0):
             new_job = form.save(commit=False)
             new_job.company = company  # Explicitly set the company field
             new_job.save()
+            
+            if job_id == 0:
+                ActivityLog.objects.create(user=request.user, action="Posted Job")
+            else:
+                ActivityLog.objects.create(user=request.user, action="Update Post")
 
             # Identify users whose skills have at least one partial match with the posted job
             job_skills = [skill.strip() for skill in new_job.skills.split(',')]

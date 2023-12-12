@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .forms import EditForm, WorkHistoryForm, EducationForm, PasswordForm, SkillForm
 from django.shortcuts import get_object_or_404, render, redirect
 from apps.jobsapp.models import WorkExperience
-from apps.accountapp.models import Education, User
+from apps.accountapp.models import ActivityLog, Education, User
 from django.core.exceptions import ValidationError
 from ..accountapp.views import Login, hasUnreadNotif
 from django.contrib.auth import logout
@@ -49,6 +49,7 @@ def index(request):
         if form.is_valid():  # checking if there's an error
             try:
                 form.save()  # update the data of the current user     
+                ActivityLog.objects.create(user=request.user, action="Update Profile")
                 messages.success(request, 'Profile successfully updated.')
                 return redirect('profileapp:index')  # direct only to the profile again
             except Exception as e:
@@ -147,7 +148,7 @@ def addWorkExp(request):
                 work_experience.user = request.user
                 work_experience.company_name = company_name
                 work_experience.save() #add the new work experience
-                
+                ActivityLog.objects.create(user=request.user, action="Update Profile")
                 messages.success(request, 'Work experience successfully added.')
                 return redirect('profileapp:index')
             except ValidationError as e:
@@ -176,7 +177,7 @@ def addEducation(request):
                 new_education = education_form.save(commit=False)
                 new_education.user = request.user
                 new_education.save()
-
+                ActivityLog.objects.create(user=request.user, action="Update Profile")
                 messages.success(request, 'Education successfully added.')
                 return redirect('profileapp:index')  # Redirect to the profile again
             except Exception as e:
@@ -206,6 +207,7 @@ def addSkill(request):
             # concatenating the skills already available (if any) in the newly added skill
             new_skill = f"{current_skill},{added_skill}" if current_skill !="" else added_skill
             User.objects.filter(username = request.user.username).update(skills=new_skill)# update skill data
+            ActivityLog.objects.create(user=request.user, action="Update Profile")
             messages.success(request,'Skill successfully added.')
         except Exception as e:
             messages.error(request, "Error: {e}")
@@ -244,7 +246,6 @@ def update_password(request):
             user = request.user
             user.set_password(new_password)
             user.save()
-            
             messages.success(request,'Password successfully updated.')
         except Exception as e:
             messages.error(request,f'Erro: {e}')
@@ -272,7 +273,7 @@ def updateEducation(request,id):
                 ended_year=ended_year
                 
             )
-            
+            ActivityLog.objects.create(user=request.user, action="Update Profile")
             messages.success(request,'Education successfully updated.')
             return JsonResponse({'status':200,'message':'Successfully updated'})
         except Exception as e:

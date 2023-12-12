@@ -337,7 +337,9 @@ def get_logs(request, id):
     # per user
 
     try:
-        activityLogs = ActivityLog.objects.filter(user_id=id)
+        activityLogs = ActivityLog.objects.filter(user_id=id).order_by(
+            "-timestamp"
+        )
     except ActivityLog.DoesNotExist:
         activityLogs = []
 
@@ -485,7 +487,7 @@ def history(request, id):
 
 
 def manage_jobs(request):
-    jobs = Job.objects.all()
+    jobs = Job.objects.all().order_by("-id")
     context = {"jobs": jobs}
     return render(request, "management/manage-jobs/manage_jobs.html", context)
 
@@ -574,7 +576,7 @@ def delete_job(request, job_id):
 
 
 def manage_companies(request):
-    companies = Company.objects.all()
+    companies = Company.objects.all().order_by("-id")
     context = {"companies": companies}
     return render(
         request, "management/manage-companies/manage_companies.html", context
