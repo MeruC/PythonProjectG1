@@ -1,11 +1,13 @@
 $(document).ready(function () {
-  // Check if jQuery Validate is loaded
-  console.log(typeof $.fn.validate !== "undefined");
-  // jQuery Validate plugin is loaded
-
-  // You can proceed with using the validate() function
-  // Example: $('#myForm').validate({ ... });
+  // form validation
   $("#profile-form").validate(formOptions);
+  // make it only accept letters
+  $(".lettersOnly").keyup(function () {
+    // do not accept numbers else accept it
+    if (this.value.match(/[^a-zA-Z ]/g)) {
+      this.value = this.value.replace(/[^a-zA-Z ]/g, "");
+    }
+  });
 });
 
 const formOptions = {
@@ -57,7 +59,7 @@ const formOptions = {
   },
   unhighlight: function (element, errorClass) {
     $(element).removeClass("border-red-500"); // Remove the class to reset the border color
-    $(element).addClass("border-green-500");
+    // $(element).addClass("border-green-500");
   },
   errorClass: "daisy-label-text-alt text-red-500 block",
 
@@ -83,16 +85,16 @@ function handleProfileConfirmation(form) {
   });
 }
 
-// document.getElementById('profilePicture').addEventListener('change', function () {
-//   var selectedFile = this.files[0];
+document.getElementById("profileInput").addEventListener("change", function () {
+  var selectedFile = this.files[0];
 
-//   if (selectedFile) {
-//       var reader = new FileReader();
+  if (selectedFile) {
+    var reader = new FileReader();
 
-//       reader.onload = function (e) {
-//           document.getElementById('profileInput').src = e.target.result;
-//       };
+    reader.onload = function (e) {
+      document.getElementById("img_settings").src = e.target.result;
+    };
 
-//       reader.readAsDataURL(selectedFile);
-//   }
-// });
+    reader.readAsDataURL(selectedFile);
+  }
+});

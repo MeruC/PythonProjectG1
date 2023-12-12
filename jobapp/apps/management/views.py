@@ -33,13 +33,16 @@ def dashboard(request):
     # get the total active job posts
     total_active_job_posts = Job.objects.filter(status="active").count()
     # get the total employers
-    total_employers = Company.objects.all().count()
+    total_employers = Company.objects.filter(
+        is_active=True,
+    ).count()
     # get the total job seekers
     total_job_seekers = (
         get_user_model()
         .objects.filter(
             is_superuser=False,
             is_staff=False,
+            is_deactivated=False,
         )
         .count()
     )
@@ -268,6 +271,9 @@ def user_detail(request, id):
         form = ProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             try:
+                if form.cleaned_data["profile_img"]:
+                    form.profile_img = form.cleaned_data["profile_img"]
+
                 form.save()
                 messages.success(request, "Profile updated successfully.")
                 return redirect(
@@ -287,7 +293,6 @@ def user_detail(request, id):
 
     else:
         profileForm = ProfileForm(instance=user)
-
         return render(
             request,
             "management/user_detail/profile.html",

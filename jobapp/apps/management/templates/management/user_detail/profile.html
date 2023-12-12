@@ -1,54 +1,86 @@
 {% extends "management/user_detail.html" %}
 {% load static %}
 {% block user_section %}
-{% include "management/messages.html" %}
-<form method="post" enctype="multipart/form-data" id="profile-form"
-    action="{% url 'managementapp:user_detail' user_record.id %}">
-    {% csrf_token %}
-    <h2 class="text-lg font-bold mb-8 ">Profile Picture</h2>
-    
-    <div class="space-y-4">
-        {{ profileForm.profile_img }}
-        <div class="flex gap-4 ">
-            <div class="form-group flex flex-col gap-1 w-full lg:w-1/2">
-                <label class="text-sm font-medium text-gray-900" for="{{ profileForm.first_name.id_for_label }}">First
-                    Name:</label>
-                {{ profileForm.first_name }}
-            </div>
-            <div class="w-full lg:w-1/2 form-group flex flex-col gap-1">
-                <label class="text-sm font-medium text-gray-900" for="{{ profileForm.last_name.id_for_label }}">Last
-                    Name:</label>
-                {{ profileForm.last_name }}
-            </div>
-        </div>
-
-        <div class="flex gap-4 ">
-            <div class="w-full lg:w-1/2 form-group flex flex-col gap-1">
-                <label class="text-sm font-medium text-gray-900"
-                    for="{{ profileForm.email_address.id_for_label }}">Email Address:</label>
-                {{ profileForm.email }}
-            </div>
-            <div class="w-full lg:w-1/2 form-group flex flex-col gap-1">
-                <label class="text-sm font-medium text-gray-900" for="profileForm.contact_number.id_for_label">Contact
-                    Number</label>
-
-
-                <div class="relative">
-                    <span class="absolute left-6 transform -translate-x-1/2 rounded font-bold p-2 pl-3 select-none">+63</span>
-                    {{ profileForm.contact_number }}
+    {% include "management/messages.html" %}
+    <form method="post"
+          enctype="multipart/form-data"
+          id="profile-form"
+          action="{% url 'managementapp:user_detail' user_record.id %}">
+        {% csrf_token %}
+        <h2 class="text-lg font-bold mb-8 ">Profile Picture</h2>
+        {% comment %} <div class="space-y-4">
+            <div class="flex flex-row flex-wrap gap-4">
+                <div class="daisy-avatar">
+                    <div class="w-24 lg:w-36 rounded-full  border ">
+                        <img src="{{ widget.value.url }}" alt="Profile Picture" height="120px" width="120px" class="" id="profilePicElem">
+                    </div>
                 </div>
             </div>
+            <div>
+                <label for="{{ form.logo.id_for_label }}" class="bg-[#E0E0E0] text-[#4E4E4E] py-3 px-5 rounded cursor-pointer">Change Picture</label>
+                {{ form.logo }}
+        </div> {% endcomment %}
+        <div>
+            <div class="flex items-center gap-8 mt-8">
+                <div class="w-44 h-44 rounded-full">
+                    <img class="w-full h-full object-cover rounded-full"
+                         id="img_settings"
+                         height="120px"
+                         width="120px"
+                         src="{% if profileForm.profile_img %}{{ user_record.profile_img.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
+                         alt="{{ user_record.profile_img.url }}">
+                </div>
+                <div>
+                    <label for="{{ profileForm.profile_img.id_for_label }}"
+                           class="bg-[#E0E0E0] text-[#4E4E4E] py-3 px-5 rounded cursor-pointer">Change Picture</label>
+                    {{ profileForm.profile_img }}
+                </div>
+            </div>
+            {% comment %} {{ profileForm.profile_img }} {% endcomment %}
+            <hr class="my-7 border-[#BABABA]">
+            <h2 class="text-lg font-bold mb-8">Personal Information</h2>
+            <div class="flex gap-4 ">
+                <div class="form-group flex flex-col gap-1 w-full lg:w-1/2">
+                    <label class="text-sm font-medium text-gray-900"
+                           for="{{ profileForm.first_name.id_for_label }}">
+                        First
+                        Name:
+                    </label>
+                    {{ profileForm.first_name }}
+                </div>
+                <div class="w-full lg:w-1/2 form-group flex flex-col gap-1">
+                    <label class="text-sm font-medium text-gray-900"
+                           for="{{ profileForm.last_name.id_for_label }}">
+                        Last
+                        Name:
+                    </label>
+                    {{ profileForm.last_name }}
+                </div>
+            </div>
+            <div class="flex gap-4 ">
+                <div class="w-full lg:w-1/2 form-group flex flex-col gap-1">
+                    <label class="text-sm font-medium text-gray-900"
+                           for="{{ profileForm.email_address.id_for_label }}">Email Address:</label>
+                    {{ profileForm.email }}
+                </div>
+                <div class="w-full lg:w-1/2 form-group flex flex-col gap-1">
+                    <label class="text-sm font-medium text-gray-900"
+                           for="profileForm.contact_number.id_for_label">Contact Number:</label>
+                    <div class="relative">
+                        <span class="absolute left-6 transform -translate-x-1/2 rounded font-bold p-2 pl-3 select-none">+63</span>
+                        {{ profileForm.contact_number }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group flex flex-col gap-1">
+                <label class="text-sm font-medium text-gray-900 profilePicture"
+                       for="{{ profileForm.profile_summary.id_for_label }}">Profile Summary:</label>
+                {{ profileForm.profile_summary }}
+            </div>
         </div>
-        <div class="form-group flex flex-col gap-1">
-            <label class="text-sm font-medium text-gray-900 profilePicture"
-                for="{{ profileForm.profile_summary.id_for_label }}">Profile Summary:</label>
-            {{ profileForm.profile_summary }}
-        </div>
-    </div>
-    <button type="submit" id="update-profile-btn"
-        class="w-max mt-5 px-4 py-3 bg-secondary text-white rounded font-semibold">
-        Update Profile
-    </button>
+        <button type="submit"
+                id="update-profile-btn"
+                class="w-max mt-5 px-4 py-3 bg-secondary text-white rounded font-semibold">Update Profile</button>
     </div>
 </form>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
