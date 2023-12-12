@@ -4,7 +4,28 @@
 {% block content %}
 {% include "navbar.html" %}
 
+
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="{% static '/js/actions.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/companyApplications.js' %}"></script>
+
+<link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+<script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+
+<link href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.colVis.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.colVis.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+
+
+<link rel="stylesheet" href="{% static 'css/table.css' %}" />
 
 <div class="bg-[#F1F8F9] min-h-screen w-full flex flex-col">
     {% include "companySidebar.html" %} 
@@ -13,71 +34,90 @@
       <h1 class="text-2xl font-bold">All Applicants</h1>
       <hr class="mt-5">
       <section class="mt-10">
-          <div class="flex flex-row gap-2">
-            <div class="flex flex-row gap-2 items-center">
-              <label for="search" class="text-gray-500"><i class="fa-solid fa-search"></i></label>
-              <input type="text" placeholder="Search" class="rounded" />
-            </div>
+        
+         
+        <div class="flex flex-row gap-3 justify-between mb-3">
+          <div class="relative w-80">
+            <i
+              class="fa-solid fa-search absolute left-4 top-3 text-gray-500"
+            ></i>
+            <input
+              type="search"
+              placeholder="Search"
+              class="w-full rounded pl-12 border-none focus:border-none focus:outline-none focus:ring-primary focus:border-primary resize-none"
+              id="jobsSearchField"
+              style=""
+            />
           </div>
-        {% comment %} TODO ADD TABLE HERE {% endcomment %}
+         
+        </div>
 
-        <div class="p-5 h-screen">
-          <div class="overflow-auto rounded-lg shadow hidden md:block">
-              <table class="w-full">
-                  <thead class="bg-[#DFFFCB]">
-                      <tr>
-                          <th class=" px-4 py-2 text-[#386641]">Applicant's Name</th>
-                          <th class=" px-4 py-2 text-[#386641]">Email</th>
-                          <th class=" px-4 py-2 text-[#386641]">Job Title</th>
-                          <th class=" px-4 py-2 text-[#386641]">Applied Date</th>
-                          <th class=" px-4 py-2 text-[#386641]">Status</th>
-                          <th class=" px-4 py-2 text-[#386641]">Actions</th>
-                      </tr>
-                  </thead>
-                  <tbody class="divide-y divide-gray-100 bg-white">
-                
-                    {% for applicant in applicants %}
-                    <tr>
-                        <td class="border px-4 py-2 text-center">{{ applicant.user.get_full_name }}</td>
-                        <td class="border px-4 py-2 text-center">{{ applicant.user.email }}</td>
-                        <td class="border px-4 py-2 text-center">{{ applicant.job.job_title }}</td>
-                        <td class="border px-4 py-2 text-center">{{ applicant.date_applied|date:"M j, Y" }}</td>
-                        <td class="border px-4 py-2 text-center">
-                            <div class="{% if applicant.status == 'approved' %}bg-[#BCF09D] text-[#396641]
-                            {% elif applicant.status == 'pending' %}bg-[#B9DEF9] text-[#236FA3]
-                            {% else %}bg-[#FF8F93] text-[#BB4748]{% endif %} rounded-full">&bull; {{ applicant.status|title }}</div>
-                        </td>
-                        <td class="border px-4 py-2 text-center">
-                          <div class="justify-items-auto space-x-2">
-                            {% if applicant.status == 'pending' %}
-                            <form id="changeStatusForm-{{ applicant.id }}-check" action="{% url 'companyapp:updateStatus' applicant.id 'check' %}" method="post" class="inline">
-                                {% csrf_token %}
-                                <button onclick="confirmApprove('{{ applicant.id }}')">
-                                    <i class="fa-regular fa-square-check"></i>
-                                </button>
-                            </form>
-                            <form id="changeStatusForm-{{ applicant.id }}-xmark" action="{% url 'companyapp:updateStatus' applicant.id 'xmark' %}" method="post" class="inline">
-                                {% csrf_token %}
-                                <button onclick="confirmReject('{{ applicant.id }}')">
-                                    <i class="fa-regular fa-rectangle-xmark"></i>
-                                </button>
-                            </form>
-                            {% else %}
-                                <span class="check-button-disabled">
-                                    <i class="fa-regular fa-square-check" style="color: #999; cursor: not-allowed;"></i>
-                                </span>
-                                <span class="xmark-button-disabled">
-                                    <i class="fa-regular fa-rectangle-xmark" style="color: #999; cursor: not-allowed;"></i>
-                                </span>
-                            {% endif %}
-                            <button><i class="fa-regular fa-eye"></i></button>
-                          </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                
-                  </tbody>
-              </table>
+             
+          
+            <table id="jobsTable" class="row-border">
+              <thead>
+                  <tr>
+                      <th>Applicant's Name</th>
+                      <th>Email</th>
+                      <th>Job Title</th>
+                      <th>Applied Date</th>
+                      <th >Status</th>
+                      <th >Actions</th>
+                  </tr>
+              </thead>
+              <tbody >
+            
+                {% for applicant in applicants %}
+                <tr>
+                    <td >{{ applicant.user.get_full_name }}</td>
+                    <td >{{ applicant.user.email }}</td>
+                    <td >{{ applicant.job.job_title }}</td>
+                    <td >{{ applicant.date_applied|date:"M j, Y" }}</td>
+                    <td >
+                        <div class="daisy-badge gap-2 {% if applicant.status == 'approved' %} daisy-badge-success bg-[#BCF09D] {% elif applicant.status == 'pending' %} daisy-badge-info bg-[#B9DEF9] {% else %} daisy-badge-error bg-[#FF8F93] {% endif %} rounded-full">
+                            <div class="w-2 h-2 rounded-full {% if applicant.status == 'approved' %} bg-[#386641] {% elif applicant.status == 'pending' %} bg-[#236FA3] {% else %} bg-[#BB4748] {% endif %}"></div>
+                            <p class="font-semibold {% if applicant.status == 'approved' %} text-[#386641] {% elif applicant.status == 'pending' %} text-[#236FA3] {% else %} text-[#BB4748] {% endif %}">
+                                {% if applicant.status == 'approved' %} Approved {% elif applicant.status == 'pending' %} Pending {% else %} Rejected {% endif %}
+                            </p>
+                        </div>
+                    </td>
+                    <td >
+                      <div class="justify-items-auto space-x-2">
+                        {% if applicant.status == 'pending' %}
+                        <form id="changeStatusForm-{{ applicant.id }}-check" action="{% url 'companyapp:updateStatus' applicant.id 'check' %}" method="post" class="inline">
+                            {% csrf_token %}
+                            <button onclick="confirmApprove('{{ applicant.id }}')">
+                                <i class="fa-regular fa-square-check"></i>
+                            </button>
+                        </form>
+                        <form id="changeStatusForm-{{ applicant.id }}-xmark" action="{% url 'companyapp:updateStatus' applicant.id 'xmark' %}" method="post" class="inline">
+                            {% csrf_token %}
+                            <button onclick="confirmReject('{{ applicant.id }}')">
+                                <i class="fa-regular fa-rectangle-xmark"></i>
+                            </button>
+                        </form>
+                        {% else %}
+                            <span class="check-button-disabled">
+                                <i class="fa-regular fa-square-check" style="color: #999; cursor: not-allowed;"></i>
+                            </span>
+                            <span class="xmark-button-disabled">
+                                <i class="fa-regular fa-rectangle-xmark" style="color: #999; cursor: not-allowed;"></i>
+                            </span>
+                        {% endif %}
+                        {% comment %}<form action="{% url 'companyapp:resume' applicant.user %}" method="post" class="inline" target="_blank" rel="noopener">
+                          {% csrf_token %}
+                          <button><i class="fa-regular fa-eye"></i></button>
+                        </form> {% endcomment %}
+                      </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            
+              </tbody>
+          </table>
+
+
+
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
           </div>
@@ -86,4 +126,7 @@
     </div>
   </div>
 </div>
+
+
+
 {% endblock content %}
