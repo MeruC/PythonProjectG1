@@ -5,6 +5,7 @@ from django.forms.widgets import ClearableFileInput
 from apps.jobsapp.models import WorkExperience
 from django_countries import countries
 
+
 class CustomClearableFileInput(ClearableFileInput):
     template_name = "widgets/custom_profile_input.html"
 
@@ -40,8 +41,8 @@ class ProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 "class": (
-                    "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary"
-                    " outline-none"
+                    "form-control rounded focus:ring-1 focus:ring-primary"
+                    " lettersOnly focus:border-primary outline-none"
                 )
             }
         ),
@@ -54,8 +55,8 @@ class ProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 "class": (
-                    "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary"
-                    " outline-none"
+                    "form-control rounded focus:ring-1 focus:ring-primary"
+                    " lettersOnly focus:border-primary outline-none"
                 )
             }
         ),
@@ -68,8 +69,8 @@ class ProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 "class": (
-                    "pl-12 form-control w-full rounded focus:ring-1 focus:ring-primary focus:border-primary"
-                    " outline-none"
+                    "pl-12 form-control w-full rounded focus:ring-1"
+                    " focus:ring-primary focus:border-primary outline-none"
                 )
             }
         ),
@@ -81,8 +82,8 @@ class ProfileForm(forms.ModelForm):
         widget=forms.EmailInput(
             attrs={
                 "class": (
-                    "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary"
-                    " outline-none"
+                    "form-control rounded focus:ring-1 focus:ring-primary"
+                    " focus:border-primary outline-none"
                 )
             }
         ),
@@ -94,8 +95,8 @@ class ProfileForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs={
                 "class": (
-                     "form-control rounded focus:ring-1 focus:ring-primary focus:border-primary"
-                    " outline-none"
+                    "form-control rounded focus:ring-1 focus:ring-primary"
+                    " focus:border-primary outline-none"
                 )
             }
         ),
@@ -253,8 +254,9 @@ class WorkHistoryForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 "class": (
-                    "w-full rounded-md border border-[#B3B3B] outline-none"
-                    " text-sm p-2"
+                    "w-full  focus:ring-1 focus:ring-primary"
+                    " focus:border-primary rounded-md border border-[#B3B3B]"
+                    " outline-none text-sm p-2"
                 ),
                 "placeholder": "Enter your Job Title",
             }
@@ -263,25 +265,27 @@ class WorkHistoryForm(forms.ModelForm):
 
     job_summary = forms.CharField(
         label="Job Summary",
-        max_length=90,
-        widget=forms.TextInput(
+        widget=forms.Textarea(
             attrs={
                 "class": (
-                    "w-full rounded-md border border-[#B3B3B] outline-none"
+                    "  focus:ring-1 focus:ring-primary focus:border-primary"
+                    " w-full rounded-md border border-[#B3B3B] outline-none"
                     " text-sm p-2"
                 ),
-                "placeholder": "Enter your Job Title",
+                "placeholder": "Enter your Job Summary",
             }
         ),
     )
+
     company_name = forms.CharField(
         label="Company Name",
         max_length=150,
         widget=forms.TextInput(
             attrs={
                 "class": (
-                    "w-full rounded-md border border-[#B3B3B] outline-none"
-                    " text-sm p-2"
+                    "w-full   focus:ring-1 focus:ring-primary"
+                    " focus:border-primary rounded-md border border-[#B3B3B]"
+                    " outline-none text-sm p-2"
                 ),
                 "placeholder": "Enter your Company Name",
             }
@@ -292,8 +296,9 @@ class WorkHistoryForm(forms.ModelForm):
         widget=forms.Select(
             attrs={
                 "class": (
-                    "w-max rounded-md border border-[#B3B3B] outline-none"
-                    " text-sm p-2"
+                    "w-max  focus:ring-1 focus:ring-primary"
+                    " focus:border-primary rounded-md border border-[#B3B3B]"
+                    " outline-none text-sm p-2"
                 ),
                 "placeholder": "Enter your Start Month",
             }
@@ -306,8 +311,9 @@ class WorkHistoryForm(forms.ModelForm):
             attrs={
                 "id": "started-year",
                 "class": (
-                    "w-full rounded-md border border-[#B3B3B] outline-none"
-                    " text-sm p-2"
+                    "w-full  focus:ring-1 focus:ring-primary"
+                    " focus:border-primary rounded-md border border-[#B3B3B]"
+                    " outline-none text-sm p-2"
                 ),
             }
         ),
@@ -319,8 +325,9 @@ class WorkHistoryForm(forms.ModelForm):
         widget=forms.Select(
             attrs={
                 "class": (
-                    "w-max rounded-md border border-[#B3B3B] outline-none"
-                    " text-sm p-2"
+                    "w-max   focus:ring-1 focus:ring-primary"
+                    " focus:border-primary rounded-md border border-[#B3B3B]"
+                    " outline-none text-sm p-2"
                 ),
                 "placeholder": "Enter your End Month",
             }
@@ -332,8 +339,9 @@ class WorkHistoryForm(forms.ModelForm):
         widget=forms.Select(
             attrs={
                 "class": (
-                    "w-full rounded-md border border-[#B3B3B] outline-none"
-                    " text-sm p-2"
+                    "w-full  focus:ring-1 focus:ring-primary"
+                    " focus:border-primary rounded-md border border-[#B3B3B]"
+                    " outline-none text-sm p-2"
                 )
             }
         ),
@@ -363,8 +371,9 @@ class EditJobForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": (
-                    "form-control rounded focus:ring-1 focus:ring-primary"
-                    " focus:border-primary"
+                    "form-control  focus:ring-1 focus:ring-primary"
+                    " focus:border-primary rounded focus:ring-1"
+                    " focus:ring-primary focus:border-primary"
                 ),
                 "placeholder": "",
                 "autocomplete": "off",
@@ -377,8 +386,9 @@ class EditJobForm(forms.Form):
         widget=forms.Textarea(
             attrs={
                 "class": (
-                    "form-control rounded focus:ring-1 focus:ring-primary"
-                    " focus:border-primary"
+                    "form-control  focus:ring-1 focus:ring-primary"
+                    " focus:border-primary rounded focus:ring-1"
+                    " focus:ring-primary focus:border-primary"
                 ),
                 "rows": 5,
                 "autocomplete": "off",
@@ -393,8 +403,9 @@ class EditJobForm(forms.Form):
         widget=forms.Select(
             attrs={
                 "class": (
-                    "form-control rounded focus:ring-1 focus:ring-primary"
-                    " focus:border-primary"
+                    "form-control  focus:ring-1 focus:ring-primary"
+                    " focus:border-primary rounded focus:ring-1"
+                    " focus:ring-primary focus:border-primary"
                 ),
             },
         ),
@@ -404,8 +415,9 @@ class EditJobForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": (
-                    "form-control rounded focus:ring-1 focus:ring-primary"
-                    " focus:border-primary"
+                    "form-control  focus:ring-1 focus:ring-primary"
+                    " focus:border-primary rounded focus:ring-1"
+                    " focus:ring-primary focus:border-primary"
                 ),
                 "autocomplete": "off",
                 "required": "true",
@@ -460,7 +472,8 @@ class EditCompanyForm(forms.Form):
     )
 
     country = forms.ChoiceField(
-        choices=[('', 'Select your Country')] + [(country, country) for code, country in countries],
+        choices=[("", "Select your Country")]
+        + [(country, country) for code, country in countries],
         widget=forms.Select(
             attrs={
                 "class": (

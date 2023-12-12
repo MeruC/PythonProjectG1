@@ -1,11 +1,13 @@
 $(document).ready(function () {
-  // Check if jQuery Validate is loaded
-  console.log(typeof $.fn.validate !== "undefined");
-  // jQuery Validate plugin is loaded
-
-  // You can proceed with using the validate() function
-  // Example: $('#myForm').validate({ ... });
+  // form validation
   $("#profile-form").validate(formOptions);
+  // make it only accept letters
+  $(".lettersOnly").keyup(function () {
+    // do not accept numbers else accept it
+    if (this.value.match(/[^a-zA-Z ]/g)) {
+      this.value = this.value.replace(/[^a-zA-Z ]/g, "");
+    }
+  });
 });
 
 const formOptions = {

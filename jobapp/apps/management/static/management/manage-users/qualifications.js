@@ -228,7 +228,7 @@ function populateWorkModal(resData) {
   console.log(data);
   $('input[name="work_title"').val(work_title);
   $('input[name="company_name"').val(company_name);
-  $('input[name="job_summary"').val(job_summary);
+  $('textarea[name="job_summary"').val(job_summary);
   $('select[name="started_month"').val(started_month);
   $('select[name="started_year"').val(started_year);
   $('select[name="end_month"').val(end_month);
