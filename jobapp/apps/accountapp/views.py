@@ -1,4 +1,4 @@
-from datetime import timezone
+from django.utils import timezone
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
