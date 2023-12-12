@@ -48,21 +48,31 @@
       </section>
       <hr class="my-5">
       <section class="text-start flex flex-row justify-center gap-2 md:flex-col md:items-start">
+        
+        {% if not user.is_superuser %}
         <button class="active-tab text-start pl-3 py-2 hover:bg-gray-100" id="profile-tab-btn"
-            onclick="openTab('profile-tab-btn')">Profile</button>
-        <button id="setting-tab-btn" class="text-start pl-3 py-2 hover:bg-gray-100" onclick="openTab('setting-tab-btn')">Account Settings</button>
+        onclick="openTab('profile-tab-btn')">Profile</button>
+        {% endif %}
+          
+  
+        <button id="setting-tab-btn" class="{% if  user.is_superuser %} active-tab {% endif %}text-start pl-3 py-2 hover:bg-gray-100" onclick="openTab('setting-tab-btn')">Account Settings</button>
       </section>
-      <hr class="my-5">                   
-        <section>
-          <a href="{% url 'profileapp:resume' %}" target="_blank" rel="noopener">
-            <button onclick="" type="button" {% if not hasInfo %} hidden {% endif %} class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e] disabled:cursor-not-allowed" >
-              View Resume
-            </button>
-          </a>
-            <button onclick="viewResume('{{missingList}}')" type="button" {% if hasInfo %} hidden {% endif %} class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e] disabled:cursor-not-allowed" >
-              View Resume
-            </button>
-        </section>
+      <hr class="my-5">  
+      
+      {% if not user.is_superuser %}
+      <section>
+        <a href="{% url 'profileapp:resume' %}" target="_blank" rel="noopener">
+          <button onclick="" type="button" {% if not hasInfo %} hidden {% endif %} class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e] disabled:cursor-not-allowed" >
+            View Resume
+          </button>
+        </a>
+          <button onclick="viewResume('{{missingList}}')" type="button" {% if hasInfo %} hidden {% endif %} class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e] disabled:cursor-not-allowed" >
+            View Resume
+          </button>
+      </section>
+      {% endif %}
+                         
+  
     </aside>
     <main class="grow flex flex-col h-full overflow-y-auto no-scrollbar border border-green-800 rounded">
 
@@ -74,7 +84,7 @@
         {% endfor %}
       {% endif %}
 
-      <div class="profile-tab flex flex-col">
+      <div class="profile-tab flex flex-col {% if user.is_superuser %} hidden {% endif %}">
         {% comment %} -- Profile Summary -- {% endcomment %}
       
         <section class="min-h-[100px] p-5">
@@ -163,7 +173,10 @@
             </button>
         </section>
       </div>
-      <div class="setting-tab hidden">
+      
+      
+        
+      <div class="setting-tab {% if not user.is_superuser %} hidden {% endif %}">
         <div class="gap-2 text-lg p-5">
             <form method="POST" action="{% url 'profileapp:index' %}" class="flex flex-col gap-3" enctype="multipart/form-data">
               {% csrf_token %}

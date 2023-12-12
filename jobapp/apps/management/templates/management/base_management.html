@@ -95,10 +95,11 @@
                              src="{% if user.company_img %}{{ user.company_img.url }}{% else %}{% static '/assets/default_profile.png' %}{% endif %}"
                              alt="">
                     </div>
-                    {% comment %} <a href="{% url 'profileapp:index' %}" class="flex-1"> {% endcomment %}
                     <div class="flex-1">
-                        <h4 class="font-semibold">{{ user.first_name }} {{ user.last_name }}</h4>
-                        <p class="text-xs text-gray-500">{{ user.email }}</p>
+                        <a href="{% url 'profileapp:index' %}">
+                            <h4 class="font-semibold">{{ user.first_name }} {{ user.last_name }}</h4>
+                            <p class="text-xs text-gray-500">{{ user.email }}</p>
+                        </a>
                     </div>
                     <button class="text-gray-500 p-1.5 rounded hover:text-gray-600 hover:bg-gray-200  transition-all duration-100"
                             id="logoutBtn"
