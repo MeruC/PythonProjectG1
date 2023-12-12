@@ -35,16 +35,24 @@ def dashboard(request):
     # get the total employers
     total_employers = Company.objects.all().count()
     # get the total job seekers
-    total_job_seekers = get_user_model().objects.filter(
-        is_superuser=False,
-        is_staff=False,
-    ).count()
+    total_job_seekers = (
+        get_user_model()
+        .objects.filter(
+            is_superuser=False,
+            is_staff=False,
+        )
+        .count()
+    )
 
-    return render(request, "management/dashboard/index.html", {
-        "total_active_job_posts": total_active_job_posts,
-        "total_employers": total_employers,
-        "total_job_seekers": total_job_seekers,
-    })
+    return render(
+        request,
+        "management/dashboard/index.html",
+        {
+            "total_active_job_posts": total_active_job_posts,
+            "total_employers": total_employers,
+            "total_job_seekers": total_job_seekers,
+        },
+    )
 
 
 def get_job_post_data(request):
@@ -464,11 +472,12 @@ def history(request, id):
     User = get_user_model()
     user = get_object_or_404(User, pk=id)
     # get all the recent applications of the user.
-    application_list = JobApplication.objects.filter(user_id=id).values(
+    application_list = jobApplicant.objects.filter(user_id=id).values(
         "id",
         "status",
         "user_id",
         company_name=F("job__company__company_name"),
+        job_title=F("job__job_title"),
         date_posted=F("job__date_posted"),
     )
 
@@ -477,7 +486,7 @@ def history(request, id):
     return render(
         request,
         "management/user_detail/history.html",
-        {"applications": application_list, "user_record": user},
+        {"application_list": application_list, "user_record": user},
     )
 
 
