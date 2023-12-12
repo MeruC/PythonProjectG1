@@ -12,10 +12,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
     # homepage
-    path("", include(jobs_urls)),
+    path("", include((jobs_urls), namespace='home')),
     path("account/", include(account_urls)),
     path("core/", include(core_urls)),
-    path("job/", include(jobs_urls)),
+    path("job/", include((jobs_urls), namespace='job')),
     path("management/", include(management_urls)),
     path("profile/", include(profile_urls)),
     path("company/", include(company_urls)),

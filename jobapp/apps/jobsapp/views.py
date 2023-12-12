@@ -93,7 +93,7 @@ def getJobList(request):
                 "company__user_id"
             )
         )
-        print(jobs)
+        #print(jobs)
         return JsonResponse(
             {
                 "success": True,
@@ -160,7 +160,7 @@ def getJobDetails(request, jobId):
             .first()
         )
         if job is None:
-            print(job)
+            #print(job)
             return redirect("jobsapp:index")
     except Job.DoesNotExist:
         return redirect("jobsapp:index")
