@@ -4,89 +4,143 @@
 {% block content %}
 {% include "navbar.html" %}
 
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="{% static '/js/actions.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/companyJobList.js' %}"></script>
+<link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+<script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<link href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.colVis.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.colVis.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+
+
+<link rel="stylesheet" href="{% static 'css/table.css' %}" />
+
 
 <div class="bg-[#F1F8F9] min-h-screen w-full flex flex-col">
-  <div class="grow flex flex-row">
-    {% comment %} SIDEBAR {% endcomment %}
-    {% include "companySidebar.html" %} 
-    {% comment %} CONTENT {% endcomment %}
-    <div class="grow overflow-auto p-10">
-      <h1 class="text-2xl font-bold">Job Listings</h1>
-      <hr class="mt-5">
-      <section class="mt-10">
-        <div class="flex flex-row justify-between items-center">
-          <div class="flex flex-row gap-2">
-            <div class="flex flex-row gap-2 items-center">
-              <label for="search" class="text-gray-500"><i class="fa-solid fa-search"></i></label>
-              <input type="text" placeholder="Search" class="rounded" />
+    <div class="grow flex flex-row">
+        {% comment %} SIDEBAR {% endcomment %}
+        <div class="w-[300px] bg-white shadow">
+            {% comment %} COMPANY INFO {% endcomment %}
+            <div class="w-max mx-auto my-5 flex flex-row items-center gap-2 ">
+                <div class="w-12 h-12 p-1 rounded-full border-2">
+                    {% comment %} TODO: Insert company logo {% endcomment %}
+                    <img src="https://img.logoipsum.com/296.svg" class="w-full h-full object-contain object-center" alt="logo" />
+                </div>
+                <div class="grow">
+                    <h4 class="font-semibold">Tech Innovations Co.</h4>
+                    <p class="text-sm text-gray-500">owner@techinnovate.com</p>
+                </div>
             </div>
-          </div>
-          <a href="{% url "companyapp:createJob" %}" class="bg-secondary text-white px-5 py-2 rounded-md transition-all duration-100">Create Job</a>
+            {% comment %} END COMPANY INFO {% endcomment %}
+            <hr>
+            {% comment %} NAVIGATION {% endcomment %}
+            <ul class="mt-5 flex flex-col gap-1 font-semibold">
+                <li class="pl-10 py-2 border-l-2 border-secondary text-secondary ">
+                    <i class="fa-solid fa-briefcase mr-3"></i><a href="{% url 'companyapp:companyJobList' %}">Job Listings</a>
+                </li>
+                <li class="pl-10 py-2 text-gray-500 hover:text-black transition-all duration-100">
+                    <i class="fa-solid fa-user-tie mr-3"></i><a href="{% url "companyapp:companyApplicants" %}">Applicants</a>
+                </li>
+                <li class="pl-10 py-2  text-gray-500 hover:text-black transition-all duration-100">
+                    <i class="fa-solid fa-gear mr-3"></i><a href="{% url "companyapp:companyProfileSettings" %}">Company Settings</a>
+                </li>
+            </ul>
         </div>
-        {% comment %} TODO ADD TABLE HERE {% endcomment %}
+        {% comment %} CONTENT {% endcomment %}
+        <div class="grow overflow-auto p-10">
+            <h1 class="text-2xl font-bold">Job Listings</h1>
+            <hr class="mt-5">
+            <section class="mt-10">
+              
+              <div class="flex flex-row gap-3 justify-between mb-3">
+                <div class="relative w-80">
+                  <i
+                    class="fa-solid fa-search absolute left-4 top-3 text-gray-500"
+                  ></i>
+                  <input
+                    type="search"
+                    placeholder="Search"
+                    class="w-full rounded pl-12 border-none focus:border-none focus:outline-none focus:ring-primary focus:border-primary resize-none"
+                    id="jobsSearchField"
+                    style=""
+                  />
+                </div>
+                <a href="{% url "companyapp:createJob" %}" class="bg-secondary text-white px-5 py-2 rounded-md transition-all duration-100">Post New Job</a>
+              </div>
+      
 
-        <div class="p-5 h-screen">
-          <div class="overflow-auto rounded-lg shadow hidden md:block">
-              <table class="w-full">
-                <thead class="bg-[#DFFFCB]">
-                      <tr>
-                          <th class="w-2/5 px-4 py-2 text-[#386641]">Job Title</th>
-                          <th class="w-1/5 px-4 py-2 text-[#386641]">No. of Applicants</th>
-                          <th class="w-1/10 px-4 py-2 text-[#386641]">Status</th>
-                          <th class="w-1/5 px-4 py-2 text-[#386641]">Date Posted</th>
-                          <th class="w-1/10 px-4 py-2 text-[#386641]">Actions</th>
-                      </tr>
-                  </thead>
-                  <tbody class="divide-y divide-gray-100 bg-white">
-                      {% for job in job_list %}
-                      <tr>
-                          <!--values -->
-                          <td class="border px-4 py-2">{{job.job_title}}</td>
-                          <td class="border px-4 py-2 text-center">
-                            {% if job.jobapplicant_set.count > 0 %}
-                                <a href="{% url 'companyapp:jobApplicants' job.id %}" class="text-[#386641] hover:underline">
-                                    {{ job.jobapplicant_set.count }} Applicant{% if job.jobapplicant_set.count > 1 %}s{% endif %}
-                                </a>
-                            {% else %}
-                                <span class="text-[#999]">
-                                    {{ job.jobapplicant_set.count }} Applicants
-                                </span>
-                            {% endif %}
-                          </td>
-                          <td class="border px-4 py-2 text-center">
-                            <div class="{% if job.status == 'active' %}bg-[#BCF09D] text-[#386641]{% else %}bg-[#FF8F92] text-[#BC4749]{% endif %} rounded-full">
-                              &bull; {{ job.status|title }}
-                          </div>
-                          
-                        </td>
-                        
-                        
-                        
-                          <td class="border px-4 py-2 text-center">{{job.date_posted|date:"M j, Y"}}</td>
-                          <td class="border px-4 py-2 text-center">
-                              <div class="justify-items-auto">
-                                  <a href="{% url 'companyapp:editJob' job.id %}">
-                                      <i class="fa-regular fa-pen-to-square mr-2"></i>
-                                  </a>
-                                  <form id="deleteJobForm-{{ job.id }}" action="{% url "companyapp:deleteJob" job.id %}" method="post" class="inline">
-                                    {% csrf_token %}
-                                    <button onclick="onDeleteJobHandler(event, '{{ job.id }}')">
-                                        <i class="fa-regular fa-trash-can ml-2"></i>
-                                    </button>
-                                </form>
-                              </div>
-                          </td>
-                      </tr>
-                      {% endfor %}
-                  </tbody>
-              </table>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
-          </div>
-      </div>
-      </section>
+
+                        <table id="jobsTable" class="row-border">
+                            <thead>
+                                <tr>
+                                    <th>Job Title</th>
+                                    <th>No. of Applicants</th>
+                                    <th>Status</th>
+                                    <th>Date Posted</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for job in job_list %}
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <p>{{ job.job_title }}</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if job.jobapplicant_set.count > 0 %}
+                                        <a href="{% url 'companyapp:jobApplicants' job.id %}" class="text-[#386641] hover:underline">
+                                            {{ job.jobapplicant_set.count }} Applicant{% if job.jobapplicant_set.count > 1 %}s{% endif %}
+                                        </a>
+                                        {% else %}
+                                        <span class="text-[#999]">
+                                            {{ job.jobapplicant_set.count }} Applicants
+                                        </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="daisy-badge gap-2 {% if job.status == 'active' %} daisy-badge-success bg-[#BCF09D]{% else %} daisy-badge-error bg-[#FF8F92] {% endif %}">
+                                            <div class="w-2 h-2 rounded-full {% if job.status == 'active' %} bg-[#386641] {% else %} bg-[#BC4749] {% endif %}"></div>
+                                            <p class="font-semibold {% if job.status == 'active' %} text-[#386641] {% else %} text-[#BC4749] {% endif %}">
+                                                {% if job.status == 'active' %} Active {% else %} Inactive {% endif %}
+                                            </p>
+                                        </div>
+                                    </td>
+                                    <td>{{job.date_posted|date:"M j, Y"}}</td>
+                                    <td>
+                                        <div class="justify-items-auto">
+                                            <a href="{% url 'companyapp:editJob' job.id %}">
+                                                <i class="fa-regular fa-pen-to-square mr-2"></i>
+                                            </a>
+                                            <form id="deleteJobForm-{{ job.id }}" action="{% url "companyapp:deleteJob" job.id %}" method="post" class="inline">
+                                                {% csrf_token %}
+                                                <button onclick="onDeleteJobHandler(event, '{{ job.id }}')">
+                                                    <i class="fa-regular fa-trash-can ml-2"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
+          
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
-  </div>
 </div>
+
 {% endblock content %}
+
