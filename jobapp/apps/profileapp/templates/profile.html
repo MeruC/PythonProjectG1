@@ -180,7 +180,7 @@
                         src="{% static '/assets/default_profile.png' %}"
                         alt="">
                 {% endif %}
-                {{ form.profile_img }}
+                <input type="file" name="{{ form.profile_img.name }}" id="{{ form.profile_img.id_for_label }}" accept="image/*" />
               </div>
                            
 
