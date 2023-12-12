@@ -468,6 +468,9 @@ def deactivate_user_account(user):
     user.save()
 
 
+# ----------------- Application History ------------------------------
+
+
 def history(request, id):
     User = get_user_model()
     user = get_object_or_404(User, pk=id)
@@ -488,6 +491,22 @@ def history(request, id):
         "management/user_detail/history.html",
         {"application_list": application_list, "user_record": user},
     )
+
+
+def delete_application(request, id,application_id):
+    try:
+        application = jobApplicant.objects.get(id=application_id)
+        application.delete()
+        messages.success(
+            request,
+            "Application deleted successfully",
+        )
+    except jobApplicant.DoesNotExist:
+        return redirect("managementapp:user_history",id=id)
+    except Exception as e:
+        messages.error(request, "Internal Server Error")
+        print(e)
+    return redirect("managementapp:user_history",id=id)
 
 
 # manage jobs ------------------------------
