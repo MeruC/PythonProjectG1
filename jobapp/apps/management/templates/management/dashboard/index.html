@@ -11,7 +11,7 @@
                 <hr class="mt-5" />
                 <!--stat container-->
                 <div class="stats-container flex gap-4 flex-wrap lg:flex-nowrap mt-10">
-                    <div class="daisy-stat bg-white rounded p-6 max-w-xs">
+                    <div class="daisy-stat bg-white rounded p-6 lg:max-w-xs">
                         <div class="daisy-stat-title flex justify-between ">
                             Active Job Posts
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -23,10 +23,10 @@
                                 <path d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </div>
-                        <div class="daisy-stat-value text-secondary">{{ total_active_job_posts }}</div>
+                        <div class="daisy-stat-value text-primary">{{ total_active_job_posts }}</div>
                     </div>
                     {% comment %} employers {% endcomment %}
-                    <div class="daisy-stat bg-white rounded p-6 max-w-xs">
+                    <div class="daisy-stat bg-white rounded p-6 lg:max-w-xs">
                         <div class="daisy-stat-title flex justify-between">
                             Employers
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,7 @@
                         <div class="daisy-stat-value text-primary">{{ total_employers }}</div>
                     </div>
                     {% comment %} job seekers {% endcomment %}
-                    <div class="daisy-stat bg-white rounded p-6 max-w-xs">
+                    <div class="daisy-stat bg-white rounded p-6 lg:max-w-xs">
                         <div class="daisy-stat-title flex justify-between">
                             Users / Job Seekers
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -63,11 +63,11 @@
                         <div class="daisy-stat-value text-primary">{{ total_job_seekers }}</div>
                     </div>
                 </div>
-                <div class="flex flex-wrap gap-4 lg:justify-between xl:[&>*]:flex-1">
+                <div class="grid grid-rows-2 lg:grid-cols-2 gap-4  ">
                     <!--chart container-->
                     <div class="chart-container mt-5 bg-white text-gray-700 p-4 rounded-md shadow-lg">
                         <div class="chart-title flex flex-col gap-4">
-                            <h2 class="text-2xl font-bold text-secondary">Job Posts</h2>
+                            <h2 class="text-xl font-bold text-secondary">Job Posts</h2>
                             <div class="chart-title-actions">
                                 <select name="jobPosts" id="jobPostsSelect" class="form-select rounded ">
                                     <option selected value="day">Day</option>
@@ -85,7 +85,7 @@
                     <!--chart container-->
                     <div class="chart-container mt-5 bg-white text-gray-700 p-4  rounded-md shadow-lg">
                         <div class="chart-title flex flex-col gap-4">
-                            <h2 class="text-2xl font-bold text-secondary">Job Applications</h2>
+                            <h2 class="text-xl font-bold text-secondary">Job Applications</h2>
                             <div class="chart-title-actions flex gap-4">
                                 <select name="jobApplications"
                                         id="jobApplicationsSelect"
