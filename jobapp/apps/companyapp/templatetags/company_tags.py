@@ -35,3 +35,21 @@ def navbar_content(user):
 
     
     return context
+
+
+@register.simple_tag
+def GetCurrentCompanyInfo(user):
+    company = Company.objects.filter(user=user).get()
+    company_name = company.company_name
+    company_img = company.logo
+    company_email = company.email_address
+    
+    #company information
+    context = {
+        "company_name": company_name,
+        "company_img": company_img,
+        "company_email": company_email,
+    }
+    
+    
+    return context
