@@ -9,7 +9,7 @@ $(document).ready(function() {
         { "width": "35%", "targets": 1 },
      
       ],
-      order: [[1, 'asc']],
+      order: [[1, 'desc']],
       buttons: [
         {
             extend: 'pdf',
