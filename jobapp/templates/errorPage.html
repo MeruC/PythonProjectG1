@@ -1,8 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}404 - Not Found{% endblock title %}
 
 {% block content %} 
+    <head>
+        <link rel="shortcut icon" type="image/png" href="{% static 'assets/favicon.png' %}"/>
+    </head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         window.onload = function alert(){
