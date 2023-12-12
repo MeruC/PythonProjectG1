@@ -23,6 +23,10 @@ window.document.addEventListener("DOMContentLoaded", function () {
     highlight: function (element, errorClass) {
       $(element).addClass("border-red-500"); // Add a class to change the border color
     },
+    unhighlight: function (element, errorClass) {
+      $(element).removeClass("border-red-500"); // Remove the class to reset the border color
+      // $(element).addClass("border-green-500");
+    },
     errorClass: "daisy-label-text-alt text-red-500",
 
     submitHandler: function (form) {
@@ -46,7 +50,7 @@ window.document.addEventListener("DOMContentLoaded", function () {
       company_name: {
         required: true,
       },
-      position: {
+      job_summary: {
         required: true,
       },
     },
@@ -57,12 +61,15 @@ window.document.addEventListener("DOMContentLoaded", function () {
       company_name: {
         required: "Please enter your company name",
       },
-      position: {
-        required: "Please enter your position",
+      job_summary: {
+        required: "Please enter your job summary",
       },
     },
     highlight: function (element, errorClass) {
       $(element).addClass("border-red-500"); // Add a class to change the border color
+    },
+    unhighlight: function (element, errorClass) {
+      $(element).removeClass("border-red-500"); // Remove the class to reset the border color
     },
     errorClass: "daisy-label-text-alt text-red-500",
 

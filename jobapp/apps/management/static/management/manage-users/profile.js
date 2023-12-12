@@ -59,7 +59,7 @@ const formOptions = {
   },
   unhighlight: function (element, errorClass) {
     $(element).removeClass("border-red-500"); // Remove the class to reset the border color
-    $(element).addClass("border-green-500");
+    // $(element).addClass("border-green-500");
   },
   errorClass: "daisy-label-text-alt text-red-500 block",
 
