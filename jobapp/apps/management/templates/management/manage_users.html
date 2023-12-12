@@ -74,9 +74,38 @@
                                         <a href="{% url 'managementapp:user_detail' user.id %}">
                                             <i class="fa-regular fa-pen-to-square   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded"></i>
                                         </a>
-                                        <div class="placeholderElem">
-                                            <i class="fa-solid fa-trash-can   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded"></i>
+                                        <div class="deaactivate-container">
+                                            <div class="removeAccountIcon" >
+                                             {% if not user.is_deactivated %}
+                                                <form method="post" class="deactivate-form" >
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                                    <input type="hidden" name="full_name" value="{{ user.first_name|title }}  {{ user.last_name|title }}">
+                                                    <input type="hidden" name="action" value="deactivate">
+                                                    <button type="button">
+                                                        <i class="fa-solid fa-trash-can   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </div>
+                                        {% else %}
+                                        <div class="activate-container">
+                                            <div class="activateAccountIcon">
+                                                <form method="post" id="activate-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                                    <input type="hidden" name="full_name" value="{{ user.first_name|title }}  {{ user.last_name|title }}">
+                                                    <input type="hidden" name="action" value="activate">
+                                                    <button
+                                            
+                                                            type="button">
+                                                            <i class="fa-solid fa-trash-can-arrow-up   text-gray-400 cursor-pointer transition hover:text-secondary hover:bg-gray-100 p-1 rounded"></i>
+                                                        </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        
                                     </div>
                                 </td>
                             </tr>

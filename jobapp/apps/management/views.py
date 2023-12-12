@@ -219,6 +219,23 @@ def get_job_applications_data(request):
 
 def manage_users(request):
     User = get_user_model()
+    if request.method == "POST":
+        action = request.POST.get("action")
+        user_id = request.POST.get("user_id")
+        user = get_object_or_404(User, pk=user_id)
+        print(user)
+        if not user:
+            messages.error(request, "User not found.")
+            return redirect("managementapp:manage_users")
+        if action == "deactivate":
+            deactivate_user_account(user)
+            messages.success(request, "User deactivated successfully.")
+            return redirect("managementapp:manage_users")
+        elif action == "activate":
+            activate_user_account(user)
+            messages.success(request, "User activated successfully.")
+            return redirect("managementapp:manage_users")
+
     normal_users = User.objects.filter(is_superuser=False)
 
     return render(
@@ -493,7 +510,7 @@ def history(request, id):
     )
 
 
-def delete_application(request, id,application_id):
+def delete_application(request, id, application_id):
     try:
         application = jobApplicant.objects.get(id=application_id)
         application.delete()
@@ -502,11 +519,11 @@ def delete_application(request, id,application_id):
             "Application deleted successfully",
         )
     except jobApplicant.DoesNotExist:
-        return redirect("managementapp:user_history",id=id)
+        return redirect("managementapp:user_history", id=id)
     except Exception as e:
         messages.error(request, "Internal Server Error")
         print(e)
-    return redirect("managementapp:user_history",id=id)
+    return redirect("managementapp:user_history", id=id)
 
 
 # manage jobs ------------------------------

@@ -118,4 +118,60 @@ $(document).ready(function () {
   };
 
   const userTable = $("#user-table").DataTable(tableOptions);
+
+  $("#user-table .deaactivate-container").on(
+    "click",
+    ".removeAccountIcon",
+    function (e) {
+      e.stopPropagation();
+      // get the form child of this div
+      const form = $(this).children("form");
+      // get the id of the user from the input form
+      const fullName = form.find("input[name='full_name']").val();
+      console.log(form, fullName);
+      Swal.fire({
+        title: "Confirm Account Deactivation?",
+        text: `Are you sure you want to deactivate the account of ${fullName}?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, deactivate it",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // run some post form submission code here
+          form.submit();
+        }
+      });
+    }
+  );
+
+  $("#user-table .activate-container").on(
+    "click",
+    ".activateAccountIcon",
+    function (e) {
+      console.log(this);
+      e.stopPropagation();
+
+      // get the form child of this div
+      const form = $(this).children("form");
+      // get the id of the user from the input form
+      const fullName = form.find("input[name='full_name']").val();
+      console.log(form, fullName);
+      Swal.fire({
+        title: "Confirm Account Activation?",
+        text: `Are you sure you want to activate the account of ${fullName}?`,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, activate it",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // run some post form submission code here
+          form.submit();
+        }
+      });
+    }
+  );
 });
