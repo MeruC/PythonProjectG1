@@ -120,10 +120,10 @@
                                         <i class="fa-regular fa-rectangle-xmark" style="color: #999; cursor: not-allowed;"></i>
                                     </span>
                                 {% endif %}
-                                <form action="{% url 'companyapp:resume' applicant.user %}" method="post" class="inline" target="_blank" rel="noopener">
+                                {% comment %}<form action="{% url 'companyapp:resume' applicant.user %}" method="post" class="inline" target="_blank" rel="noopener">
                                   {% csrf_token %}
                                   <button><i class="fa-regular fa-eye"></i></button>
-                                </form>
+                                </form> {% endcomment %}
                               </div>
                             </td>
                             
