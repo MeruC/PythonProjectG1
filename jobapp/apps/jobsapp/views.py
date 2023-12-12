@@ -190,7 +190,7 @@ def manageApplication(request, jobId):
             existing_application.delete()
         else:
             jobApplicant.objects.create(
-                job_id=job.id, user_id=request.user.id, status="pending"
+                job_id=job.id, user_id=request.user.id, status="pending", date_applied=timezone.now()
             )
             # Alerts.objects.create(
             #     notification="Applicant",
