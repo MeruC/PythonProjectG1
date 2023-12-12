@@ -300,7 +300,7 @@ def delete_education(request,id):
     del_education = get_object_or_404(Education,id=id)
     try:
         del_education.delete() #delete education record
-        messages.success(request,'Deletion of education success')
+        messages.success(request,'Education successfully removed.')
         return JsonResponse({'status':200,'message':'Success Deletion'})
     except Exception as e:
         messages.error(request,f'Error: {e}')

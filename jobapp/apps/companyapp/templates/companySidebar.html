@@ -11,9 +11,9 @@
         <div class="w-12 h-12 p-1 rounded-full border-2">
           
           {% if company_data.company_img %}
-            <img src="{{company_data.company_img.url}}" class="w-full h-full object-contain object-center" alt="logo" />
+            <img src="{{company_data.company_img.url}}" class="w-full h-full object-cover rounded-full object-center" alt="logo" />
           {% else %}
-            <img src="{% static '/assets/default_logo.png' %}" class="w-full h-full object-contain object-center rounded-full" alt="logo" />
+            <img src="{% static '/assets/default_logo.png' %}" class="w-full h-full object-cover rounded-full object-center" alt="logo" />
           {% endif %}
         </div>
         <div class="grow">
