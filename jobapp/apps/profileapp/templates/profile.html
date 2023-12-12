@@ -361,8 +361,8 @@
   
   <!-- update password -->
   <div class="fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 bg-black bg-opacity-25 update-pass-modal hidden">
-      <div class="w-full h-full block mx-auto rounded-md bg-white p-5 sm:max-w-[600px] sm:h-max">
-        <form method="POST">
+      <div class="w-full block mx-auto h-full rounded-md bg-white p-5 sm:max-w-[600px] sm:h-max">
+        <form id="password-update-form" action="{% url 'profileapp:updatePassword' %}" method="POST">
           {% csrf_token %}
           <h2 class="font-bold text-[#386641] text-lg pb-5">Change Password</h2>
           <p class="text-sm italic text-red-400 hidden unmatch-current-password-msg">Incorrect current password</p>
@@ -380,6 +380,7 @@
           <label>Confirm Password:</label>
           <input type="password" name="confirm_pass" autocomplete="confirm-password" class="block rounded-md border border-gray-300 py-3 p-2 outline-none text-sm w-full resize-none"/>
           <p class="text-sm italic text-red-400 hidden unmatch-new-password-msg">New password not match!</p>
+          <p class="text-sm italic text-red-400 hidden match-newandconfirm-password-msg">Current and New password match!</p>
           <div class="flex gap-3 justify-end mt-2">
             <button type="button"class="bg-[#386641] rounded-sm text-white px-4 py-2 font-bold hover:bg-[#6a994e]" onclick="updatePassword('{{user.id}}')">Change password</button>
             <button class="hover:text-gray-500 text-gray-400" type="button" onclick="togglePassModal()">Cancel</button>

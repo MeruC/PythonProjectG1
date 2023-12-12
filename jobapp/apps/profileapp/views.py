@@ -212,7 +212,7 @@ def addSkill(request):
     return redirect('profileapp:index')
 
 
-def updatePassword(request, id):
+def check_current_password(request, id):
     if(request.method == 'POST'):
         user = get_object_or_404(User,id=id)
         
@@ -220,20 +220,34 @@ def updatePassword(request, id):
             # load body to get the data sent
             data = json.loads(request.body)
             current_password = data.get('current_password')
-            new_password = data.get('new_password')
-            user_auth = authenticate(request, username=user.username, password=current_password)
-            
+            user_auth = authenticate(request, username=user.username, password=current_password)  
             
             # check current password for validation
             if user_auth is not None:
-                user.set_password(new_password)
-                user.save()
-                return JsonResponse({'status':200,'message':'Successfully updated'})
-            else : return JsonResponse({'status':200,'message':'Password unmatched'})
+                return JsonResponse({'status':200,'message':'Password matched'})
+            else:
+                return JsonResponse({'status':200,'message':'Password unmatched'})
             
         except Exception as e:
             messages.error(request,f'Error: {e}') 
             return redirect('profileapp:index')  # Redirect to the profile again
+        
+    return redirect('profileapp:index')
+
+
+def update_password(request):
+    if(request.method == 'POST'):
+        new_password = request.POST.get('password')
+        
+        #update password
+        try:
+            user = request.user
+            user.set_password(new_password)
+            user.save()
+            
+            messages.success(request,'Password successfully updated.')
+        except Exception as e:
+            messages.error(request,f'Erro: {e}')
         
     return redirect('profileapp:index')
 
