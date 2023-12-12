@@ -16,8 +16,8 @@ $(document).ready(function () {
 
     console.log(id, companyName, jobTitle);
     Swal.fire({
-      title: "Delete?",
-      text: `Are you sure you want to delete their application for ${companyName} as a ${jobTitle}?`,
+      title: "Remove?",
+      text: `Are you sure you want to remove their application for ${companyName} as a ${jobTitle}?`,
       icon: "warning",
       confirmButtonText: "Delete",
       confirmButtonColor: "#EF5350",
