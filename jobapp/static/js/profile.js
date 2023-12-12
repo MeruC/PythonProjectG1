@@ -340,7 +340,7 @@ function updateEducation(id){
 function toggleDeactivateModal(){
     Swal.fire({
         title: 'Deactivate Account?',
-        text: 'This action prevents you from logging in. Only the administrator will be able to activate this account. Are you sure you want to continue?',
+        text: 'You will be unable to log in as a result of this action. This account can only be activated by the administrator. Are you certain you want to proceed?',
         icon: 'error',
         confirmButtonText: 'Delete',
         confirmButtonColor: '#EF5350',
