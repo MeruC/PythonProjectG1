@@ -19,7 +19,7 @@ User = get_user_model()
 
 # Create your views here.
 def index(request):
-    return render(request, "index.html")
+    return redirect("companyapp:companyJobList")
 
 @login_required(login_url='/account/login/')
 def createCompany(request):

@@ -85,6 +85,8 @@ def Login(request):
 
     return render(request, "login.html", {"form": form})
 
+def index(request):
+    return redirect("accountapp:login")
 
 # ------------------ Logout ------------------
 def Logout(request):
