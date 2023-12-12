@@ -5,7 +5,7 @@
 {% include "navbar.html" %}
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="{% static '/js/actions.js' %}"></script>
-<script type="text/javascript" src="{% static '/js/companyApplications.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/jobApplications.js' %}"></script>
 
 <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
 <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
@@ -87,17 +87,17 @@
                 
                         {% for applicant in applicants %}
                           <tr>
-                            <td class="border px-4 py-2 text-center">{{ applicant.user.get_full_name }}</td>
-                            <td class="border px-4 py-2 text-center">{{ applicant.user.email }}</td>
-                            <td class="border px-4 py-2 text-center">{{ applicant.date_applied|date:"M j, Y" }}</td>
-                            <td class="border px-4 py-2 text-center"><div class="daisy-badge gap-2 {% if applicant.status == 'approved' %} daisy-badge-success bg-[#BCF09D] {% elif applicant.status == 'pending' %} daisy-badge-info bg-[#B9DEF9] {% else %} daisy-badge-error bg-[#FF8F93] {% endif %} rounded-full">
+                            <td >{{ applicant.user.get_full_name }}</td>
+                            <td >{{ applicant.user.email }}</td>
+                            <td >{{ applicant.date_applied|date:"M j, Y" }}</td>
+                            <td ><div class="daisy-badge gap-2 {% if applicant.status == 'approved' %} daisy-badge-success bg-[#BCF09D] {% elif applicant.status == 'pending' %} daisy-badge-info bg-[#B9DEF9] {% else %} daisy-badge-error bg-[#FF8F93] {% endif %} rounded-full">
                               <div class="w-2 h-2 rounded-full {% if applicant.status == 'approved' %} bg-[#386641] {% elif applicant.status == 'pending' %} bg-[#236FA3] {% else %} bg-[#BB4748] {% endif %}"></div>
                               <p class="font-semibold {% if applicant.status == 'approved' %} text-[#386641] {% elif applicant.status == 'pending' %} text-[#236FA3] {% else %} text-[#BB4748] {% endif %}">
                                   {% if applicant.status == 'approved' %} Approved {% elif applicant.status == 'pending' %} Pending {% else %} Rejected {% endif %}
                               </p>
                           </div>
                         </td>
-                            <td class="border px-4 py-2 text-center">
+                            <td >
                               <div class="justify-items-auto space-x-2">
                                 {% if applicant.status == 'pending' %}
                                 <form id="changeStatusForm-{{ applicant.id }}-check" action="{% url 'companyapp:updateStatus' applicant.id 'check' %}" method="post" class="inline">

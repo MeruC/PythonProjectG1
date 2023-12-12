@@ -4,18 +4,18 @@ $(document).ready(function() {
       dom: 'Bfrtip',
       "autoWidth": false,
       "columnDefs": [
-          { "width": "30%", "targets": 0 },
+          { "width": "20%", "targets": 0 },
           { "width": "25%", "targets": 1 },
           { "width": "20%", "targets": 2 },
           { "width": "15%", "targets": 3 },
           { "width": "10%", "targets": 4 },
-          { "width": "10%", "targets": 4 },
+          { "width": "20%", "targets": 5 },
       ],
       buttons: [
           {
               extend: 'pdf',
               exportOptions: {
-                  columns: [0, 1, 2, 3, 4]
+                  columns: [0, 1, 2, 3, 4, 5, 6]
               },
               title: 'Job Listings',
               customize: function(doc) {
